@@ -1,5 +1,9 @@
 ## LAI Yao (来耀)
 
+# Biography
+
+LAI Yao received his Bachelor's Degree in Micro-electronics Engineering, Fudan University and Master's Degree in Software Engineering, Tsinghua University.
+
 You can use the [editor on GitHub](https://github.com/laiyao1/laiyao1.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
