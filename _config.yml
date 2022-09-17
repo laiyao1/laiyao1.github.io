@@ -81,7 +81,7 @@ analytics:
 # Site Author
 author:
   name             : "LAI Yao (来耀)"
-  avatar           : "profile.png"
+  avatar           : "profile.jpg" # "profile.png"
   bio              : "Ph.D student at The University of Hong Kong"
   location         : "Hong Kong S.A.R."
   employer         :
