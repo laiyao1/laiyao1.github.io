@@ -11,21 +11,23 @@ redirect_from:
 
 Education
 ======
-* B.S. in GitHub, GitHub University, 2012
-* M.S. in Jekyll, GitHub University, 2014
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
+* B.Eng. in Micro-electronics, Fudan University, 2017
+* M.Eng. in Software Engineering, Tsinghua University, 2020
+* Ph.D in Computer Science, the University of Hong Kong, 2025 (expected)
 
 Work experience
 ======
-* Summer 2015: Research Assistant
-  * Github University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
+* 2020-2021: Algorithm Engineer
+  * Bytedance
+  * Duties included: Text Analysis in Search Engines
 
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* Summer 2019: Software Engineering Intern
+  * Google
+  * Duties included: Knowledge graph development
+
+* Spring 2016: Physical Design Intern
+  * NVIDIA
+  * Duties included: Physical design development
   
 Skills
 ======
