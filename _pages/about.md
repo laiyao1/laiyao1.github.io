@@ -27,3 +27,11 @@ Visual Representation Learning (NeurIPS 2022, accepted)
 
 - OpenSMax: Unknown Domain Generation Algorithm Detection (ECAI 2020, [pdf](https://ecai2020.eu/papers/317_paper.pdf))
   - **Yao Lai**, Guolou Ping, Yuexin Wu, Chenhui Lu and Xiaojun Ye
+
+
+Awards
+=====
+- Hong Kong PhD Fellowship (2021)
+- Outstanding Graduate of Software School, Tsinghua University (2020)
+- Outstanding Graduate of Shanghai City (2017)
+- National Scholarship (2015)
