@@ -22,10 +22,10 @@ My long-term research goal is to leveraging cutting-edge deep learning technolog
 Publications
 =====
 - MaskPlace: Fast Chip Placement via Reinforced
-Visual Representation Learning (NeurIPS 2022, accepted, [project](https://laiyao1.github.io/maskplace/))
+Visual Representation Learning (NeurIPS 2022, CCF-A, accepted, [[project](https://laiyao1.github.io/maskplace/)])
   - **Yao Lai**, Yao Mu and Ping Luo
 
-- OpenSMax: Unknown Domain Generation Algorithm Detection (ECAI 2020, [paper](https://ecai2020.eu/papers/317_paper.pdf))
+- OpenSMax: Unknown Domain Generation Algorithm Detection (ECAI 2020, CCF-B, [[paper](https://ecai2020.eu/papers/317_paper.pdf)][[video]((https://underline.io/lecture/1842-opensmax-unknown-domain-generation-algorithm-detection))])
   - **Yao Lai**, Guolou Ping, Yuexin Wu, Chenhui Lu and Xiaojun Ye
 
 
