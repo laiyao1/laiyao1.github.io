@@ -23,7 +23,7 @@ Publications
 =====
 - MaskPlace: Fast Chip Placement via Reinforced
 Visual Representation Learning (NeurIPS 2022, CCF-A, accepted)
-  - [[project](https://laiyao1.github.io/maskplace/)])
+  - [[project](https://laiyao1.github.io/maskplace/)]
   - **Yao Lai**, Yao Mu and Ping Luo
 
 - OpenSMax: Unknown Domain Generation Algorithm Detection (ECAI 2020, CCF-B)
