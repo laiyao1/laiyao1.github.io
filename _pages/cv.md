@@ -12,7 +12,9 @@ redirect_from:
 Education
 ======
 * B.Eng. in Micro-electronics, Fudan University, 2017
+  * GPA: 3.88/4.00, Ranking: 2/69
 * M.Eng. in Software Engineering, Tsinghua University, 2020
+  * GPA: 3.84/4.00, Ranking: 1/98
 * Ph.D in Computer Science, the University of Hong Kong, 2025 (expected)
 
 Work experience
@@ -33,7 +35,7 @@ Skills
 ======
 * Python, C/C++, SQL, Java, Perl, MATLAB
 * Pytorch, Tensorflow, Scikit-learn
-* English (TOEFL 102), 日本語(JLPT-N3), 廣東話
+* English, 日本語, 廣東話, 普通话
 
 Publications
 ======
@@ -41,17 +43,19 @@ Publications
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
   
-Talks
+<!-- Talks
 ======
   <ul>{% for post in site.talks %}
     {% include archive-single-talk-cv.html %}
-  {% endfor %}</ul>
+  {% endfor %}</ul> -->
   
 Teaching
 ======
-  <ul>{% for post in site.teaching %}
+* Teaching Assistant, COMP3278 Introduction to database management systems (2022 Autumn)
+* Teaching Assistant, ENGG1340 Computer programming II (2022 Spring)
+  <!-- <ul>{% for post in site.teaching %}
     {% include archive-single-cv.html %}
-  {% endfor %}</ul>
+  {% endfor %}</ul> -->
   
 Service and leadership
 ======
