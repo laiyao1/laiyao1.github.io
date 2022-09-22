@@ -11,7 +11,7 @@ redirect_from:
 
 Education
 ======
-* B.Eng. in Micro-electronics, Fudan University, 2017
+* B.Eng. in Micro-electronics Science and Engineering, Fudan University, 2017
   * GPA: 3.88/4.00, Ranking: 2/69
 * M.Eng. in Software Engineering, Tsinghua University, 2020
   * GPA: 3.84/4.00, Ranking: 1/98
