@@ -53,9 +53,7 @@ Teaching
 ======
 * Teaching Assistant, COMP3278 Introduction to database management systems (2022 Autumn)
 * Teaching Assistant, ENGG1340 Computer programming II (2022 Spring)
-  <!-- <ul>{% for post in site.teaching %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul> -->
+
   
 Service and leadership
 ======
