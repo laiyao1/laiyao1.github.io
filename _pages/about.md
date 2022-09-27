@@ -37,6 +37,3 @@ Awards
 - Outstanding Graduate of Software School, Tsinghua University (2020)
 - Outstanding Graduate of Shanghai City (2017)
 - National Scholarship (2015)
-
-
-<script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=M0MjCK9V4V16gUsL_TgdRLTYdLqYb46ibQfPih65tKs&cl=ffffff&w=a"></script>
