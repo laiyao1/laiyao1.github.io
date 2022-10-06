@@ -9,7 +9,7 @@ redirect_from:
 
 {% include base_path %}
 
-Education
+Education 🧑‍🎓
 ======
 * B.Eng. in Micro-electronics Science and Engineering, Fudan University, 2017
   * GPA: 3.88/4.00, Ranking: 2/69
@@ -17,7 +17,7 @@ Education
   * GPA: 3.84/4.00, Ranking: 1/98
 * Ph.D in Computer Science, the University of Hong Kong, 2025 (expected)
 
-Work experience
+Work experience 🧑‍💻
 ======
 * 2020-2021: Algorithm Engineer
   * Bytedance
@@ -31,14 +31,14 @@ Work experience
   * NVIDIA
   * Duties included: Physical design development
   
-Skills
+Skills 🔨
 ======
 * Python, C/C++, SQL, Java, Perl, MATLAB
 * Pytorch, Tensorflow, Scikit-learn
 * English 🇺🇸, 日本語 🇯🇵, 廣東話 🇭🇰, 普通话 🇨🇳
 * Guitar 🎸, Piano 🎹
 
-Publications
+Publications 📖
 ======
   <ul>{% for post in site.publications %}
     {% include archive-single-cv.html %}
@@ -50,12 +50,12 @@ Publications
     {% include archive-single-talk-cv.html %}
   {% endfor %}</ul> -->
   
-Teaching
+Teaching 🧑‍🏫
 ======
 * Teaching Assistant, COMP3278 Introduction to database management systems (2022 Autumn)
 * Teaching Assistant, ENGG1340 Computer programming II (2022 Spring)
 
   
-Service and leadership
+Service and leadership 🤝
 ======
 * Monitor of Software School of Tsinghua Unversity
