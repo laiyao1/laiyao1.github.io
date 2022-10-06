@@ -35,7 +35,8 @@ Skills
 ======
 * Python, C/C++, SQL, Java, Perl, MATLAB
 * Pytorch, Tensorflow, Scikit-learn
-* English🇺🇸, 日本語🇯🇵, 廣東話🇭🇰, 普通话🇨🇳
+* English 🇺🇸, 日本語 🇯🇵, 廣東話 🇭🇰, 普通话 🇨🇳
+* Guitar 🎸, Piano 🎹
 
 Publications
 ======
