@@ -35,7 +35,7 @@ Skills
 ======
 * Python, C/C++, SQL, Java, Perl, MATLAB
 * Pytorch, Tensorflow, Scikit-learn
-* English:us:, 日本語:jp:, 廣東話:hong_kong:, 普通话:cn:
+* English:us:, 日本語:jp:, 廣東話🇭🇰, 普通话:cn:
 
 Publications
 ======
