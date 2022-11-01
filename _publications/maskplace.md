@@ -12,3 +12,4 @@ This paper proposes an RL-based chip placement method MaskPlace based on rich vi
 <!-- [Download paper here](http://academicpages.github.io/files/paper1.pdf) -->
 [[Project](https://laiyao1.github.io/maskplace/)]
 <!-- Recommended citation: Your Name, You. (2009). "Paper Title Number 1." <i>Journal 1</i>. 1(1). -->
+Lai, Y., Mu Y., & Luo, P. (2022). OpenSMax: Unknown Domain Generation Algorithm Detection. In NeuraIPS 2022.
