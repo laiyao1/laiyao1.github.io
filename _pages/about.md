@@ -17,7 +17,7 @@ My Chinese name is 来耀.
 
 Research Highlights
 =====
-My long-term research goal is to leveraging cutting-edge deep learning technologies to solve hard problems in electronic design automation and information security.
+My long-term research goal is to leverage cutting-edge deep learning technologies to solve challenges in electronic design automation (EDA) and information security.
 
 Publications
 =====
@@ -35,6 +35,7 @@ Awards
 =====
 - Hong Kong PhD Fellowship (2021)
 - Outstanding Graduate of Software School, Tsinghua University (2020)
+- Outstanding Bachelor Thesis Award (2017)
 - Outstanding Graduate of Shanghai City (2017)
 - National Scholarship (2015)
 
