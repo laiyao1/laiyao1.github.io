@@ -21,6 +21,11 @@ My long-term research goal is to leverage cutting-edge deep learning technologie
 
 Publications
 =====
+- ChiPFormer: Transferable Chip Placement via Offline Decision Transformer
+ (ICML 2023, CCF-A)
+  - **Yao Lai**, Jinxin Liu, Zhentao Tang, Bin Wang, Jianye Hao, and Ping Luo
+
+
 - MaskPlace: Fast Chip Placement via Reinforced
 Visual Representation Learning (NeurIPS 2022, CCF-A, **spotlight** presentation(acceptance rate 5.1%) )
   - [[paper](https://openreview.net/pdf?id=T2DBbSh6_uY)][[project](https://laiyao1.github.io/maskplace/)][[poster](https://nips.cc/media/PosterPDFs/NeurIPS%202022/7417744a2bac776fabe5a09b21c707a2.png)]
