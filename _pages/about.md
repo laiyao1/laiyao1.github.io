@@ -17,7 +17,7 @@ My Chinese name is 来耀.
 
 Research Highlights
 =====
-My long-term research goal is to leverage cutting-edge deep learning technologies to solve challenges in electronic design automation (EDA) and information security.
+My long-term research goal is to leverage cutting-edge deep learning technologies to solve challenges in Electronic Design Automation (EDA) and Information Security (IS).
 
 Publications
 =====
