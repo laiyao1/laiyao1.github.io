@@ -23,6 +23,7 @@ Publications
 =====
 - ChiPFormer: Transferable Chip Placement via Offline Decision Transformer
  (ICML 2023, CCF-A)
+  - [[paper](https://openreview.net/pdf?id=j0miEWtw87)]
   - **Yao Lai**, Jinxin Liu, Zhentao Tang, Bin Wang, Jianye Hao, and Ping Luo
 
 
