@@ -84,7 +84,7 @@ author:
   avatar           : "profile.jpg" # "profile.png"
   bio              : "Ph.D student at The University of Hong Kong"
   location         : "Hong Kong S.A.R."
-  employer         :
+  employer         : "mmlab@HKU"
   pubmed           : # "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   googlescholar    : "https://scholar.google.com/citations?user=9Oxeo68AAAAJ"
   email            : "laiyao@connect.hku.hk"
@@ -99,7 +99,7 @@ author:
   github           : "laiyao1"
   google_plus      :
   keybase          :
-  instagram        :
+  instagram        : "laiyao1"
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
   linkedin         : "laiyao1"

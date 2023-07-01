@@ -9,6 +9,9 @@ redirect_from:
 
 {% include base_path %}
 
+[[CV (English)](http://laiyao1.github.io/files/resume2023.pdf)]
+<!-- [[CV (中文)]()] -->
+
 Education 🧑‍🎓
 ======
 * B.Eng. in Micro-electronics Science and Engineering, Fudan University, 2017

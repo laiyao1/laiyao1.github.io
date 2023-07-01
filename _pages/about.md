@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I am a Ph.D. candidate in [computer science department](https://cs.hku.hk) at [the University of Hong Kong](https://hku.hk), fortunately advised by [Prof. Ping Luo](http://luoping.me/). Previously, I received my M.Eng. degree in the [software school](https://www.thss.tsinghua.edu.cn/) of [Tsinghua University](https://www.tsinghua.edu.cn/en/) and B.Eng. degree in the [microelectronics department](https://sme.fudan.edu.cn/) of [Fudan University](https://www.fudan.edu.cn/en). My research interests include AI for Electronic Design Automation, AI for security and other possible applications.
+I am a Ph.D. candidate in [computer science department](https://cs.hku.hk) at [the University of Hong Kong](https://hku.hk), also affiliated with mmlab@HKU, fortunately advised by [Prof. Ping Luo](http://luoping.me/). Previously, I received my M.Eng. degree in the [software school](https://www.thss.tsinghua.edu.cn/) of [Tsinghua University](https://www.tsinghua.edu.cn/en/) and B.Eng. degree in the [microelectronics department](https://sme.fudan.edu.cn/) of [Fudan University](https://www.fudan.edu.cn/en). My research interests include AI for Electronic Design Automation, AI for security and other possible applications.
 My Chinese name is 来耀.
 
 
@@ -23,7 +23,7 @@ Publications
 =====
 - ChiPFormer: Transferable Chip Placement via Offline Decision Transformer
  (ICML 2023, CCF-A)
-  - [[paper](https://openreview.net/pdf?id=j0miEWtw87)]
+  - [[paper](https://openreview.net/pdf?id=j0miEWtw87)][[project](https://sites.google.com/view/chipformer/home)][[poster](https://icml.cc/media/PosterPDFs/ICML%202023/25027.png?t=1687696170.2696526)]
   - **Yao Lai**, Jinxin Liu, Zhentao Tang, Bin Wang, Jianye Hao, and Ping Luo
 
 
