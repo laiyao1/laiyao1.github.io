@@ -19,6 +19,11 @@ Research Highlights
 =====
 My long-term research goal is to leverage cutting-edge deep learning technologies to solve challenges in Electronic Design Automation (EDA) and Information Security (IS).
 
+Video
+=====
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9-EQmDjRLHQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
 Publications
 =====
 - ChiPFormer: Transferable Chip Placement via Offline Decision Transformer
