@@ -23,6 +23,8 @@ Video
 =====
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9-EQmDjRLHQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+For China(mainland) visitors, you can view this video on [bilibili](https://www.bilibili.com/video/BV1ym4y177CC/).
+
 
 Publications
 =====
@@ -34,7 +36,7 @@ Publications
 
 - MaskPlace: Fast Chip Placement via Reinforced
 Visual Representation Learning (NeurIPS 2022, CCF-A, **spotlight** presentation(acceptance rate 5.1%) )
-  - [[paper](https://openreview.net/pdf?id=T2DBbSh6_uY)][[project](https://laiyao1.github.io/maskplace/)][[poster](https://nips.cc/media/PosterPDFs/NeurIPS%202022/7417744a2bac776fabe5a09b21c707a2.png)]
+  - [[paper](https://openreview.net/pdf?id=T2DBbSh6_uY)][[project](https://laiyao1.github.io/maskplace/)][[poster](https://nips.cc/media/PosterPDFs/NeurIPS%202022/7417744a2bac776fabe5a09b21c707a2.png)][[code](https://github.com/laiyao1/maskplace)] <span style="color:new">NEW!</span>
   - **Yao Lai**, Yao Mu and Ping Luo
 
 - OpenSMax: Unknown Domain Generation Algorithm Detection (ECAI 2020, CCF-B)
