@@ -49,15 +49,6 @@ Publications 📖
 -  **Yao Lai**, Jinxin Liu, Zhentao Tang, Wang Bin, Jianye Hao, Ping Luo. ChiPFormer: Transferable Chip Placement via Offline Decision Transformer [C]. ICML 2023. (CCF-A)
 -  **Yao Lai**, Yao Mu, Ping Luo. MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning [C]. NeurIPS 2022. (CCF-A)
 - **Yao Lai**, Guolou Ping, Xiaojun Ye. Opensmax: Unknown domain generation algorithm detection [C].  ECAI 2020. (CCF-B)
-  <!-- <ul>{% for post in site.publications %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul> -->
-  
-<!-- Talks
-======
-  <ul>{% for post in site.talks %}
-    {% include archive-single-talk-cv.html %}
-  {% endfor %}</ul> -->
   
 Teaching 🧑‍🏫
 ======
