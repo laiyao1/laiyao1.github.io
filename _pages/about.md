@@ -8,8 +8,13 @@ redirect_from:
   - /about.html
 ---
 
-I am a Ph.D. candidate in [computer science department](https://cs.hku.hk) at [the University of Hong Kong](https://hku.hk), also affiliated with [mmlab@HKU](https://mmlab-hku.com/), fortunately advised by [Prof. Ping Luo](http://luoping.me/). Previously, I received my M.Eng. degree in the [software school](https://www.thss.tsinghua.edu.cn/) of [Tsinghua University](https://www.tsinghua.edu.cn/en/) and B.Eng. degree in the [microelectronics department](https://sme.fudan.edu.cn/) of [Fudan University](https://www.fudan.edu.cn/en). My research interests include AI for Electronic Design Automation, AI for security and other possible applications.
-My Chinese name is 来耀.
+I am a Ph.D. candidate in [computer science department](https://cs.hku.hk) at [the University of Hong Kong](https://hku.hk) (HKU), also affiliated with [mmlab@HKU](https://mmlab-hku.com/), fortunately advised by [Prof. Ping Luo](http://luoping.me/). 
+
+Previously, I received my M.Eng. degree in the [software school](https://www.thss.tsinghua.edu.cn/) of [Tsinghua University](https://www.tsinghua.edu.cn/en/) (THU) and B.Eng. degree in the [microelectronics department](https://sme.fudan.edu.cn/) of [Fudan University](https://www.fudan.edu.cn/en) (FDU). 
+
+My research interests include AI for Electronic Design Automation, AI for security and other possible applications.
+
+I will join in [UTDA](https://www.cerc.utexas.edu/utda/) lab of [The University of Texas at Austin](https://www.utexas.edu/) (UTAustin), advised by [David Z. Pan](https://www.ece.utexas.edu/people/faculty/david-z-pan) from Feb., 2024.
 
 
 
@@ -30,7 +35,7 @@ Publications
 =====
 - ChiPFormer: Transferable Chip Placement via Offline Decision Transformer
  (ICML 2023, CCF-A)
-  - [[paper](https://openreview.net/pdf?id=j0miEWtw87)][[website](https://sites.google.com/view/chipformer/home)][[poster](https://icml.cc/media/PosterPDFs/ICML%202023/25027.png?t=1687696170.2696526)][[code](https://github.com/laiyao1/chipformer)] <span style="color:red">**NEW!**</span>
+  - [[paper](https://openreview.net/pdf?id=j0miEWtw87)][[website](https://sites.google.com/view/chipformer/home)][[poster](https://icml.cc/media/PosterPDFs/ICML%202023/25027.png?t=1687696170.2696526)][[code](https://github.com/laiyao1/chipformer)] 
   - **Yao Lai**, Jinxin Liu, Zhentao Tang, Bin Wang, Jianye Hao, and Ping Luo
 
 
