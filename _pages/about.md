@@ -9,7 +9,6 @@ redirect_from:
 ---
 
 I am a Ph.D. candidate in [computer science department](https://cs.hku.hk) at [the University of Hong Kong](https://hku.hk) (HKU), also affiliated with [mmlab@HKU](https://mmlab-hku.com/), fortunately advised by Prof. [Ping Luo](http://luoping.me/). 
-
 Previously, I received my M.Eng. degree in the [software school](https://www.thss.tsinghua.edu.cn/) of [Tsinghua University](https://www.tsinghua.edu.cn/en/) (THU) and B.Eng. degree in the [microelectronics department](https://sme.fudan.edu.cn/) of [Fudan University](https://www.fudan.edu.cn/en) (FDU). 
 
 My research interests include AI for Electronic Design Automation (AI4EDA), AI for security and other possible applications.
@@ -20,9 +19,9 @@ I will join in [UTDA](https://www.cerc.utexas.edu/utda/) lab of [The University 
 
 
 
-Research Highlights
+<!-- Research Highlights
 =====
-My long-term research goal is to leverage cutting-edge deep learning technologies to solve challenges in Electronic Design Automation (EDA) and Information Security (IS).
+My long-term research goal is to leverage cutting-edge deep learning technologies to solve challenges in Electronic Design Automation (EDA) and Information Security (IS). -->
 
 Video
 =====
