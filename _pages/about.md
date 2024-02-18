@@ -13,7 +13,7 @@ Previously, I received my M.Eng. degree in the [software school](https://www.ths
 
 My research interests include AI for Electronic Design Automation (AI4EDA), AI for security and other possible applications.
 
-I will join in [UTDA](https://www.cerc.utexas.edu/utda/) lab of [The University of Texas at Austin](https://www.utexas.edu/) (UTAustin), advised by Prof. [David Z. Pan](https://www.ece.utexas.edu/people/faculty/david-z-pan) from Feb., 2024.
+I am honored to have the opportunity to join the [UTDA](https://www.cerc.utexas.edu/utda/) lab of [The University of Texas at Austin](https://www.utexas.edu/) (UTAustin), advised by Prof. [David Z. Pan](https://www.ece.utexas.edu/people/faculty/david-z-pan) from Feb., 2024.
 
 
 
