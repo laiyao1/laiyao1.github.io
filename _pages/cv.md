@@ -9,7 +9,7 @@ redirect_from:
 
 {% include base_path %}
 
-[[CV (English)](http://laiyao1.github.io/files/resume2023.pdf)]
+[[CV (English)](http://laiyao1.github.io/files/resume2024.pdf)]
 [[简历 (中文)](http://laiyao1.github.io/files/resume2023-zh.pdf)]
 <!-- [[CV (中文)]()] -->
 
