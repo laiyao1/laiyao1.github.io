@@ -1,0 +1,38 @@
+---
+layout: default
+title : Yao Lai
+navbar_title: Home
+---
+{% include widgets/profile_card.html %}
+
+{% include widgets/url_debug_message.html %}
+
+{% if site.data.display.homepage.show_experience %}
+{% include widgets/experience_card.html %}
+{% endif %}
+
+{% if site.data.display.homepage.show_news %}
+{% assign count_news = site.news | size %}
+{% if count_news > 0 %}
+{% include widgets/news_card.html %}
+{% endif %}
+{% endif %}
+
+{% if site.data.display.homepage.show_selected_publications %}
+{% assign pubs = site.publications | sort: "date" | reverse | where: "selected", true %}
+{% 
+    include widgets/publication_card.html 
+    publications=pubs
+    title='<i class="fas fa-star"></i> Selected Publications'
+%}
+{% endif %}
+
+{% include widgets/video.html %}
+
+
+<!-- Clustrmaps 地球仪 -->
+<div style="text-align: center; margin: 20px 0;">
+<div style="width: 150px; height: 150px; margin: 0 auto; overflow: hidden;">
+<script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=BW1NoouVGr5xIu5HcRPakVvuagqFjr6UPik3Id_jT3Y"></script>
+</div>
+</div>

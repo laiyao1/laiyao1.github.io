@@ -1,0 +1,479 @@
+{% assign publications = include.publications %}
+<div class="my-3 p-0 bg-white shadow-sm rounded-sm">
+    <h6 class="border-bottom border-gray p-3 mb-0">
+        {% if include.title %}{{ include.title }}{% else %}<i class="fas fa-star"></i> Selected Recent Publications{% endif %} 
+        <a href="{{ 'publications' | relative_url }}">(view all <i class="fas fa-angle-double-right"></i>)</a>
+    </h6>
+    {% for item in publications limit:include.limit %}
+        {% include widgets/publication_item.html item=item %}    
+    {% endfor %}
+    <h6 class="d-block p-3 mt-0 text-right">
+        <a href="{{ 'publications' | relative_url }}">All publications <i class="fas fa-angle-double-right"></i></a>
+    </h6>
+</div>
+
+<!-- Citation功能的CSS和JS -->
+<style>
+/* 让citation徽章与现有的badge样式完全一致 */
+.citation-badge {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 100%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 10rem;
+    margin-left: 0.5rem;
+    color: #fff;
+    background-color: #6f42c1;
+    transition: opacity 0.3s ease;
+    cursor: default;
+    user-select: none;
+}
+
+.badge.citation-badge {
+    /* 确保完全继承badge的样式 */
+}
+
+.citation-badge.badge-info {
+    background-color: #17a2b8;
+}
+
+.citation-badge.badge-secondary {
+    background-color: #6c757d;
+}
+
+.citation-badge.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.citation-badge.badge-danger {
+    background-color: #dc3545;
+}
+
+.citation-loading {
+    animation: citationPulse 2s infinite;
+}
+
+@keyframes citationPulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+.citation-error {
+    background-color: #6c757d !important;
+    opacity: 0.7;
+}
+
+.citation-retry {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+</style>
+
+<script>
+(function() {
+    'use strict';
+    
+    // 避免重复初始化
+    if (window.citationManagerInitialized) return;
+    window.citationManagerInitialized = true;
+    
+    // 改进的缓存机制
+    class CitationCache {
+        constructor(successExpiryTime = 3600000, failureExpiryTime = 300000) {
+            this.cache = this.loadFromStorage();
+            this.successExpiryTime = successExpiryTime; // 成功结果缓存1小时
+            this.failureExpiryTime = failureExpiryTime;  // 失败结果缓存5分钟
+        }
+        
+        loadFromStorage() {
+            try {
+                const stored = localStorage.getItem('citation_cache_v3');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    return new Map(data);
+                }
+                return new Map();
+            } catch (error) {
+                console.warn('Failed to load citation cache:', error);
+                return new Map();
+            }
+        }
+        
+        saveToStorage() {
+            try {
+                const data = [...this.cache.entries()];
+                localStorage.setItem('citation_cache_v3', JSON.stringify(data));
+            } catch (error) {
+                console.warn('Failed to save citation cache:', error);
+            }
+        }
+        
+        set(key, value, isSuccess = true) {
+            this.cache.set(key, {
+                value: value,
+                timestamp: Date.now(),
+                isSuccess: isSuccess
+            });
+            this.saveToStorage();
+        }
+        
+        get(key) {
+            const item = this.cache.get(key);
+            if (!item) return null;
+            
+            // 根据成功/失败状态使用不同的过期时间
+            const expiryTime = item.isSuccess ? this.successExpiryTime : this.failureExpiryTime;
+            
+            if (Date.now() - item.timestamp > expiryTime) {
+                this.cache.delete(key);
+                this.saveToStorage();
+                return null;
+            }
+            
+            return item;
+        }
+        
+        isExpired(key) {
+            const item = this.get(key);
+            return item === null;
+        }
+        
+        // 清理过期项
+        cleanup() {
+            const now = Date.now();
+            let hasChanges = false;
+            
+            for (const [key, item] of this.cache.entries()) {
+                const expiryTime = item.isSuccess ? this.successExpiryTime : this.failureExpiryTime;
+                if (now - item.timestamp > expiryTime) {
+                    this.cache.delete(key);
+                    hasChanges = true;
+                }
+            }
+            
+            if (hasChanges) {
+                this.saveToStorage();
+            }
+        }
+    }
+    
+    const citationCache = new CitationCache();
+    
+    // 请求队列管理
+    class RequestQueue {
+        constructor(maxConcurrent = 3, delayBetween = 800) {
+            this.queue = [];
+            this.active = 0;
+            this.maxConcurrent = maxConcurrent;
+            this.delayBetween = delayBetween;
+        }
+        
+        async add(fn) {
+            return new Promise((resolve, reject) => {
+                this.queue.push({ fn, resolve, reject });
+                this.process();
+            });
+        }
+        
+        async process() {
+            if (this.active >= this.maxConcurrent || this.queue.length === 0) {
+                return;
+            }
+            
+            this.active++;
+            const { fn, resolve, reject } = this.queue.shift();
+            
+            try {
+                const result = await fn();
+                resolve(result);
+            } catch (error) {
+                reject(error);
+            } finally {
+                this.active--;
+                setTimeout(() => this.process(), this.delayBetween);
+            }
+        }
+    }
+    
+    const requestQueue = new RequestQueue(3, 800);
+    
+    // 带重试的fetch函数
+    async function fetchWithTimeout(url, options = {}, timeout = 12000) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        
+        try {
+            const response = await fetch(url, {
+                ...options,
+                signal: controller.signal,
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (compatible; Academic Citation Bot)',
+                    'Accept': 'application/json',
+                    ...options.headers
+                }
+            });
+            clearTimeout(timeoutId);
+            return response;
+        } catch (error) {
+            clearTimeout(timeoutId);
+            throw error;
+        }
+    }
+    
+    // 获取引用数的主函数
+    async function getCitationCount(paperTitle, elementId, retryCount = 0) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        
+        const cacheKey = paperTitle.toLowerCase().trim();
+        const cached = citationCache.get(cacheKey);
+        
+        // 如果有缓存且是成功的结果，直接使用
+        if (cached !== null && cached.isSuccess) {
+            updateCitationDisplay(elementId, cached.value, true);
+            return;
+        }
+        
+        // 如果有缓存的失败结果，先显示，但继续尝试获取新数据
+        if (cached !== null && !cached.isSuccess && retryCount === 0) {
+            updateCitationDisplay(elementId, cached.value, false);
+        }
+        
+        try {
+            await requestQueue.add(async () => {
+                const searchUrl = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(paperTitle)}&fields=citationCount,title&limit=1`;
+                
+                const response = await fetchWithTimeout(searchUrl);
+                
+                if (response.status === 429) {
+                    throw new Error('RATE_LIMITED');
+                }
+                
+                if (response.status === 503 || response.status === 502) {
+                    throw new Error('SERVICE_UNAVAILABLE');
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP_${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.data && data.data.length > 0) {
+                    const citationCount = data.data[0].citationCount || 0;
+                    citationCache.set(cacheKey, citationCount, true);
+                    updateCitationDisplay(elementId, citationCount, true);
+                } else {
+                    // 没找到数据，但这是成功的响应
+                    citationCache.set(cacheKey, 'N/A', true);
+                    updateCitationDisplay(elementId, 'N/A', false);
+                }
+            });
+        } catch (error) {
+            console.warn(`Citation fetch failed for "${paperTitle}" (attempt ${retryCount + 1}):`, error.message);
+            
+            // 判断是否需要重试
+            const shouldRetry = (
+                error.name === 'AbortError' || 
+                error.message === 'RATE_LIMITED' || 
+                error.message === 'SERVICE_UNAVAILABLE' ||
+                error.message.includes('HTTP_5')
+            ) && retryCount < 2;
+            
+            if (shouldRetry) {
+                // 延迟重试，每次重试间隔递增
+                const retryDelay = (retryCount + 1) * 3000 + Math.random() * 2000;
+                setTimeout(() => {
+                    updateCitationDisplay(elementId, 'Retrying...', false, true);
+                    getCitationCount(paperTitle, elementId, retryCount + 1);
+                }, retryDelay);
+                
+                // 如果没有缓存，显示加载状态
+                if (!cached) {
+                    updateCitationDisplay(elementId, 'Loading...', false);
+                }
+                return;
+            }
+            
+            // 不重试或重试次数用完，缓存失败结果
+            let errorMsg = 'Unavailable';
+            if (error.message === 'RATE_LIMITED') {
+                errorMsg = 'Rate Limited';
+            } else if (error.message === 'SERVICE_UNAVAILABLE') {
+                errorMsg = 'Service Down';
+            } else if (error.name === 'AbortError') {
+                errorMsg = 'Timeout';
+            }
+            
+            citationCache.set(cacheKey, errorMsg, false);
+            updateCitationDisplay(elementId, errorMsg, false);
+        }
+    }
+    
+    // 更新显示的函数
+    function updateCitationDisplay(elementId, count, isSuccess, isRetrying = false) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        
+        // 清除所有状态类
+        element.classList.remove('citation-loading', 'citation-error', 'citation-retry');
+        
+        if (isSuccess && typeof count === 'number') {
+            element.textContent = `Citations: ${count}`;
+            element.title = `This paper has been cited ${count} times (updated every hour)`;
+        } else if (count === 'N/A') {
+            element.textContent = 'Citations: N/A';
+            element.title = 'No citation data found for this paper';
+        } else {
+            // 错误状态处理
+            element.classList.add('citation-error');
+            
+            if (isRetrying) {
+                element.classList.add('citation-retry');
+                element.textContent = 'Citations: ...';
+                element.title = 'Retrying to fetch citation data...';
+            } else if (count === 'Loading...') {
+                element.classList.add('citation-loading');
+                element.textContent = 'Citations: ...';
+                element.title = 'Loading citation data...';
+            } else if (count === 'Retrying...') {
+                element.classList.add('citation-retry');
+                element.textContent = 'Citations: ...';
+                element.title = 'Retrying to fetch citation data...';
+            } else {
+                element.textContent = 'Citations: --';
+                
+                // 根据错误类型设置不同的提示
+                if (count === 'Rate Limited') {
+                    element.title = 'Citation service rate limited, will retry automatically';
+                } else if (count === 'Service Down') {
+                    element.title = 'Citation service temporarily down, will retry on next visit';
+                } else if (count === 'Timeout') {
+                    element.title = 'Citation data request timeout, will retry on next visit';
+                } else {
+                    element.title = 'Citation data temporarily unavailable, will retry on next visit';
+                }
+            }
+        }
+    }
+    
+    // 初始化所有citation徽章
+    function initializeCitations() {
+        const publicationItems = document.querySelectorAll('[data-paper-title]');
+        
+        publicationItems.forEach((item, index) => {
+            const paperTitle = item.getAttribute('data-paper-title');
+            if (!paperTitle || paperTitle.trim().length < 5) return;
+            
+            const citationId = `citation-${Date.now()}-${index}`;
+            
+            // 查找合适的容器
+            let container = item.querySelector('.citation-container-desktop') || 
+                          item.querySelector('.citation-container-mobile');
+            
+            if (!container) {
+                const pubParagraphs = item.querySelectorAll('p.small');
+                for (let p of pubParagraphs) {
+                    if (p.innerHTML.includes('<i>') && 
+                        (p.textContent.includes('2024') ||
+                         p.textContent.includes('2023') || 
+                         p.textContent.includes('2022') || 
+                         p.textContent.includes('2021') ||
+                         p.textContent.includes('2020'))) {
+                        container = p;
+                        break;
+                    }
+                }
+            }
+            
+            if (!container) return;
+            
+            // 创建citation徽章
+            const citationBadge = document.createElement('span');
+            citationBadge.className = 'badge badge-pill citation-badge citation-loading';
+            citationBadge.id = citationId;
+            citationBadge.textContent = 'Citations: ...';
+            citationBadge.title = 'Loading citation data...';
+            
+            // 添加到容器
+            if (container.classList.contains('citation-container-desktop') || 
+                container.classList.contains('citation-container-mobile')) {
+                container.appendChild(citationBadge);
+            } else {
+                container.appendChild(document.createTextNode(' '));
+                container.appendChild(citationBadge);
+            }
+            
+            // 延迟获取引用数，避免同时发起太多请求
+            setTimeout(() => {
+                getCitationCount(paperTitle, citationId);
+            }, index * 500 + Math.random() * 1000);
+        });
+    }
+    
+    // 定期更新过期的缓存
+    function setupPeriodicUpdate() {
+        // 每小时检查一次过期的缓存
+        setInterval(() => {
+            citationCache.cleanup();
+            
+            const publicationItems = document.querySelectorAll('[data-paper-title]');
+            
+            publicationItems.forEach((item, index) => {
+                const paperTitle = item.getAttribute('data-paper-title');
+                if (!paperTitle) return;
+                
+                const cacheKey = paperTitle.toLowerCase().trim();
+                
+                if (citationCache.isExpired(cacheKey)) {
+                    const citationBadge = item.querySelector('.citation-badge');
+                    if (citationBadge) {
+                        setTimeout(() => {
+                            getCitationCount(paperTitle, citationBadge.id);
+                        }, index * 1000 + Math.random() * 2000);
+                    }
+                }
+            });
+        }, 3600000); // 每小时检查一次
+        
+        // 每天清理一次过期缓存
+        setInterval(() => {
+            citationCache.cleanup();
+        }, 86400000); // 24小时
+    }
+    
+    // 页面加载完成后初始化
+    function initialize() {
+        // 先清理过期缓存
+        citationCache.cleanup();
+        
+        // 初始化citation徽章
+        initializeCitations();
+        
+        // 设置定期更新
+        setupPeriodicUpdate();
+        
+        console.log('Citation manager initialized successfully');
+    }
+    
+    // 根据页面加载状态初始化
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initialize, 100);
+        });
+    } else {
+        setTimeout(initialize, 100);
+    }
+    
+    // 页面卸载时保存缓存
+    window.addEventListener('beforeunload', () => {
+        citationCache.saveToStorage();
+    });
+})();
+</script>
