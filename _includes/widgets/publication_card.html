@@ -165,16 +165,22 @@
     
     const citationCache = new CitationCache();
     
-    // 请求队列管理
+    // 请求队列管理 - 优化版
     class RequestQueue {
-        constructor(maxConcurrent = 3, delayBetween = 800) {
+        constructor(maxConcurrent = 6, delayBetween = 300, maxQueueSize = 50) {
             this.queue = [];
             this.active = 0;
             this.maxConcurrent = maxConcurrent;
             this.delayBetween = delayBetween;
+            this.maxQueueSize = maxQueueSize;
         }
         
         async add(fn) {
+            // 如果队列太长,直接快速失败
+            if (this.queue.length >= this.maxQueueSize) {
+                throw new Error('QUEUE_FULL');
+            }
+            
             return new Promise((resolve, reject) => {
                 this.queue.push({ fn, resolve, reject });
                 this.process();
@@ -201,10 +207,10 @@
         }
     }
     
-    const requestQueue = new RequestQueue(3, 800);
+    const requestQueue = new RequestQueue(6, 300);
     
     // 带重试的fetch函数
-    async function fetchWithTimeout(url, options = {}, timeout = 12000) {
+    async function fetchWithTimeout(url, options = {}, timeout = 15000) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
         
@@ -234,13 +240,13 @@
         const cacheKey = paperTitle.toLowerCase().trim();
         const cached = citationCache.get(cacheKey);
         
-        // 如果有缓存且是成功的结果，直接使用
+        // 如果有缓存且是成功的结果,直接使用
         if (cached !== null && cached.isSuccess) {
             updateCitationDisplay(elementId, cached.value, true);
             return;
         }
         
-        // 如果有缓存的失败结果，先显示，但继续尝试获取新数据
+        // 如果有缓存的失败结果,先显示,但继续尝试获取新数据
         if (cached !== null && !cached.isSuccess && retryCount === 0) {
             updateCitationDisplay(elementId, cached.value, false);
         }
@@ -270,7 +276,7 @@
                     citationCache.set(cacheKey, citationCount, true);
                     updateCitationDisplay(elementId, citationCount, true);
                 } else {
-                    // 没找到数据，但这是成功的响应
+                    // 没找到数据,但这是成功的响应
                     citationCache.set(cacheKey, 'N/A', true);
                     updateCitationDisplay(elementId, 'N/A', false);
                 }
@@ -287,21 +293,21 @@
             ) && retryCount < 2;
             
             if (shouldRetry) {
-                // 延迟重试，每次重试间隔递增
-                const retryDelay = (retryCount + 1) * 3000 + Math.random() * 2000;
+                // 优化的重试延迟
+                const retryDelay = (retryCount + 1) * 1500 + Math.random() * 1000;
                 setTimeout(() => {
                     updateCitationDisplay(elementId, 'Retrying...', false, true);
                     getCitationCount(paperTitle, elementId, retryCount + 1);
                 }, retryDelay);
                 
-                // 如果没有缓存，显示加载状态
+                // 如果没有缓存,显示加载状态
                 if (!cached) {
                     updateCitationDisplay(elementId, 'Loading...', false);
                 }
                 return;
             }
             
-            // 不重试或重试次数用完，缓存失败结果
+            // 不重试或重试次数用完,缓存失败结果
             let errorMsg = 'Unavailable';
             if (error.message === 'RATE_LIMITED') {
                 errorMsg = 'Rate Limited';
@@ -309,6 +315,8 @@
                 errorMsg = 'Service Down';
             } else if (error.name === 'AbortError') {
                 errorMsg = 'Timeout';
+            } else if (error.message === 'QUEUE_FULL') {
+                errorMsg = 'Queue Full';
             }
             
             citationCache.set(cacheKey, errorMsg, false);
@@ -356,6 +364,8 @@
                     element.title = 'Citation service temporarily down, will retry on next visit';
                 } else if (count === 'Timeout') {
                     element.title = 'Citation data request timeout, will retry on next visit';
+                } else if (count === 'Queue Full') {
+                    element.title = 'Too many requests, will retry on next visit';
                 } else {
                     element.title = 'Citation data temporarily unavailable, will retry on next visit';
                 }
@@ -363,58 +373,88 @@
         }
     }
     
-    // 初始化所有citation徽章
+    // 创建citation徽章的辅助函数
+    function createCitationBadge(item, index) {
+        const paperTitle = item.getAttribute('data-paper-title');
+        if (!paperTitle || paperTitle.trim().length < 5) return null;
+        
+        const citationId = `citation-${Date.now()}-${index}`;
+        
+        // 查找合适的容器
+        let container = item.querySelector('.citation-container-desktop') || 
+                      item.querySelector('.citation-container-mobile');
+        
+        if (!container) {
+            const pubParagraphs = item.querySelectorAll('p.small');
+            for (let p of pubParagraphs) {
+                if (p.innerHTML.includes('<i>') && 
+                    (p.textContent.includes('2024') ||
+                     p.textContent.includes('2023') || 
+                     p.textContent.includes('2022') || 
+                     p.textContent.includes('2021') ||
+                     p.textContent.includes('2020'))) {
+                    container = p;
+                    break;
+                }
+            }
+        }
+        
+        if (!container) return null;
+        
+        // 创建citation徽章
+        const citationBadge = document.createElement('span');
+        citationBadge.className = 'badge badge-pill citation-badge citation-loading';
+        citationBadge.id = citationId;
+        citationBadge.textContent = 'Citations: ...';
+        citationBadge.title = 'Loading citation data...';
+        
+        // 添加到容器
+        if (container.classList.contains('citation-container-desktop') || 
+            container.classList.contains('citation-container-mobile')) {
+            container.appendChild(citationBadge);
+        } else {
+            container.appendChild(document.createTextNode(' '));
+            container.appendChild(citationBadge);
+        }
+        
+        return { citationId, paperTitle };
+    }
+    
+    // 初始化所有citation徽章 - 优化版分批加载
     function initializeCitations() {
         const publicationItems = document.querySelectorAll('[data-paper-title]');
         
-        publicationItems.forEach((item, index) => {
-            const paperTitle = item.getAttribute('data-paper-title');
-            if (!paperTitle || paperTitle.trim().length < 5) return;
+        if (publicationItems.length === 0) return;
+        
+        // 分为优先加载和延迟加载两组
+        const priorityItems = Array.from(publicationItems).slice(0, 10);
+        const restItems = Array.from(publicationItems).slice(10);
+        
+        // 优先加载前10个(可见区域)
+        priorityItems.forEach((item, index) => {
+            const badgeInfo = createCitationBadge(item, index);
+            if (!badgeInfo) return;
             
-            const citationId = `citation-${Date.now()}-${index}`;
-            
-            // 查找合适的容器
-            let container = item.querySelector('.citation-container-desktop') || 
-                          item.querySelector('.citation-container-mobile');
-            
-            if (!container) {
-                const pubParagraphs = item.querySelectorAll('p.small');
-                for (let p of pubParagraphs) {
-                    if (p.innerHTML.includes('<i>') && 
-                        (p.textContent.includes('2024') ||
-                         p.textContent.includes('2023') || 
-                         p.textContent.includes('2022') || 
-                         p.textContent.includes('2021') ||
-                         p.textContent.includes('2020'))) {
-                        container = p;
-                        break;
-                    }
-                }
-            }
-            
-            if (!container) return;
-            
-            // 创建citation徽章
-            const citationBadge = document.createElement('span');
-            citationBadge.className = 'badge badge-pill citation-badge citation-loading';
-            citationBadge.id = citationId;
-            citationBadge.textContent = 'Citations: ...';
-            citationBadge.title = 'Loading citation data...';
-            
-            // 添加到容器
-            if (container.classList.contains('citation-container-desktop') || 
-                container.classList.contains('citation-container-mobile')) {
-                container.appendChild(citationBadge);
-            } else {
-                container.appendChild(document.createTextNode(' '));
-                container.appendChild(citationBadge);
-            }
-            
-            // 延迟获取引用数，避免同时发起太多请求
+            // 快速启动,短间隔
             setTimeout(() => {
-                getCitationCount(paperTitle, citationId);
-            }, index * 500 + Math.random() * 1000);
+                getCitationCount(badgeInfo.paperTitle, badgeInfo.citationId);
+            }, index * 100 + Math.random() * 100);
         });
+        
+        // 延迟加载其余项
+        if (restItems.length > 0) {
+            setTimeout(() => {
+                restItems.forEach((item, index) => {
+                    const badgeInfo = createCitationBadge(item, index + 10);
+                    if (!badgeInfo) return;
+                    
+                    // 较长间隔,避免拥堵
+                    setTimeout(() => {
+                        getCitationCount(badgeInfo.paperTitle, badgeInfo.citationId);
+                    }, index * 200 + Math.random() * 200);
+                });
+            }, 1500); // 优先项加载后1.5秒开始加载其余项
+        }
     }
     
     // 定期更新过期的缓存
@@ -436,7 +476,7 @@
                     if (citationBadge) {
                         setTimeout(() => {
                             getCitationCount(paperTitle, citationBadge.id);
-                        }, index * 1000 + Math.random() * 2000);
+                        }, index * 500 + Math.random() * 1000);
                     }
                 }
             });
