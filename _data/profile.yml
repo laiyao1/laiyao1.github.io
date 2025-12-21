@@ -3,8 +3,8 @@ secondary_name: ""
 navbar_name: ""
 
 positions:
-- logo: /assets/images/badges/hku.jpg  # Logo is optional
-  name: The University of Hong Kong
+- logo: /assets/images/badges/cambridge.jpg  # Logo is optional
+  name: University of Cambridge
 # - name: Position 2 without logo
 
 
@@ -21,10 +21,11 @@ linkedin: laiyao1
 
 short_bio: >-
   <p>
-    I am a Ph.D. candidate in <a href="https://cs.hku.hk">computer science department</a> at <a href="https://hku.hk">the University of Hong Kong</a> (HKU), also affiliated with <a href="https://mmlab.hk/">mmlab@HKU</a>, fortunately advised by Prof. <a href="http://luoping.me/">Ping Luo</a>. 
-    I am also honored to have the opportunity to work with the <a href="https://www.cerc.utexas.edu/utda/">UTDA</a> lab of <a href="https://www.utexas.edu/">The University of Texas at Austin</a> (UTAustin), advised by Prof. <a href="https://www.ece.utexas.edu/people/faculty/david-z-pan">David Z. Pan</a>.
-    Previously, I received my M.Eng. degree in the <a href="https://www.thss.tsinghua.edu.cn/">software school</a> of <a href="https://www.tsinghua.edu.cn/en/">Tsinghua University</a> (THU) and B.Eng. degree in the <a href="https://sme.fudan.edu.cn/">microelectronics department</a> of <a href="https://www.fudan.edu.cn/en">Fudan University</a> (FDU). 
-    My research interests include AI for Electronic Design Automation (AI4EDA), AI for security and other possible applications.
+    I am a Postdoctoral Research Associate at the <a href="https://www.cam.ac.uk/">University of Cambridge</a>, working with <a href="https://www.cl.cam.ac.uk/~rdm34/">Prof. Robert Mullins</a>.
+    I received my Ph.D. in Computer Science from the <a href="https://cs.hku.hk">University of Hong Kong</a> (HKU), where I was affiliated with <a href="https://mmlab.hk/">mmlab@HKU</a> and advised by <a href="http://luoping.me/">Prof. Ping Luo</a>.
+    During my Ph.D., I also collaborated with the <a href="https://www.cerc.utexas.edu/utda/">UTDA Lab</a> at <a href="https://www.utexas.edu/">The University of Texas at Austin</a>, under the guidance of <a href="https://www.ece.utexas.edu/people/faculty/david-z-pan">Prof. David Z. Pan</a> (IEEE/ACM Fellow).
+    Previously, I obtained my M.Eng. degree from the <a href="https://www.thss.tsinghua.edu.cn/">Software School</a> at <a href="https://www.tsinghua.edu.cn/en/">Tsinghua University</a>, advised by <a href="https://www.thss.tsinghua.edu.cn/en/faculty/xiaojunye.htm">Prof. Xiaojun Ye</a>, and my B.Eng. degree from the <a href="https://sme.fudan.edu.cn/">Department of Microelectronics</a> at <a href="https://www.fudan.edu.cn/en">Fudan University</a>, advised by <a href="https://sme.fudan.edu.cn/60/77/c31158a352375/page.htm">Prof. Xuan Zeng</a> and <a href="https://sme.fudan.edu.cn/5f/ec/c31146a352236/page.htm">Prof. Minge Jing</a>.
+    My research interests include AI for Electronic Design Automation (AI4EDA), AI for security, and related applications.
   </p>
 
 portrait_url: /assets/images/photos/profile.jpg
@@ -35,7 +36,7 @@ education:
 - name: The University of Hong Kong
   logo: /assets/images/badges/hku.jpg
   position: Ph.D. in Computer Science
-  date: Sep. 2021 - Jul. 2025
+  date: Sep. 2021 - Nov. 2025
 
 - name: Tsinghua University
   logo: /assets/images/badges/thu.png
@@ -48,9 +49,14 @@ education:
   date: Sep. 2013 - Jul. 2017
 
 experience:
+- name: University of Cambridge
+  logo: /assets/images/badges/cambridge.png
+  position: Postdoctoral Research Associate
+  data: Dec. 2025 - President
+
 - name: The University of Texas at Austin
   logo: /assets/images/badges/utaustin.png
-  position: Visiting Research Student
+  position: Visiting PhD Student
   date: Feb. 2024 - Jul. 2024
 
 
@@ -58,6 +64,8 @@ awards:
 - name: NeurIPS Scholar Award
   date: 2024
 - name: Hong Kong PhD Fellowship
+  date: 2021
+- name: HKU Presidential PhD Scholar
   date: 2021
 - name: Outstanding Graduate of Software School, Tsinghua University 
   date: 2020
