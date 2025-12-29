@@ -37,7 +37,6 @@ function readFrontMatter(filePath) {
     return frontMatter;
 }
 
-// 获取所有出版物文件
 // 递归获取所有出版物文件
 function getAllPublications() {
     if (!fs.existsSync(PUBLICATIONS_DIR)) {
@@ -69,6 +68,9 @@ function getAllPublications() {
     // 按文件名排序（最新的在前）
     files.sort().reverse();
     
+    console.log('Found files:');
+    files.forEach(f => console.log(`  - ${f}`));
+    
     return files.map(filePath => {
         const frontMatter = readFrontMatter(filePath);
         const fileName = path.basename(filePath, '.md');
@@ -94,7 +96,6 @@ function fetchByArxiv(arxivId) {
             'Accept': 'application/json'
         };
         
-        // 只有当 API_KEY 存在且不为空时才添加
         if (API_KEY && API_KEY.length > 0) {
             headers['x-api-key'] = API_KEY;
         }
@@ -274,10 +275,11 @@ async function main() {
         
         if (publications.length === 0) {
             console.log('No publications found!');
+            console.log(`Searched in: ${PUBLICATIONS_DIR}`);
             return;
         }
         
-        console.log(`Found ${publications.length} publications\n`);
+        console.log(`\nFound ${publications.length} publications\n`);
         
         const results = {
             generated_at: new Date().toISOString(),
