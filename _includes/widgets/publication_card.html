@@ -12,9 +12,8 @@
     </h6>
 </div>
 
-<!-- Citation功能的CSS和JS -->
+<!-- Citation功能的CSS -->
 <style>
-
 .badge {
     display: inline-block;
     padding: 0.25em 0.4em;
@@ -33,7 +32,7 @@
     border-radius: 10rem;
 }
 
-/* 出版物相关的badge - 与citation-badge一致的样式 */
+/* 出版物相关的badge */
 .badge-publication {
     font-size: 100%;
     border-radius: 10rem;
@@ -72,79 +71,23 @@
     background-color: #007bff;
 }
 
-/* 让badge可点击时的样式 */
-a .badge {
-    text-decoration: none;
-    transition: opacity 0.3s ease;
-}
-
-a:hover .badge {
-    opacity: 0.85;
-    text-decoration: none;
-}
-
-/* 让citation徽章与现有的badge样式完全一致 */
+/* Citation badge 样式 */
 .citation-badge {
     display: inline-block;
-    padding: 0.25em 0.4em;
-    font-size: 100%;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: 10rem;
     margin-left: 0.25rem;
-    margin-right: 0.25rem;
-    color: #fff;
-    background-color: #6f42c1;
+}
+
+.citation-badge a {
+    text-decoration: none;
     transition: opacity 0.3s ease;
-    cursor: default;
-    user-select: none;
 }
 
-.badge.citation-badge {
-    /* 确保完全继承badge的样式 */
-}
-
-.citation-badge.badge-info {
-    background-color: #17a2b8;
-}
-
-.citation-badge.badge-secondary {
-    background-color: #6c757d;
-}
-
-.citation-badge.badge-warning {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-.citation-badge.badge-danger {
-    background-color: #dc3545;
-}
-
-.citation-loading {
-    animation: citationPulse 2s infinite;
-}
-
-@keyframes citationPulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.6; }
-    100% { opacity: 1; }
-}
-
-.citation-error {
-    background-color: #6c757d !important;
-    opacity: 0.7;
-}
-
-.citation-retry {
-    background-color: #ffc107 !important;
-    color: #212529 !important;
+.citation-badge a:hover {
+    opacity: 0.85;
 }
 </style>
 
+<!-- Citation功能的JS - 静态版本 -->
 <script>
 (function() {
     'use strict';
@@ -153,436 +96,141 @@ a:hover .badge {
     if (window.citationManagerInitialized) return;
     window.citationManagerInitialized = true;
     
-    // 改进的缓存机制
-    class CitationCache {
-        constructor(successExpiryTime = 3600000, failureExpiryTime = 300000) {
-            this.cache = this.loadFromStorage();
-            this.successExpiryTime = successExpiryTime; // 成功结果缓存1小时
-            this.failureExpiryTime = failureExpiryTime;  // 失败结果缓存5分钟
-        }
+    function loadCitationData() {
+        // 尝试多个可能的路径
+        const possiblePaths = [
+            '{{ "/assets/data/publications.json" | relative_url }}',
+            '{{ "/_data/publications.json" | relative_url }}',
+            '/assets/data/publications.json',
+            '/_data/publications.json'
+        ];
         
-        loadFromStorage() {
-            try {
-                const stored = localStorage.getItem('citation_cache_v3');
-                if (stored) {
-                    const data = JSON.parse(stored);
-                    return new Map(data);
-                }
-                return new Map();
-            } catch (error) {
-                console.warn('Failed to load citation cache:', error);
-                return new Map();
-            }
-        }
-        
-        saveToStorage() {
-            try {
-                const data = [...this.cache.entries()];
-                localStorage.setItem('citation_cache_v3', JSON.stringify(data));
-            } catch (error) {
-                console.warn('Failed to save citation cache:', error);
-            }
-        }
-        
-        set(key, value, isSuccess = true) {
-            this.cache.set(key, {
-                value: value,
-                timestamp: Date.now(),
-                isSuccess: isSuccess
-            });
-            this.saveToStorage();
-        }
-        
-        get(key) {
-            const item = this.cache.get(key);
-            if (!item) return null;
-            
-            // 根据成功/失败状态使用不同的过期时间
-            const expiryTime = item.isSuccess ? this.successExpiryTime : this.failureExpiryTime;
-            
-            if (Date.now() - item.timestamp > expiryTime) {
-                this.cache.delete(key);
-                this.saveToStorage();
-                return null;
-            }
-            
-            return item;
-        }
-        
-        isExpired(key) {
-            const item = this.get(key);
-            return item === null;
-        }
-        
-        // 清理过期项
-        cleanup() {
-            const now = Date.now();
-            let hasChanges = false;
-            
-            for (const [key, item] of this.cache.entries()) {
-                const expiryTime = item.isSuccess ? this.successExpiryTime : this.failureExpiryTime;
-                if (now - item.timestamp > expiryTime) {
-                    this.cache.delete(key);
-                    hasChanges = true;
+        async function tryFetch(paths) {
+            for (let path of paths) {
+                try {
+                    console.log('Trying to fetch from:', path);
+                    const response = await fetch(path);
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Successfully loaded publications data from:', path);
+                        return data;
+                    }
+                } catch (error) {
+                    console.warn('Failed to load from', path, error);
                 }
             }
-            
-            if (hasChanges) {
-                this.saveToStorage();
-            }
-        }
-    }
-    
-    const citationCache = new CitationCache();
-    
-    // 请求队列管理 - 优化版
-    class RequestQueue {
-        constructor(maxConcurrent = 6, delayBetween = 300, maxQueueSize = 50) {
-            this.queue = [];
-            this.active = 0;
-            this.maxConcurrent = maxConcurrent;
-            this.delayBetween = delayBetween;
-            this.maxQueueSize = maxQueueSize;
+            throw new Error('Failed to load publications data from all paths');
         }
         
-        async add(fn) {
-            // 如果队列太长,直接快速失败
-            if (this.queue.length >= this.maxQueueSize) {
-                throw new Error('QUEUE_FULL');
-            }
-            
-            return new Promise((resolve, reject) => {
-                this.queue.push({ fn, resolve, reject });
-                this.process();
+        tryFetch(possiblePaths)
+            .then(data => {
+                console.log('Publications data:', data);
+                updateCitationBadges(data);
+            })
+            .catch(error => {
+                console.error('Error loading citation data:', error);
+                hideAllBadges();
             });
-        }
-        
-        async process() {
-            if (this.active >= this.maxConcurrent || this.queue.length === 0) {
-                return;
-            }
-            
-            this.active++;
-            const { fn, resolve, reject } = this.queue.shift();
-            
-            try {
-                const result = await fn();
-                resolve(result);
-            } catch (error) {
-                reject(error);
-            } finally {
-                this.active--;
-                setTimeout(() => this.process(), this.delayBetween);
-            }
-        }
     }
     
-    const requestQueue = new RequestQueue(6, 300);
-    
-    // 带重试的fetch函数
-    async function fetchWithTimeout(url, options = {}, timeout = 15000) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), timeout);
-        
-        try {
-            const response = await fetch(url, {
-                ...options,
-                signal: controller.signal,
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (compatible; Academic Citation Bot)',
-                    'Accept': 'application/json',
-                    ...options.headers
-                }
-            });
-            clearTimeout(timeoutId);
-            return response;
-        } catch (error) {
-            clearTimeout(timeoutId);
-            throw error;
-        }
-    }
-    
-    // 获取引用数的主函数
-    async function getCitationCount(paperTitle, elementId, retryCount = 0) {
-        const element = document.getElementById(elementId);
-        if (!element) return;
-        
-        const cacheKey = paperTitle.toLowerCase().trim();
-        const cached = citationCache.get(cacheKey);
-        
-        // 如果有缓存且是成功的结果,直接使用
-        if (cached !== null && cached.isSuccess) {
-            updateCitationDisplay(elementId, cached.value, true);
+    function updateCitationBadges(data) {
+        if (!data || !data.papers) {
+            console.error('Invalid data format');
+            hideAllBadges();
             return;
         }
         
-        // 如果有缓存的失败结果,先显示,但继续尝试获取新数据
-        if (cached !== null && !cached.isSuccess && retryCount === 0) {
-            updateCitationDisplay(elementId, cached.value, false);
-        }
-        
-        try {
-            await requestQueue.add(async () => {
-                const searchUrl = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(paperTitle)}&fields=citationCount,title&limit=1`;
-                
-                const response = await fetchWithTimeout(searchUrl);
-                
-                if (response.status === 429) {
-                    throw new Error('RATE_LIMITED');
-                }
-                
-                if (response.status === 503 || response.status === 502) {
-                    throw new Error('SERVICE_UNAVAILABLE');
-                }
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP_${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (data.data && data.data.length > 0) {
-                    const citationCount = data.data[0].citationCount || 0;
-                    citationCache.set(cacheKey, citationCount, true);
-                    updateCitationDisplay(elementId, citationCount, true);
-                } else {
-                    // 没找到数据,但这是成功的响应
-                    citationCache.set(cacheKey, 'N/A', true);
-                    updateCitationDisplay(elementId, 'N/A', false);
-                }
-            });
-        } catch (error) {
-            console.warn(`Citation fetch failed for "${paperTitle}" (attempt ${retryCount + 1}):`, error.message);
+        // 遍历所有带有 data-paper-id 的元素
+        document.querySelectorAll('[data-paper-id]').forEach(element => {
+            const paperId = element.getAttribute('data-paper-id');
+            if (!paperId) return;
             
-            // 判断是否需要重试
-            const shouldRetry = (
-                error.name === 'AbortError' || 
-                error.message === 'RATE_LIMITED' || 
-                error.message === 'SERVICE_UNAVAILABLE' ||
-                error.message.includes('HTTP_5')
-            ) && retryCount < 2;
+            // 查找对应的论文数据
+            const paper = data.papers.find(p => p.id === paperId);
             
-            if (shouldRetry) {
-                // 优化的重试延迟
-                const retryDelay = (retryCount + 1) * 1500 + Math.random() * 1000;
-                setTimeout(() => {
-                    updateCitationDisplay(elementId, 'Retrying...', false, true);
-                    getCitationCount(paperTitle, elementId, retryCount + 1);
-                }, retryDelay);
-                
-                // 如果没有缓存,显示加载状态
-                if (!cached) {
-                    updateCitationDisplay(elementId, 'Loading...', false);
-                }
+            if (!paper) {
+                console.warn('No data found for paper:', paperId);
                 return;
             }
             
-            // 不重试或重试次数用完,缓存失败结果
-            let errorMsg = 'Unavailable';
-            if (error.message === 'RATE_LIMITED') {
-                errorMsg = 'Rate Limited';
-            } else if (error.message === 'SERVICE_UNAVAILABLE') {
-                errorMsg = 'Service Down';
-            } else if (error.name === 'AbortError') {
-                errorMsg = 'Timeout';
-            } else if (error.message === 'QUEUE_FULL') {
-                errorMsg = 'Queue Full';
+            // 查找citation badge容器
+            const badgeContainer = element.querySelector('.citation-badge');
+            if (!badgeContainer) {
+                console.warn('No citation badge container found for:', paperId);
+                return;
             }
             
-            citationCache.set(cacheKey, errorMsg, false);
-            updateCitationDisplay(elementId, errorMsg, false);
-        }
-    }
-    
-    // 更新显示的函数
-    function updateCitationDisplay(elementId, count, isSuccess, isRetrying = false) {
-        const element = document.getElementById(elementId);
-        if (!element) return;
-        
-        // 清除所有状态类
-        element.classList.remove('citation-loading', 'citation-error', 'citation-retry');
-        
-        if (isSuccess && typeof count === 'number') {
-            element.textContent = `Citations: ${count}`;
-            element.title = `This paper has been cited ${count} times (updated every hour)`;
-        } else if (count === 'N/A') {
-            element.textContent = 'Citations: N/A';
-            element.title = 'No citation data found for this paper';
-        } else {
-            // 错误状态处理
-            element.classList.add('citation-error');
+            // 如果没有引用数据，隐藏badge
+            if (paper.citations === null || paper.citations === undefined) {
+                badgeContainer.style.display = 'none';
+                return;
+            }
             
-            if (isRetrying) {
-                element.classList.add('citation-retry');
-                element.textContent = 'Citations: ...';
-                element.title = 'Retrying to fetch citation data...';
-            } else if (count === 'Loading...') {
-                element.classList.add('citation-loading');
-                element.textContent = 'Citations: ...';
-                element.title = 'Loading citation data...';
-            } else if (count === 'Retrying...') {
-                element.classList.add('citation-retry');
-                element.textContent = 'Citations: ...';
-                element.title = 'Retrying to fetch citation data...';
+            // 根据引用数选择颜色
+            const citations = paper.citations;
+            let badgeClass = 'badge-secondary';
+            
+            if (citations >= 100) {
+                badgeClass = 'badge-danger';
+            } else if (citations >= 50) {
+                badgeClass = 'badge-warning';
+            } else if (citations >= 10) {
+                badgeClass = 'badge-info';
+            } else if (citations > 0) {
+                badgeClass = 'badge-success';
+            }
+            
+            // 构建badge HTML
+            let html = '';
+            const citationText = `<i class="fas fa-quote-right"></i> ${citations} citation${citations !== 1 ? 's' : ''}`;
+            
+            // 如果有 Semantic Scholar Paper ID，创建链接
+            if (paper.semantic_scholar && paper.semantic_scholar.paper_id) {
+                const s2Url = `https://www.semanticscholar.org/paper/${paper.semantic_scholar.paper_id}`;
+                html = `<a href="${s2Url}" target="_blank" class="badge badge-pill ${badgeClass}" style="color: white; text-decoration: none;" title="View on Semantic Scholar">${citationText}</a>`;
             } else {
-                element.textContent = 'Citations: --';
-                
-                // 根据错误类型设置不同的提示
-                if (count === 'Rate Limited') {
-                    element.title = 'Citation service rate limited, will retry automatically';
-                } else if (count === 'Service Down') {
-                    element.title = 'Citation service temporarily down, will retry on next visit';
-                } else if (count === 'Timeout') {
-                    element.title = 'Citation data request timeout, will retry on next visit';
-                } else if (count === 'Queue Full') {
-                    element.title = 'Too many requests, will retry on next visit';
-                } else {
-                    element.title = 'Citation data temporarily unavailable, will retry on next visit';
-                }
+                html = `<span class="badge badge-pill ${badgeClass}" title="Citation count from Semantic Scholar">${citationText}</span>`;
             }
-        }
-    }
-    
-    // 创建citation徽章的辅助函数
-    function createCitationBadge(item, index) {
-        const paperTitle = item.getAttribute('data-paper-title');
-        if (!paperTitle || paperTitle.trim().length < 5) return null;
-        
-        const citationId = `citation-${Date.now()}-${index}`;
-        
-        // 查找合适的容器
-        let container = item.querySelector('.citation-container-desktop') || 
-                      item.querySelector('.citation-container-mobile');
-        
-        if (!container) {
-            const pubParagraphs = item.querySelectorAll('p.small');
-            for (let p of pubParagraphs) {
-                if (p.innerHTML.includes('<i>') && 
-                    (p.textContent.includes('2024') ||
-                     p.textContent.includes('2023') || 
-                     p.textContent.includes('2022') || 
-                     p.textContent.includes('2021') ||
-                     p.textContent.includes('2020'))) {
-                    container = p;
-                    break;
-                }
-            }
-        }
-        
-        if (!container) return null;
-        
-        // 创建citation徽章
-        const citationBadge = document.createElement('span');
-        citationBadge.className = 'badge badge-pill citation-badge citation-loading';
-        citationBadge.id = citationId;
-        citationBadge.textContent = 'Citations: ...';
-        citationBadge.title = 'Loading citation data...';
-        
-        // 添加到容器
-        if (container.classList.contains('citation-container-desktop') || 
-            container.classList.contains('citation-container-mobile')) {
-            container.appendChild(citationBadge);
-        } else {
-            container.appendChild(citationBadge);
-        }
-        
-        return { citationId, paperTitle };
-    }
-    
-    // 初始化所有citation徽章 - 优化版分批加载
-    function initializeCitations() {
-        const publicationItems = document.querySelectorAll('[data-paper-title]');
-        
-        if (publicationItems.length === 0) return;
-        
-        // 分为优先加载和延迟加载两组
-        const priorityItems = Array.from(publicationItems).slice(0, 10);
-        const restItems = Array.from(publicationItems).slice(10);
-        
-        // 优先加载前10个(可见区域)
-        priorityItems.forEach((item, index) => {
-            const badgeInfo = createCitationBadge(item, index);
-            if (!badgeInfo) return;
             
-            // 快速启动,短间隔
-            setTimeout(() => {
-                getCitationCount(badgeInfo.paperTitle, badgeInfo.citationId);
-            }, index * 100 + Math.random() * 100);
+            badgeContainer.innerHTML = html;
+            badgeContainer.style.display = 'inline-block';
+            
+            console.log(`Updated citation for ${paperId}: ${citations} citations`);
         });
         
-        // 延迟加载其余项
-        if (restItems.length > 0) {
-            setTimeout(() => {
-                restItems.forEach((item, index) => {
-                    const badgeInfo = createCitationBadge(item, index + 10);
-                    if (!badgeInfo) return;
-                    
-                    // 较长间隔,避免拥堵
-                    setTimeout(() => {
-                        getCitationCount(badgeInfo.paperTitle, badgeInfo.citationId);
-                    }, index * 200 + Math.random() * 200);
-                });
-            }, 1500); // 优先项加载后1.5秒开始加载其余项
-        }
+        // 显示总引用数（如果需要）
+        const totalCitations = data.total_citations || 0;
+        console.log(`Total citations across all papers: ${totalCitations}`);
     }
     
-    // 定期更新过期的缓存
-    function setupPeriodicUpdate() {
-        // 每小时检查一次过期的缓存
-        setInterval(() => {
-            citationCache.cleanup();
-            
-            const publicationItems = document.querySelectorAll('[data-paper-title]');
-            
-            publicationItems.forEach((item, index) => {
-                const paperTitle = item.getAttribute('data-paper-title');
-                if (!paperTitle) return;
-                
-                const cacheKey = paperTitle.toLowerCase().trim();
-                
-                if (citationCache.isExpired(cacheKey)) {
-                    const citationBadge = item.querySelector('.citation-badge');
-                    if (citationBadge) {
-                        setTimeout(() => {
-                            getCitationCount(paperTitle, citationBadge.id);
-                        }, index * 500 + Math.random() * 1000);
-                    }
-                }
-            });
-        }, 3600000); // 每小时检查一次
-        
-        // 每天清理一次过期缓存
-        setInterval(() => {
-            citationCache.cleanup();
-        }, 86400000); // 24小时
+    function hideAllBadges() {
+        document.querySelectorAll('.citation-badge').forEach(badge => {
+            badge.style.display = 'none';
+        });
     }
     
-    // 页面加载完成后初始化
+    // 初始化
     function initialize() {
-        // 先清理过期缓存
-        citationCache.cleanup();
+        console.log('Initializing citation manager (static mode)...');
         
-        // 初始化citation徽章
-        initializeCitations();
+        // 检查是否有需要加载citation的元素
+        const elementsWithCitations = document.querySelectorAll('[data-paper-id]');
+        if (elementsWithCitations.length === 0) {
+            console.log('No elements with data-paper-id found, skipping citation load');
+            return;
+        }
         
-        // 设置定期更新
-        setupPeriodicUpdate();
+        console.log(`Found ${elementsWithCitations.length} publication(s) to load citations for`);
         
-        console.log('Citation manager initialized successfully');
+        // 加载citation数据
+        loadCitationData();
     }
     
     // 根据页面加载状态初始化
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(initialize, 100);
-        });
+        document.addEventListener('DOMContentLoaded', initialize);
     } else {
-        setTimeout(initialize, 100);
+        initialize();
     }
-    
-    // 页面卸载时保存缓存
-    window.addEventListener('beforeunload', () => {
-        citationCache.saveToStorage();
-    });
 })();
 </script>
