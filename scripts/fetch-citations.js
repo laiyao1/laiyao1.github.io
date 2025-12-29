@@ -5,67 +5,61 @@ const path = require('path');
 const OUTPUT_FILE = '_data/publications.json';
 const PUBLICATIONS_DIR = '_publications';
 
+// 正确读取 API Key
+const API_KEY = process.env.SEMANTIC_SCHOLAR_API_KEY || '';
+
 // 延迟函数
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-// 从 markdown 文件中提取标题和标识符
-function extractMetadataFromMarkdown(filePath) {
-    try {
-        const content = fs.readFileSync(filePath, 'utf8');
-        const titleMatch = content.match(/title:\s*"([^"]+)"/);
-        const dateMatch = content.match(/date:\s*(\d{4})/);
-        const doiMatch = content.match(/doi:\s*"?([^"\n]+)"?/i);
-        const arxivMatch = content.match(/arxiv:\s*"?([^"\n]+)"?/i);
+// 从 Markdown 文件读取 front matter
+function readFrontMatter(filePath) {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const match = content.match(/^---\s*\n([\s\S]*?)\n---/);
+    
+    if (!match) return null;
+    
+    const frontMatter = {};
+    const lines = match[1].split('\n');
+    
+    for (const line of lines) {
+        const colonIndex = line.indexOf(':');
+        if (colonIndex === -1) continue;
         
-        if (titleMatch) {
-            return {
-                title: titleMatch[1],
-                year: dateMatch ? dateMatch[1] : null,
-                doi: doiMatch ? doiMatch[1].trim() : null,
-                arxiv: arxivMatch ? arxivMatch[1].trim() : null
-            };
-        }
-    } catch (error) {
-        console.error(`Error reading ${filePath}:`, error.message);
+        const key = line.substring(0, colonIndex).trim();
+        let value = line.substring(colonIndex + 1).trim();
+        
+        // 移除引号
+        value = value.replace(/^["']|["']$/g, '');
+        
+        frontMatter[key] = value;
     }
-    return null;
+    
+    return frontMatter;
 }
 
-// 获取所有论文
+// 获取所有出版物文件
 function getAllPublications() {
-    const publications = [];
+    if (!fs.existsSync(PUBLICATIONS_DIR)) {
+        console.error(`Directory not found: ${PUBLICATIONS_DIR}`);
+        return [];
+    }
     
-    function readDir(dir) {
-        const items = fs.readdirSync(dir);
+    const files = fs.readdirSync(PUBLICATIONS_DIR)
+        .filter(file => file.endsWith('.md'))
+        .sort()
+        .reverse(); // 最新的在前
+    
+    return files.map(file => {
+        const filePath = path.join(PUBLICATIONS_DIR, file);
+        const frontMatter = readFrontMatter(filePath);
+        const id = path.basename(file, '.md');
         
-        for (const item of items) {
-            const fullPath = path.join(dir, item);
-            const stat = fs.statSync(fullPath);
-            
-            if (stat.isDirectory()) {
-                readDir(fullPath);
-            } else if (item.endsWith('.md')) {
-                const data = extractMetadataFromMarkdown(fullPath);
-                if (data && data.title) {
-                    const id = path.basename(item, '.md');
-                    publications.push({
-                        id: id,
-                        title: data.title,
-                        year: data.year,
-                        doi: data.doi,
-                        arxiv: data.arxiv,
-                        file: fullPath
-                    });
-                }
-            }
-        }
-    }
-    
-    if (fs.existsSync(PUBLICATIONS_DIR)) {
-        readDir(PUBLICATIONS_DIR);
-    }
-    
-    return publications;
+        return {
+            id,
+            file,
+            ...frontMatter
+        };
+    });
 }
 
 // 使用 Semantic Scholar API 通过 arXiv ID 获取
@@ -76,14 +70,17 @@ function fetchByArxiv(arxivId) {
         
         console.log(`  Searching by arXiv ID: ${cleanArxivId}`);
         
-        const options = {
-            headers: {
-                'User-Agent': 'Academic-Website-Citation-Bot',
-                'Accept': 'application/json',
-                // 如果有 API Key，添加到请求头
-                ...(API_KEY && { 'x-api-key': API_KEY })
-            }
+        const headers = {
+            'User-Agent': 'Academic-Website-Citation-Bot',
+            'Accept': 'application/json'
         };
+        
+        // 只有当 API_KEY 存在且不为空时才添加
+        if (API_KEY && API_KEY.length > 0) {
+            headers['x-api-key'] = API_KEY;
+        }
+        
+        const options = { headers };
         
         https.get(url, options, (res) => {
             let data = '';
@@ -117,13 +114,16 @@ function fetchByDOI(doi) {
         
         console.log(`  Searching by DOI: ${doi}`);
         
-        const options = {
-            headers: {
-                'User-Agent': 'Academic-Website-Citation-Bot',
-                'Accept': 'application/json',
-                ...(API_KEY && { 'x-api-key': API_KEY })
-            }
+        const headers = {
+            'User-Agent': 'Academic-Website-Citation-Bot',
+            'Accept': 'application/json'
         };
+        
+        if (API_KEY && API_KEY.length > 0) {
+            headers['x-api-key'] = API_KEY;
+        }
+        
+        const options = { headers };
         
         https.get(url, options, (res) => {
             let data = '';
@@ -158,13 +158,16 @@ function fetchByTitle(title) {
         
         console.log(`  Searching by title: ${title.substring(0, 60)}...`);
         
-        const options = {
-            headers: {
-                'User-Agent': 'Academic-Website-Citation-Bot',
-                'Accept': 'application/json',
-                ...(API_KEY && { 'x-api-key': API_KEY })
-            }
+        const headers = {
+            'User-Agent': 'Academic-Website-Citation-Bot',
+            'Accept': 'application/json'
         };
+        
+        if (API_KEY && API_KEY.length > 0) {
+            headers['x-api-key'] = API_KEY;
+        }
+        
+        const options = { headers };
         
         https.get(url, options, (res) => {
             let data = '';
@@ -196,94 +199,45 @@ function fetchByTitle(title) {
     });
 }
 
-// 获取单篇论文的 citation
-async function fetchCitation(paper) {
-    let retries = 3;
+// 获取单篇论文的引用数据（带重试）
+async function getCitationData(publication, maxRetries = 3) {
+    let lastError = null;
     
-    while (retries > 0) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
-            let result = null;
-            
-            // 查询优先级：arXiv ID > DOI > 标题搜索
-            
-            // 1. 优先使用 arXiv ID（最可靠）
-            if (paper.arxiv) {
-                result = await fetchByArxiv(paper.arxiv);
-                if (result) {
-                    console.log(`  ✓ Found by arXiv ID: ${result.citationCount} citations`);
-                } else {
-                    console.log(`  arXiv ID not found, trying DOI...`);
-                }
+            // 优先使用 DOI
+            if (publication.doi) {
+                const data = await fetchByDOI(publication.doi);
+                if (data) return data;
             }
             
-            // 2. 使用 DOI
-            if (!result && paper.doi) {
-                await delay(1000); // 避免请求过快
-                result = await fetchByDOI(paper.doi);
-                if (result) {
-                    console.log(`  ✓ Found by DOI: ${result.citationCount} citations`);
-                } else {
-                    console.log(`  DOI not found, trying title search...`);
-                }
+            // 尝试 arXiv ID
+            if (publication.arxiv) {
+                const data = await fetchByArxiv(publication.arxiv);
+                if (data) return data;
             }
             
-            // 3. 如果 DOI 没找到，使用标题搜索
-            if (!result && paper.title) {
-                await delay(1000);
-                result = await fetchByTitle(paper.title);
-                if (result) {
-                    console.log(`  ✓ Found by title: ${result.citationCount} citations`);
-                }
+            // 最后使用标题搜索
+            if (publication.title) {
+                const data = await fetchByTitle(publication.title);
+                if (data) return data;
             }
             
-            if (result) {
-                return {
-                    id: paper.id,
-                    title: paper.title,
-                    year: paper.year,
-                    citations: result.citationCount || 0,
-                    source: 'semantic_scholar',
-                    s2_paper_id: result.paperId,
-                    s2_title: result.title,
-                    external_ids: result.externalIds,
-                    updated: new Date().toISOString()
-                };
-            } else {
-                console.log(`  ✗ Not found in Semantic Scholar`);
-                return {
-                    id: paper.id,
-                    title: paper.title,
-                    year: paper.year,
-                    citations: null,
-                    source: 'semantic_scholar',
-                    error: 'Not found',
-                    updated: new Date().toISOString()
-                };
-            }
+            return null;
             
         } catch (error) {
-            retries--;
+            lastError = error;
             
-            if (error.message.includes('Rate limit')) {
-                console.log(`  ⚠ Rate limited, waiting 10 seconds...`);
-                await delay(10000);
-            } else if (retries > 0) {
-                console.log(`  ⚠ Error: ${error.message}, retrying... (${retries} left)`);
-                await delay(2000);
-            } else {
-                console.log(`  ✗ Failed after retries: ${error.message}`);
-                return {
-                    id: paper.id,
-                    title: paper.title,
-                    year: paper.year,
-                    citations: null,
-                    source: 'semantic_scholar',
-                    error: error.message,
-                    updated: new Date().toISOString()
-                };
+            if (attempt < maxRetries) {
+                const waitTime = attempt * 2;
+                console.log(`  ⚠ Error: ${error.message}, retrying... (${maxRetries - attempt} left)`);
+                await delay(waitTime * 1000);
             }
         }
     }
+    
+    console.log(`  ✗ Failed after retries: ${lastError?.message || 'Unknown error'}`);
+    return null;
 }
 
 // 主函数
@@ -291,93 +245,85 @@ async function main() {
     try {
         console.log('=== Starting Publication Data Generation ===\n');
         
+        if (API_KEY && API_KEY.length > 0) {
+            console.log('✓ Using Semantic Scholar API Key (authenticated)\n');
+        } else {
+            console.log('⚠ No API Key found, using public API (rate limited)\n');
+        }
+        
         const publications = getAllPublications();
         
         if (publications.length === 0) {
             console.log('No publications found!');
-            console.log(`Checked directory: ${PUBLICATIONS_DIR}`);
-            process.exit(1);
+            return;
         }
         
-        console.log(`Found ${publications.length} publication(s):\n`);
-        publications.forEach((p, i) => {
-            console.log(`${i + 1}. ${p.title}`);
-            console.log(`   Year: ${p.year || 'N/A'}`);
-            console.log(`   arXiv: ${p.arxiv || 'N/A'}`);
-            console.log(`   DOI: ${p.doi || 'N/A'}`);
-            console.log('');
-        });
+        console.log(`Found ${publications.length} publications\n`);
         
-        const results = {};
-        
-        // 获取引用数据
-        for (let i = 0; i < publications.length; i++) {
-            const paper = publications[i];
-            console.log(`[${i + 1}/${publications.length}] Processing: ${paper.id}`);
-            
-            const result = await fetchCitation(paper);
-            results[paper.id] = result;
-            
-            if (i < publications.length - 1) {
-                console.log(`  Waiting 3 seconds...\n`);
-                await delay(3000);
-            }
-        }
-
-        // 生成 publications.json（主文件）
-        const publicationsData = publications.map(paper => {
-            const citationData = results[paper.id];
-            return {
-                id: paper.id,
-                title: paper.title,
-                year: paper.year,
-                citations: citationData.citations || 0,
-                semantic_scholar: {
-                    paper_id: citationData.s2_paper_id || null,
-                    title: citationData.s2_title || null,
-                    external_ids: citationData.external_ids || null
-                },
-                last_updated: citationData.updated
-            };
-        });
-
-        const publicationsOutput = {
-            last_updated: new Date().toISOString(),
-            total_papers: publications.length,
-            total_citations: publicationsData.reduce((sum, p) => sum + (p.citations || 0), 0),
-            papers: publicationsData
+        const results = {
+            generated_at: new Date().toISOString(),
+            total_citations: 0,
+            papers: []
         };
         
-        // 确保 _data 目录存在
-        const dir = '_data';
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
+        let successCount = 0;
+        let notFoundCount = 0;
+        
+        for (let i = 0; i < publications.length; i++) {
+            const pub = publications[i];
+            console.log(`[${i + 1}/${publications.length}] Processing: ${pub.id}`);
+            
+            const citationData = await getCitationData(pub);
+            
+            const paperData = {
+                id: pub.id,
+                title: pub.title || 'Untitled',
+                citations: citationData ? citationData.citationCount : null,
+                semantic_scholar: citationData ? {
+                    paper_id: citationData.paperId,
+                    external_ids: citationData.externalIds || {}
+                } : null
+            };
+            
+            results.papers.push(paperData);
+            
+            if (citationData) {
+                results.total_citations += citationData.citationCount || 0;
+                successCount++;
+                console.log(`  ✓ Found: ${citationData.citationCount || 0} citations`);
+            } else {
+                notFoundCount++;
+                console.log(`  ✗ Not found`);
+            }
+            
+            // 等待，避免速率限制
+            if (i < publications.length - 1) {
+                const waitTime = API_KEY && API_KEY.length > 0 ? 1 : 3;
+                console.log(`  Waiting ${waitTime} seconds...\n`);
+                await delay(waitTime * 1000);
+            }
         }
         
-        // 写入文件
-        fs.writeFileSync(OUTPUT_FILE, JSON.stringify(publicationsOutput, null, 2));
+        // 确保目录存在
+        const outputDir = path.dirname(OUTPUT_FILE);
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true });
+        }
+        
+        // 写入结果
+        fs.writeFileSync(OUTPUT_FILE, JSON.stringify(results, null, 2));
         
         console.log('\n=== Summary ===');
         console.log(`Output: ${OUTPUT_FILE}`);
         console.log(`Total papers: ${publications.length}`);
-        console.log(`Total citations: ${publicationsOutput.total_citations}`);
-        
-        const successful = publicationsData.filter(p => p.citations !== null && p.citations > 0).length;
-        const failed = publicationsData.filter(p => p.citations === null).length;
-        
-        console.log(`Papers with citations: ${successful}`);
-        console.log(`Papers not found: ${failed}`);
+        console.log(`Total citations: ${results.total_citations}`);
+        console.log(`Papers with citations: ${successCount}`);
+        console.log(`Papers not found: ${notFoundCount}`);
         
         console.log('\nCitation details:');
-        publicationsData.forEach(p => {
-            if (p.citations !== null) {
-                console.log(`  ${p.id}: ${p.citations} citations`);
-            } else {
-                console.log(`  ${p.id}: Not found`);
-            }
+        results.papers.forEach(p => {
+            console.log(`  ${p.id}: ${p.citations !== null ? p.citations : 'N/A'} citations`);
         });
-        
-        console.log('\n✓ Done!');
         
     } catch (error) {
         console.error('Fatal error:', error);
