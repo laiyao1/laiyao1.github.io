@@ -38,25 +38,44 @@ function readFrontMatter(filePath) {
 }
 
 // 获取所有出版物文件
+// 递归获取所有出版物文件
 function getAllPublications() {
     if (!fs.existsSync(PUBLICATIONS_DIR)) {
         console.error(`Directory not found: ${PUBLICATIONS_DIR}`);
         return [];
     }
     
-    const files = fs.readdirSync(PUBLICATIONS_DIR)
-        .filter(file => file.endsWith('.md'))
-        .sort()
-        .reverse(); // 最新的在前
+    const files = [];
     
-    return files.map(file => {
-        const filePath = path.join(PUBLICATIONS_DIR, file);
+    // 递归查找所有 .md 文件
+    function findMarkdownFiles(dir) {
+        const items = fs.readdirSync(dir);
+        
+        for (const item of items) {
+            const fullPath = path.join(dir, item);
+            const stat = fs.statSync(fullPath);
+            
+            if (stat.isDirectory()) {
+                // 递归进入子目录
+                findMarkdownFiles(fullPath);
+            } else if (item.endsWith('.md')) {
+                files.push(fullPath);
+            }
+        }
+    }
+    
+    findMarkdownFiles(PUBLICATIONS_DIR);
+    
+    // 按文件名排序（最新的在前）
+    files.sort().reverse();
+    
+    return files.map(filePath => {
         const frontMatter = readFrontMatter(filePath);
-        const id = path.basename(file, '.md');
+        const fileName = path.basename(filePath, '.md');
         
         return {
-            id,
-            file,
+            id: fileName,
+            file: filePath,
             ...frontMatter
         };
     });
