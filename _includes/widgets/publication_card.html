@@ -14,6 +14,75 @@
 
 <!-- Citation功能的CSS和JS -->
 <style>
+
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 100%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+
+.badge-pill {
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+    border-radius: 10rem;
+}
+
+/* 出版物相关的badge - 与citation-badge一致的样式 */
+.badge-publication {
+    font-size: 100%;
+    border-radius: 10rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+}
+
+/* Badge颜色样式 */
+.badge-success {
+    color: #fff;
+    background-color: #28a745;
+}
+
+.badge-warning {
+    color: #212529;
+    background-color: #ffc107;
+}
+
+.badge-info {
+    color: #fff;
+    background-color: #17a2b8;
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #dc3545;
+}
+
+.badge-secondary {
+    color: #fff;
+    background-color: #6c757d;
+}
+
+.badge-primary {
+    color: #fff;
+    background-color: #007bff;
+}
+
+/* 让badge可点击时的样式 */
+a .badge {
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+a:hover .badge {
+    opacity: 0.85;
+    text-decoration: none;
+}
+
 /* 让citation徽章与现有的badge样式完全一致 */
 .citation-badge {
     display: inline-block;
