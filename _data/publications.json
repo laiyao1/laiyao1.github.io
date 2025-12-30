@@ -1,0 +1,76 @@
+{
+  "generated_at": "2025-12-30T01:24:08.629Z",
+  "total_citations": 225,
+  "papers": [
+    {
+      "id": "2025-pub-2",
+      "title": "FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities",
+      "citations": 17,
+      "semantic_scholar": {
+        "paper_id": "17fdf94362b3ae856f67edafd6a8532dc87642ee",
+        "external_ids": {
+          "ArXiv": "2505.20147",
+          "DBLP": "journals/corr/abs-2505-20147",
+          "DOI": "10.48550/arXiv.2505.20147",
+          "CorpusId": 278911369
+        }
+      }
+    },
+    {
+      "id": "2025-pub-1",
+      "title": "AnalogCoder: Analog Circuit Design via Training-Free Code Generation",
+      "citations": 76,
+      "semantic_scholar": {
+        "paper_id": "bcfd6404ad1c913b915d1f7731d3bc69564d98e7",
+        "external_ids": {
+          "DBLP": "conf/aaai/LaiLCPHP025",
+          "ArXiv": "2405.14918",
+          "DOI": "10.48550/arXiv.2405.14918",
+          "CorpusId": 270045319
+        }
+      }
+    },
+    {
+      "id": "2024-pub-1",
+      "title": "Scalable and Effective Arithmetic Tree Generation for Adder and Multiplier Designs",
+      "citations": 8,
+      "semantic_scholar": {
+        "paper_id": "fb350778b51672b1ac9f36a40c9efbdf746e35d5",
+        "external_ids": {
+          "DBLP": "conf/nips/LaiLPL24",
+          "ArXiv": "2405.06758",
+          "DOI": "10.48550/arXiv.2405.06758",
+          "CorpusId": 269757451
+        }
+      }
+    },
+    {
+      "id": "2023-pub-1",
+      "title": "ChiPFormer: Transferable Chip Placement via Offline Decision Transformer",
+      "citations": 56,
+      "semantic_scholar": {
+        "paper_id": "4a810f17843145195d73d5c63dc0f1477ba9cafc",
+        "external_ids": {
+          "ArXiv": "2306.14744",
+          "DBLP": "journals/corr/abs-2306-14744",
+          "DOI": "10.48550/arXiv.2306.14744",
+          "CorpusId": 259251800
+        }
+      }
+    },
+    {
+      "id": "2022-pub-1",
+      "title": "MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning",
+      "citations": 68,
+      "semantic_scholar": {
+        "paper_id": "938c988ce314c6cd64b5b860daa9923f10d2709c",
+        "external_ids": {
+          "DBLP": "journals/corr/abs-2211-13382",
+          "ArXiv": "2211.13382",
+          "DOI": "10.48550/arXiv.2211.13382",
+          "CorpusId": 254017801
+        }
+      }
+    }
+  ]
+}
