@@ -168,17 +168,17 @@
             
             // 根据引用数选择颜色
             const citations = paper.citations;
-            let badgeClass = 'badge-secondary';
+            let badgeClass = 'badge-info';
             
-            if (citations >= 100) {
-                badgeClass = 'badge-danger';
-            } else if (citations >= 50) {
-                badgeClass = 'badge-warning';
-            } else if (citations >= 10) {
-                badgeClass = 'badge-info';
-            } else if (citations > 0) {
-                badgeClass = 'badge-success';
-            }
+            // if (citations >= 100) {
+            //     badgeClass = 'badge-danger';
+            // } else if (citations >= 50) {
+            //     badgeClass = 'badge-warning';
+            // } else if (citations >= 10) {
+            //     badgeClass = 'badge-info';
+            // } else if (citations > 0) {
+            //     badgeClass = 'badge-success';
+            // }
             
             // 构建badge HTML
             let html = '';
