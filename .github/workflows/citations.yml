@@ -1,29 +1,37 @@
 name: Update Citations
 
 on:
-  # 每周日凌晨 2 点运行（UTC时间，北京时间上午10点）
   schedule:
-    - cron: '0 2 * * 0'
-  
-  # 允许手动触发
+    - cron: '0 0 * * 0'
   workflow_dispatch:
-  
-  # 当论文文件更新时触发
-  push:
-    paths:
-      - '_publications/**/*.md'
 
 jobs:
   update-citations:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
       
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+      
+      # 👇 添加这个调试步骤
+      - name: Debug - Check directory structure
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          echo ""
+          echo "=== Looking for _publications directory ==="
+          ls -la | grep publications || echo "No _publications in root"
+          echo ""
+          echo "=== All directories ==="
+          find . -type d -name "*publication*" -o -type d -name "*pub*"
+          echo ""
+          echo "=== All .md files ==="
+          find . -name "*.md" | head -20
       
       - name: Generate publications data with citations
         run: node scripts/fetch-citations.js
@@ -35,10 +43,9 @@ jobs:
           mkdir -p assets/data
           cp _data/publications.json assets/data/publications.json
       
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add _data/publications.json assets/data/publications.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update citations [automated]"
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update citations [automated]" && git push)

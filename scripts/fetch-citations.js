@@ -39,8 +39,27 @@ function readFrontMatter(filePath) {
 
 // 递归获取所有出版物文件
 function getAllPublications() {
+    console.log('=== Directory Check ===');
+    console.log('Current working directory:', process.cwd());
+    console.log('Looking for:', PUBLICATIONS_DIR);
+    console.log('Absolute path:', path.resolve(PUBLICATIONS_DIR));
+    console.log('Directory exists?', fs.existsSync(PUBLICATIONS_DIR));
+    
     if (!fs.existsSync(PUBLICATIONS_DIR)) {
         console.error(`Directory not found: ${PUBLICATIONS_DIR}`);
+        
+        // 尝试列出当前目录内容
+        console.log('\n=== Current directory contents ===');
+        try {
+            const items = fs.readdirSync('.');
+            items.forEach(item => {
+                const stat = fs.statSync(item);
+                console.log(`  ${stat.isDirectory() ? '[DIR]' : '[FILE]'} ${item}`);
+            });
+        } catch (e) {
+            console.error('Error reading directory:', e.message);
+        }
+        
         return [];
     }
     
