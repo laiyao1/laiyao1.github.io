@@ -1,11 +1,11 @@
 {
-  "generated_at": "2025-12-30T01:41:02.333Z",
-  "total_citations": 225,
+  "generated_at": "2025-12-31T00:36:35.199Z",
+  "total_citations": 227,
   "papers": [
     {
       "id": "2025-pub-2",
       "title": "FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities",
-      "citations": 17,
+      "citations": 18,
       "semantic_scholar": {
         "paper_id": "17fdf94362b3ae856f67edafd6a8532dc87642ee",
         "external_ids": {
@@ -61,7 +61,7 @@
     {
       "id": "2022-pub-1",
       "title": "MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning",
-      "citations": 68,
+      "citations": 69,
       "semantic_scholar": {
         "paper_id": "938c988ce314c6cd64b5b860daa9923f10d2709c",
         "external_ids": {
