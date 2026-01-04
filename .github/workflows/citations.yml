@@ -8,16 +8,12 @@ on:
 jobs:
   update-citations:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Pull latest changes
-        run: git pull origin main
       
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -35,14 +31,7 @@ jobs:
           cp _data/publications.json assets/data/publications.json
       
       - name: Commit and push changes
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add _data/publications.json assets/data/publications.json
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Update citations [automated]"
-            git pull --rebase origin main
-            git push
-          fi
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update citations [automated]"
+          file_pattern: "_data/publications.json assets/data/publications.json"
