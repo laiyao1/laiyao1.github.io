@@ -17,7 +17,7 @@
 .badge {
     display: inline-block;
     padding: 0.25em 0.4em;
-    font-size: 100%;
+    font-size: 0.75rem;  /* 改为固定大小 */
     font-weight: 700;
     line-height: 1;
     text-align: center;
@@ -26,19 +26,20 @@
     border-radius: 0.25rem;
 }
 
+.badge-publication {
+    font-size: 0.75rem;  /* 固定大小 */
+    border-radius: 10rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+}
+
+
 .badge-pill {
     padding-right: 0.6em;
     padding-left: 0.6em;
     border-radius: 10rem;
 }
 
-/* 出版物相关的badge */
-.badge-publication {
-    font-size: 100%;
-    border-radius: 10rem;
-    margin-left: 0.25rem;
-    margin-right: 0.25rem;
-}
 
 /* Badge颜色样式 */
 .badge-success {
@@ -92,141 +93,93 @@
 (function() {
     'use strict';
     
-    // 避免重复初始化
-    if (window.citationManagerInitialized) return;
-    window.citationManagerInitialized = true;
+    // 使用唯一ID来跟踪已处理的元素，而不是阻止重复初始化
+    const PROCESSED_ATTR = 'data-citation-loaded';
     
     function loadCitationData() {
-        // 尝试多个可能的路径
         const possiblePaths = [
             '{{ "/assets/data/publications.json" | relative_url }}',
-            '{{ "/_data/publications.json" | relative_url }}',
-            '/assets/data/publications.json',
-            '/_data/publications.json'
+            '/assets/data/publications.json'
         ];
         
         async function tryFetch(paths) {
             for (let path of paths) {
                 try {
-                    console.log('Trying to fetch from:', path);
                     const response = await fetch(path);
                     if (response.ok) {
-                        const data = await response.json();
-                        console.log('Successfully loaded publications data from:', path);
-                        return data;
+                        return await response.json();
                     }
                 } catch (error) {
-                    console.warn('Failed to load from', path, error);
+                    console.warn('Failed to load from', path);
                 }
             }
-            throw new Error('Failed to load publications data from all paths');
+            throw new Error('Failed to load publications data');
         }
         
-        tryFetch(possiblePaths)
-            .then(data => {
-                console.log('Publications data:', data);
-                updateCitationBadges(data);
-            })
-            .catch(error => {
-                console.error('Error loading citation data:', error);
-                hideAllBadges();
-            });
+        return tryFetch(possiblePaths);
     }
     
     function updateCitationBadges(data) {
         if (!data || !data.papers) {
-            console.error('Invalid data format');
-            hideAllBadges();
+            hideUnprocessedBadges();
             return;
         }
         
-        // 遍历所有带有 data-paper-id 的元素
-        document.querySelectorAll('[data-paper-id]').forEach(element => {
+        // 只处理未处理过的元素
+        document.querySelectorAll('[data-paper-id]:not([' + PROCESSED_ATTR + '])').forEach(element => {
             const paperId = element.getAttribute('data-paper-id');
             if (!paperId) return;
             
-            // 查找对应的论文数据
+            // 标记为已处理
+            element.setAttribute(PROCESSED_ATTR, 'true');
+            
             const paper = data.papers.find(p => p.id === paperId);
-            
-            if (!paper) {
-                console.warn('No data found for paper:', paperId);
-                return;
-            }
-            
-            // 查找citation badge容器
             const badgeContainer = element.querySelector('.citation-badge');
-            if (!badgeContainer) {
-                console.warn('No citation badge container found for:', paperId);
-                return;
-            }
             
-            // 如果没有引用数据，隐藏badge
-            if (paper.citations === null || paper.citations === undefined) {
+            if (!badgeContainer) return;
+            
+            if (!paper || paper.citations === null || paper.citations === undefined) {
                 badgeContainer.style.display = 'none';
                 return;
             }
             
-            // 根据引用数选择颜色
             const citations = paper.citations;
-            let badgeClass = 'badge-info';
-            
-            // if (citations >= 100) {
-            //     badgeClass = 'badge-danger';
-            // } else if (citations >= 50) {
-            //     badgeClass = 'badge-warning';
-            // } else if (citations >= 10) {
-            //     badgeClass = 'badge-info';
-            // } else if (citations > 0) {
-            //     badgeClass = 'badge-success';
-            // }
-            
-            // 构建badge HTML
-            let html = '';
+            const badgeClass = 'badge-info';
             const citationText = `<i class="fas fa-quote-right"></i> ${citations} citation${citations !== 1 ? 's' : ''}`;
             
-            // 如果有 Semantic Scholar Paper ID，创建链接
             if (paper.semantic_scholar && paper.semantic_scholar.paper_id) {
                 const s2Url = `https://www.semanticscholar.org/paper/${paper.semantic_scholar.paper_id}`;
-                html = `<a href="${s2Url}" target="_blank" class="badge badge-pill ${badgeClass}" style="color: white; text-decoration: none;" title="View on Semantic Scholar">${citationText}</a>`;
+                badgeContainer.innerHTML = `<a href="${s2Url}" target="_blank" class="badge badge-pill ${badgeClass}" style="color: white;">${citationText}</a>`;
             } else {
-                html = `<span class="badge badge-pill ${badgeClass}" title="Citation count from Semantic Scholar">${citationText}</span>`;
+                badgeContainer.innerHTML = `<span class="badge badge-pill ${badgeClass}">${citationText}</span>`;
             }
-            
-            badgeContainer.innerHTML = html;
             badgeContainer.style.display = 'inline-block';
-            
-            console.log(`Updated citation for ${paperId}: ${citations} citations`);
         });
-        
-        // 显示总引用数（如果需要）
-        const totalCitations = data.total_citations || 0;
-        console.log(`Total citations across all papers: ${totalCitations}`);
     }
     
-    function hideAllBadges() {
-        document.querySelectorAll('.citation-badge').forEach(badge => {
+    function hideUnprocessedBadges() {
+        document.querySelectorAll('[data-paper-id]:not([' + PROCESSED_ATTR + ']) .citation-badge').forEach(badge => {
             badge.style.display = 'none';
         });
     }
     
-    // 初始化
     function initialize() {
-        console.log('Initializing citation manager (static mode)...');
+        const unprocessed = document.querySelectorAll('[data-paper-id]:not([' + PROCESSED_ATTR + '])');
+        if (unprocessed.length === 0) return;
         
-        // 检查是否有需要加载citation的元素
-        const elementsWithCitations = document.querySelectorAll('[data-paper-id]');
-        if (elementsWithCitations.length === 0) {
-            console.log('No elements with data-paper-id found, skipping citation load');
-            return;
+        // 如果已有缓存数据，直接使用
+        if (window._citationData) {
+            updateCitationBadges(window._citationData);
+        } else {
+            loadCitationData()
+                .then(data => {
+                    window._citationData = data;  // 缓存数据
+                    updateCitationBadges(data);
+                })
+                .catch(() => hideUnprocessedBadges());
         }
-        
-        console.log(`Found ${elementsWithCitations.length} publication(s) to load citations for`);
-        
-        // 加载citation数据
-        loadCitationData();
     }
     
-    // 根据页面加载状态初始化
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initialize);
     } else {
