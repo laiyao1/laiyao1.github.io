@@ -11,27 +11,14 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      
-      # 👇 添加这个调试步骤
-      - name: Debug - Check directory structure
-        run: |
-          echo "=== Current directory ==="
-          pwd
-          echo ""
-          echo "=== Looking for _publications directory ==="
-          ls -la | grep publications || echo "No _publications in root"
-          echo ""
-          echo "=== All directories ==="
-          find . -type d -name "*publication*" -o -type d -name "*pub*"
-          echo ""
-          echo "=== All .md files ==="
-          find . -name "*.md" | head -20
+          node-version: '20'
       
       - name: Generate publications data with citations
         run: node scripts/fetch-citations.js
@@ -47,9 +34,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
           git pull --rebase origin main
-
           git add _data/publications.json assets/data/publications.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update citations [automated]"
+          git diff --staged --quiet || git commit -m "Update citations [automated]"
           git push
