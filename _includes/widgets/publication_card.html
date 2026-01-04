@@ -89,99 +89,58 @@
 </style>
 
 <!-- Citation功能的JS - 静态版本 -->
+{% assign publications = include.publications %}
+<div class="my-3 p-0 bg-white shadow-sm rounded-sm">
+    <h6 class="border-bottom border-gray p-3 mb-0">
+        {% if include.title %}{{ include.title }}{% else %}<i class="fas fa-star"></i> Selected Recent Publications{% endif %} 
+        <a href="{{ 'publications' | relative_url }}">(view all <i class="fas fa-angle-double-right"></i>)</a>
+    </h6>
+    {% for item in publications limit:include.limit %}
+        {% include widgets/publication_item.html item=item %}    
+    {% endfor %}
+    <h6 class="d-block p-3 mt-0 text-right">
+        <a href="{{ 'publications' | relative_url }}">All publications <i class="fas fa-angle-double-right"></i></a>
+    </h6>
+</div>
+
 <script>
 (function() {
-    'use strict';
-    
-    console.log('=== Citation Script Starting ===');
-    
-    async function loadCitationData() {
-        const paths = [
-            '/assets/data/publications.json',
-            '{{ "/assets/data/publications.json" | relative_url }}'
-        ];
-        
-        for (let path of paths) {
-            try {
-                console.log('Trying:', path);
-                const response = await fetch(path);
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Loaded from:', path);
-                    return data;
+    async function loadCitations() {
+        try {
+            const response = await fetch('{{ "/assets/data/publications.json" | relative_url }}');
+            if (!response.ok) return;
+            const data = await response.json();
+            
+            document.querySelectorAll('[data-paper-id]').forEach(el => {
+                const id = el.getAttribute('data-paper-id');
+                const badge = el.querySelector('.citation-badge');
+                if (!badge) return;
+                
+                const paper = data.papers.find(p => p.id === id);
+                if (!paper || paper.citations == null) {
+                    badge.style.display = 'none';
+                    return;
                 }
-            } catch (e) {
-                console.warn('Failed:', path, e);
-            }
-        }
-        return null;
-    }
-    
-    function updateCitationBadges(data) {
-        if (!data || !data.papers) {
-            console.error('Invalid data');
-            return;
-        }
-        
-        console.log('Papers in JSON:', data.papers.map(p => p.id));
-        
-        document.querySelectorAll('[data-paper-id]').forEach(element => {
-            const paperId = element.getAttribute('data-paper-id');
-            const badgeContainer = element.querySelector('.citation-badge');
-            
-            console.log('Processing:', paperId, 'Badge found:', !!badgeContainer);
-            
-            if (!badgeContainer) return;
-            
-            const paper = data.papers.find(p => p.id === paperId);
-            
-            if (!paper) {
-                console.warn('No match for:', paperId);
-                badgeContainer.style.display = 'none';
-                return;
-            }
-            
-            if (paper.citations === null || paper.citations === undefined) {
-                badgeContainer.style.display = 'none';
-                return;
-            }
-            
-            const citations = paper.citations;
-            const s2Id = paper.semantic_scholar?.paper_id;
-            
-            if (s2Id) {
-                badgeContainer.innerHTML = `<a href="https://www.semanticscholar.org/paper/${s2Id}" target="_blank" class="badge badge-pill badge-info" style="color: white; font-size: 0.75rem; text-decoration: none;"><i class="fas fa-quote-right"></i> ${citations} citation${citations !== 1 ? 's' : ''}</a>`;
-            } else {
-                badgeContainer.innerHTML = `<span class="badge badge-pill badge-info" style="font-size: 0.75rem;"><i class="fas fa-quote-right"></i> ${citations} citation${citations !== 1 ? 's' : ''}</span>`;
-            }
-            
-            console.log('Updated:', paperId, '→', citations);
-        });
-    }
-    
-    async function init() {
-        const elements = document.querySelectorAll('[data-paper-id]');
-        console.log('Found elements:', elements.length);
-        
-        if (elements.length === 0) return;
-        
-        // 打印所有 paper id
-        elements.forEach(el => console.log('Paper ID in HTML:', el.getAttribute('data-paper-id')));
-        
-        const data = await loadCitationData();
-        if (data) {
-            updateCitationBadges(data);
-        } else {
-            document.querySelectorAll('.citation-badge').forEach(b => {
-                b.innerHTML = '<span class="badge badge-danger" style="font-size: 0.75rem;">Error</span>';
+                
+                const s2Id = paper.semantic_scholar?.paper_id;
+                const count = paper.citations;
+                const label = count === 1 ? 'citation' : 'citations';
+                
+                if (s2Id) {
+                    badge.innerHTML = `<a href="https://www.semanticscholar.org/paper/${s2Id}" target="_blank" class="badge badge-pill badge-info" style="color:#fff;text-decoration:none;font-size:0.75rem;"><i class="fas fa-quote-right"></i> ${count} ${label}</a>`;
+                } else {
+                    badge.innerHTML = `<span class="badge badge-pill badge-info" style="font-size:0.75rem;"><i class="fas fa-quote-right"></i> ${count} ${label}</span>`;
+                }
             });
+        } catch (e) {
+            console.error('Citation load error:', e);
         }
     }
     
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', loadCitations);
     } else {
-        init();
+        loadCitations();
     }
 })();
 </script>
