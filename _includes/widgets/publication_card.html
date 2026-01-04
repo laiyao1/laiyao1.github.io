@@ -93,97 +93,95 @@
 (function() {
     'use strict';
     
-    // 使用唯一ID来跟踪已处理的元素，而不是阻止重复初始化
-    const PROCESSED_ATTR = 'data-citation-loaded';
+    console.log('=== Citation Script Starting ===');
     
-    function loadCitationData() {
-        const possiblePaths = [
-            '{{ "/assets/data/publications.json" | relative_url }}',
-            '/assets/data/publications.json'
+    async function loadCitationData() {
+        const paths = [
+            '/assets/data/publications.json',
+            '{{ "/assets/data/publications.json" | relative_url }}'
         ];
         
-        async function tryFetch(paths) {
-            for (let path of paths) {
-                try {
-                    const response = await fetch(path);
-                    if (response.ok) {
-                        return await response.json();
-                    }
-                } catch (error) {
-                    console.warn('Failed to load from', path);
+        for (let path of paths) {
+            try {
+                console.log('Trying:', path);
+                const response = await fetch(path);
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Loaded from:', path);
+                    return data;
                 }
+            } catch (e) {
+                console.warn('Failed:', path, e);
             }
-            throw new Error('Failed to load publications data');
         }
-        
-        return tryFetch(possiblePaths);
+        return null;
     }
     
     function updateCitationBadges(data) {
         if (!data || !data.papers) {
-            hideUnprocessedBadges();
+            console.error('Invalid data');
             return;
         }
         
-        // 只处理未处理过的元素
-        document.querySelectorAll('[data-paper-id]:not([' + PROCESSED_ATTR + '])').forEach(element => {
+        console.log('Papers in JSON:', data.papers.map(p => p.id));
+        
+        document.querySelectorAll('[data-paper-id]').forEach(element => {
             const paperId = element.getAttribute('data-paper-id');
-            if (!paperId) return;
-            
-            // 标记为已处理
-            element.setAttribute(PROCESSED_ATTR, 'true');
-            
-            const paper = data.papers.find(p => p.id === paperId);
             const badgeContainer = element.querySelector('.citation-badge');
+            
+            console.log('Processing:', paperId, 'Badge found:', !!badgeContainer);
             
             if (!badgeContainer) return;
             
-            if (!paper || paper.citations === null || paper.citations === undefined) {
+            const paper = data.papers.find(p => p.id === paperId);
+            
+            if (!paper) {
+                console.warn('No match for:', paperId);
+                badgeContainer.style.display = 'none';
+                return;
+            }
+            
+            if (paper.citations === null || paper.citations === undefined) {
                 badgeContainer.style.display = 'none';
                 return;
             }
             
             const citations = paper.citations;
-            const badgeClass = 'badge-info';
-            const citationText = `<i class="fas fa-quote-right"></i> ${citations} citation${citations !== 1 ? 's' : ''}`;
+            const s2Id = paper.semantic_scholar?.paper_id;
             
-            if (paper.semantic_scholar && paper.semantic_scholar.paper_id) {
-                const s2Url = `https://www.semanticscholar.org/paper/${paper.semantic_scholar.paper_id}`;
-                badgeContainer.innerHTML = `<a href="${s2Url}" target="_blank" class="badge badge-pill ${badgeClass}" style="color: white;">${citationText}</a>`;
+            if (s2Id) {
+                badgeContainer.innerHTML = `<a href="https://www.semanticscholar.org/paper/${s2Id}" target="_blank" class="badge badge-pill badge-info" style="color: white; font-size: 0.75rem; text-decoration: none;"><i class="fas fa-quote-right"></i> ${citations} citation${citations !== 1 ? 's' : ''}</a>`;
             } else {
-                badgeContainer.innerHTML = `<span class="badge badge-pill ${badgeClass}">${citationText}</span>`;
+                badgeContainer.innerHTML = `<span class="badge badge-pill badge-info" style="font-size: 0.75rem;"><i class="fas fa-quote-right"></i> ${citations} citation${citations !== 1 ? 's' : ''}</span>`;
             }
-            badgeContainer.style.display = 'inline-block';
+            
+            console.log('Updated:', paperId, '→', citations);
         });
     }
     
-    function hideUnprocessedBadges() {
-        document.querySelectorAll('[data-paper-id]:not([' + PROCESSED_ATTR + ']) .citation-badge').forEach(badge => {
-            badge.style.display = 'none';
-        });
-    }
-    
-    function initialize() {
-        const unprocessed = document.querySelectorAll('[data-paper-id]:not([' + PROCESSED_ATTR + '])');
-        if (unprocessed.length === 0) return;
+    async function init() {
+        const elements = document.querySelectorAll('[data-paper-id]');
+        console.log('Found elements:', elements.length);
         
-        // 如果已有缓存数据，直接使用
-        if (window._citationData) {
-            updateCitationBadges(window._citationData);
+        if (elements.length === 0) return;
+        
+        // 打印所有 paper id
+        elements.forEach(el => console.log('Paper ID in HTML:', el.getAttribute('data-paper-id')));
+        
+        const data = await loadCitationData();
+        if (data) {
+            updateCitationBadges(data);
         } else {
-            loadCitationData()
-                .then(data => {
-                    window._citationData = data;  // 缓存数据
-                    updateCitationBadges(data);
-                })
-                .catch(() => hideUnprocessedBadges());
+            document.querySelectorAll('.citation-badge').forEach(b => {
+                b.innerHTML = '<span class="badge badge-danger" style="font-size: 0.75rem;">Error</span>';
+            });
         }
     }
     
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initialize);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        initialize();
+        init();
     }
 })();
 </script>

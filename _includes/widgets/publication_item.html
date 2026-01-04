@@ -1,7 +1,7 @@
 {% assign item = include.item %}
 
 <!-- Desktop版本 -->
-<div class="d-none d-md-block" data-paper-id="{{ item.path | split: '/' | last | remove: '.md' }}">
+<div class="d-none d-md-block publication-item" data-paper-id="{{ item.path | split: '/' | last | remove: '.md' }}">
     <div class="row no-gutters border-bottom border-gray">
         {%- if item.cover -%}
         <div class="col-md-3 col-xl-2 mb-md-0 p-md-3">
@@ -17,11 +17,7 @@
             <!-- 发表信息和引用徽章 -->
             <p class="mt-0 mb-0 small">
                 {{item.pub_pre}}<i>{{ item.pub }}</i>{{ item.pub_post }} {{ item.pub_date }} {{ item.pub_last }}
-                <span class="citation-badge" data-paper-id="{{ item.path | split: '/' | last | remove: '.md' }}">
-                    <span class="badge badge-pill badge-secondary">
-                        <i class="fas fa-quote-right"></i> Loading...
-                    </span>
-                </span>
+                <span class="citation-badge"></span>
             </p>
             
             <p class="mt-0 mb-0 small text-muted">{{ item.abstract }}</p>
@@ -41,7 +37,7 @@
 </div>
 
 <!-- Mobile版本 -->
-<div class="card w-100 d-md-none border-top-0 border-right-0 border-left-0 rounded-0" style="overflow-y: scroll;" data-paper-id="{{ item.path | split: '/' | last | remove: '.md' }}">
+<div class="card w-100 d-md-none border-top-0 border-right-0 border-left-0 rounded-0 publication-item" style="overflow-y: scroll;" data-paper-id="{{ item.path | split: '/' | last | remove: '.md' }}">
     {%- if item.cover -%}
     <img data-src="{{ item.cover | relative_url }}" alt="{{ item.title }}" class="lazy card-img w-100" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
     {%- else -%}
@@ -56,11 +52,7 @@
             <!-- 发表信息和引用徽章 -->
             <p class="mt-0 mb-0 small">
                 {{item.pub_pre}}<i>{{ item.pub }}</i>{{ item.pub_post }} {{ item.pub_date }} {{ item.pub_last }}
-                <span class="citation-badge" data-paper-id="{{ item.path | split: '/' | last | remove: '.md' }}">
-                    <span class="badge badge-pill badge-secondary">
-                        <i class="fas fa-quote-right"></i> Loading...
-                    </span>
-                </span>
+                <span class="citation-badge"></span>
             </p>
             
             <p class="mt-0 mb-0 small text-muted d-none d-sm-block">{{ item.abstract }}</p>
