@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-09T00:25:17.849Z",
-  "total_citations": 249,
+  "generated_at": "2026-02-10T00:30:09.342Z",
+  "total_citations": 251,
   "papers": [
     {
       "id": "2025-pub-2",
@@ -47,7 +47,7 @@
     {
       "id": "2023-pub-1",
       "title": "ChiPFormer: Transferable Chip Placement via Offline Decision Transformer",
-      "citations": 61,
+      "citations": 62,
       "semantic_scholar": {
         "paper_id": "4a810f17843145195d73d5c63dc0f1477ba9cafc",
         "external_ids": {
@@ -61,7 +61,7 @@
     {
       "id": "2022-pub-1",
       "title": "MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning",
-      "citations": 75,
+      "citations": 76,
       "semantic_scholar": {
         "paper_id": "938c988ce314c6cd64b5b860daa9923f10d2709c",
         "external_ids": {
