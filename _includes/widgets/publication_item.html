@@ -6,7 +6,7 @@
     <div class="row no-gutters border-bottom border-gray">
         {%- if item.cover -%}
         <div class="col-md-3 col-xl-2 mb-md-0 p-md-3" style="position: relative;">
-            <img data-src="{{ item.cover | relative_url }}" alt="{{ item.title }}" class="lazy w-100 rounded-sm" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
+            <img data-src="{{ item.cover | relative_url }}" alt="{{ item.title }}" class="lazy w-100 rounded-xl" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
             {%- if item.venue -%}
             <span class="pub-badge">{{ item.venue }}</span>
             {%- endif -%}
@@ -47,7 +47,7 @@
     <span class="pub-badge">{{ item.venue }}</span>
     {%- endif -%}
     {%- else -%}
-    <img alt="{{ item.title }}" class="w-100 rounded-sm" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
+    <img alt="{{ item.title }}" class="w-100 rounded-xl" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
     {%- endif -%}
     <div class="card-img-overlay d-flex align-items-start flex-column" style="background-color: rgba(255, 255, 255, 0.85);">
         <div class="mb-auto"></div>

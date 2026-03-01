@@ -59,3 +59,10 @@ img.lazy {
     font-family: Courier, monospace;
 }
 
+.rounded-sm {
+    border-radius: 0.25rem;
+}
+
+.rounded-xl {
+    border-radius: 1rem;
+}
