@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-03-01T00:26:31.961Z",
-  "total_citations": 259,
+  "generated_at": "2026-03-02T00:23:59.583Z",
+  "total_citations": 265,
   "papers": [
     {
       "id": "2025-pub-2",
@@ -69,6 +69,20 @@
           "ArXiv": "2211.13382",
           "DOI": "10.48550/arXiv.2211.13382",
           "CorpusId": 254017801
+        }
+      }
+    },
+    {
+      "id": "2020-pub-1",
+      "title": "OpenSMax: Unknown Domain Generation Algorithm Detection",
+      "citations": 6,
+      "semantic_scholar": {
+        "paper_id": "57fbaaf670bd4a098b6e5ad62bf5f8e0e0eaf4ad",
+        "external_ids": {
+          "DBLP": "conf/ecai/LaiPWLY20",
+          "MAG": "3090249537",
+          "DOI": "10.3233/FAIA200301",
+          "CorpusId": 221714538
         }
       }
     }
