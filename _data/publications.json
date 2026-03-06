@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-03-05T00:24:25.339Z",
-  "total_citations": 266,
+  "generated_at": "2026-03-06T00:28:15.664Z",
+  "total_citations": 269,
   "papers": [
     {
       "id": "2025-pub-2",
@@ -47,7 +47,7 @@
     {
       "id": "2023-pub-1",
       "title": "ChiPFormer: Transferable Chip Placement via Offline Decision Transformer",
-      "citations": 63,
+      "citations": 64,
       "semantic_scholar": {
         "paper_id": "4a810f17843145195d73d5c63dc0f1477ba9cafc",
         "external_ids": {
@@ -61,7 +61,7 @@
     {
       "id": "2022-pub-1",
       "title": "MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning",
-      "citations": 78,
+      "citations": 79,
       "semantic_scholar": {
         "paper_id": "938c988ce314c6cd64b5b860daa9923f10d2709c",
         "external_ids": {
@@ -75,7 +75,7 @@
     {
       "id": "2020-pub-1",
       "title": "OpenSMax: Unknown Domain Generation Algorithm Detection",
-      "citations": 6,
+      "citations": 7,
       "semantic_scholar": {
         "paper_id": "57fbaaf670bd4a098b6e5ad62bf5f8e0e0eaf4ad",
         "external_ids": {
