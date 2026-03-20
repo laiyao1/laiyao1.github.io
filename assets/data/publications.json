@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-03-19T00:26:12.864Z",
-  "total_citations": 279,
+  "generated_at": "2026-03-20T00:24:58.198Z",
+  "total_citations": 281,
   "papers": [
     {
       "id": "2025-pub-2",
@@ -47,7 +47,7 @@
     {
       "id": "2023-pub-1",
       "title": "ChiPFormer: Transferable Chip Placement via Offline Decision Transformer",
-      "citations": 65,
+      "citations": 67,
       "semantic_scholar": {
         "paper_id": "4a810f17843145195d73d5c63dc0f1477ba9cafc",
         "external_ids": {
