@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-04-04T00:25:51.497Z",
-  "total_citations": 291,
+  "generated_at": "2026-04-05T00:29:46.270Z",
+  "total_citations": 292,
   "papers": [
     {
       "id": "2025-pub-2",
@@ -19,7 +19,7 @@
     {
       "id": "2025-pub-1",
       "title": "AnalogCoder: Analog Circuit Design via Training-Free Code Generation",
-      "citations": 99,
+      "citations": 100,
       "semantic_scholar": {
         "paper_id": "bcfd6404ad1c913b915d1f7731d3bc69564d98e7",
         "external_ids": {
