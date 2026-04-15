@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-04-14T00:33:41.269Z",
-  "total_citations": 293,
+  "generated_at": "2026-04-15T00:34:15.790Z",
+  "total_citations": 294,
   "papers": [
     {
       "id": "2025-pub-2",
@@ -33,7 +33,7 @@
     {
       "id": "2024-pub-1",
       "title": "Scalable and Effective Arithmetic Tree Generation for Adder and Multiplier Designs",
-      "citations": 8,
+      "citations": 9,
       "semantic_scholar": {
         "paper_id": "fb350778b51672b1ac9f36a40c9efbdf746e35d5",
         "external_ids": {
