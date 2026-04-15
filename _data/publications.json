@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-03-01T00:26:31.961Z",
-  "total_citations": 259,
+  "generated_at": "2026-04-15T00:34:15.790Z",
+  "total_citations": 294,
   "papers": [
     {
       "id": "2025-pub-2",
       "title": "FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities",
-      "citations": 21,
+      "citations": 27,
       "semantic_scholar": {
         "paper_id": "17fdf94362b3ae856f67edafd6a8532dc87642ee",
         "external_ids": {
@@ -19,7 +19,7 @@
     {
       "id": "2025-pub-1",
       "title": "AnalogCoder: Analog Circuit Design via Training-Free Code Generation",
-      "citations": 89,
+      "citations": 100,
       "semantic_scholar": {
         "paper_id": "bcfd6404ad1c913b915d1f7731d3bc69564d98e7",
         "external_ids": {
@@ -33,7 +33,7 @@
     {
       "id": "2024-pub-1",
       "title": "Scalable and Effective Arithmetic Tree Generation for Adder and Multiplier Designs",
-      "citations": 8,
+      "citations": 9,
       "semantic_scholar": {
         "paper_id": "fb350778b51672b1ac9f36a40c9efbdf746e35d5",
         "external_ids": {
@@ -47,7 +47,7 @@
     {
       "id": "2023-pub-1",
       "title": "ChiPFormer: Transferable Chip Placement via Offline Decision Transformer",
-      "citations": 63,
+      "citations": 68,
       "semantic_scholar": {
         "paper_id": "4a810f17843145195d73d5c63dc0f1477ba9cafc",
         "external_ids": {
@@ -61,14 +61,28 @@
     {
       "id": "2022-pub-1",
       "title": "MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning",
-      "citations": 78,
+      "citations": 83,
       "semantic_scholar": {
         "paper_id": "938c988ce314c6cd64b5b860daa9923f10d2709c",
         "external_ids": {
-          "DBLP": "journals/corr/abs-2211-13382",
+          "DBLP": "conf/nips/LaiM022",
           "ArXiv": "2211.13382",
           "DOI": "10.48550/arXiv.2211.13382",
           "CorpusId": 254017801
+        }
+      }
+    },
+    {
+      "id": "2020-pub-1",
+      "title": "OpenSMax: Unknown Domain Generation Algorithm Detection",
+      "citations": 7,
+      "semantic_scholar": {
+        "paper_id": "57fbaaf670bd4a098b6e5ad62bf5f8e0e0eaf4ad",
+        "external_ids": {
+          "DBLP": "conf/ecai/LaiPWLY20",
+          "MAG": "3090249537",
+          "DOI": "10.3233/FAIA200301",
+          "CorpusId": 221714538
         }
       }
     }
