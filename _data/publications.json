@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-26T00:43:41.502Z",
-  "total_citations": 326,
+  "generated_at": "2026-05-27T00:45:19.247Z",
+  "total_citations": 331,
   "papers": [
     {
       "id": "2026-pub-1",
@@ -19,7 +19,7 @@
     {
       "id": "2025-pub-2",
       "title": "FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities",
-      "citations": 34,
+      "citations": 35,
       "semantic_scholar": {
         "paper_id": "17fdf94362b3ae856f67edafd6a8532dc87642ee",
         "external_ids": {
@@ -61,7 +61,7 @@
     {
       "id": "2023-pub-1",
       "title": "ChiPFormer: Transferable Chip Placement via Offline Decision Transformer",
-      "citations": 71,
+      "citations": 73,
       "semantic_scholar": {
         "paper_id": "4a810f17843145195d73d5c63dc0f1477ba9cafc",
         "external_ids": {
@@ -75,7 +75,7 @@
     {
       "id": "2022-pub-1",
       "title": "MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning",
-      "citations": 85,
+      "citations": 87,
       "semantic_scholar": {
         "paper_id": "938c988ce314c6cd64b5b860daa9923f10d2709c",
         "external_ids": {
