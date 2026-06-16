@@ -299,7 +299,19 @@ async function main() {
         }
         
         console.log(`\nFound ${publications.length} publications\n`);
-        
+
+        // 读取上一次的结果，作为 API 失败时的回退（避免把已有引用数覆盖成 null）
+        const previousById = {};
+        try {
+            if (fs.existsSync(OUTPUT_FILE)) {
+                const prev = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
+                (prev.papers || []).forEach(p => { previousById[p.id] = p; });
+                console.log(`Loaded ${Object.keys(previousById).length} previous records for fallback\n`);
+            }
+        } catch (e) {
+            console.log(`⚠ Could not read previous data: ${e.message}\n`);
+        }
+
         const results = {
             generated_at: new Date().toISOString(),
             total_citations: 0,
@@ -314,27 +326,48 @@ async function main() {
             console.log(`[${i + 1}/${publications.length}] Processing: ${pub.id}`);
             
             const citationData = await getCitationData(pub);
-            
-            const paperData = {
-                id: pub.id,
-                title: pub.title || 'Untitled',
-                citations: citationData ? citationData.citationCount : null,
-                semantic_scholar: citationData ? {
-                    paper_id: citationData.paperId,
-                    external_ids: citationData.externalIds || {}
-                } : null
-            };
-            
-            results.papers.push(paperData);
-            
+
+            let paperData;
+
             if (citationData) {
+                paperData = {
+                    id: pub.id,
+                    title: pub.title || 'Untitled',
+                    citations: citationData.citationCount,
+                    semantic_scholar: {
+                        paper_id: citationData.paperId,
+                        external_ids: citationData.externalIds || {}
+                    }
+                };
                 results.total_citations += citationData.citationCount || 0;
                 successCount++;
                 console.log(`  ✓ Found: ${citationData.citationCount || 0} citations`);
             } else {
-                notFoundCount++;
-                console.log(`  ✗ Not found`);
+                // API 没查到：若上次有有效引用数，则保留旧值，避免清零
+                const prev = previousById[pub.id];
+                if (prev && prev.citations != null) {
+                    paperData = {
+                        id: pub.id,
+                        title: pub.title || prev.title || 'Untitled',
+                        citations: prev.citations,
+                        semantic_scholar: prev.semantic_scholar || null
+                    };
+                    results.total_citations += prev.citations || 0;
+                    successCount++;
+                    console.log(`  ↺ Not found, keeping previous: ${prev.citations} citations`);
+                } else {
+                    paperData = {
+                        id: pub.id,
+                        title: pub.title || 'Untitled',
+                        citations: null,
+                        semantic_scholar: null
+                    };
+                    notFoundCount++;
+                    console.log(`  ✗ Not found`);
+                }
             }
+
+            results.papers.push(paperData);
             
             // 等待，避免速率限制
             if (i < publications.length - 1) {
