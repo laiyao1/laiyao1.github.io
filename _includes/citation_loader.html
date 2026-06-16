@@ -84,7 +84,7 @@
                 if (!badge) return;
                 
                 const paper = data.papers.find(p => p.id === id);
-                if (!paper || paper.citations == null) {
+                if (!paper || paper.citations == null || paper.citations < 1) {
                     badge.style.display = 'none';
                     return;
                 }
