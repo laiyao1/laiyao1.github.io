@@ -1,6 +1,15 @@
 {% assign item = include.item %}
 {% assign paper_id = item.paper_id | default: item.path | split: '/' | last | remove: '.md' %}
 
+{%- comment -%} CCF rank: use front-matter `ccf` if set, otherwise infer from venue {%- endcomment -%}
+{% assign ccf = item.ccf %}
+{% unless ccf %}
+  {% assign ccf_a_venues = "AAAI,NeurIPS,NIPS,ACL,CVPR,ICCV,ICML,IJCAI,MM,KDD,SIGGRAPH,TCAD,DAC,ICCAD,MICRO,ISCA,HPCA,TPAMI" | split: "," %}
+  {% assign ccf_b_venues = "ECAI,EMNLP,COLING,ICME,ICPR,DATE,ASP-DAC,ICCD,GLSVLSI" | split: "," %}
+  {% if ccf_a_venues contains item.venue %}{% assign ccf = "A" %}
+  {% elsif ccf_b_venues contains item.venue %}{% assign ccf = "B" %}{% endif %}
+{% endunless %}
+
 <!-- Desktop版本 -->
 <div class="d-none d-md-block" data-paper-id="{{ paper_id }}">
     <div class="row no-gutters border-bottom border-gray">
@@ -8,7 +17,7 @@
         <div class="col-md-3 col-xl-2 mb-md-0 p-md-3" style="position: relative;">
             <img data-src="{{ item.cover | relative_url }}" alt="{{ item.title }}" class="lazy w-100 rounded-xl" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
             {%- if item.venue -%}
-            <span class="pub-badge">{{ item.venue }}</span>
+            <span class="pub-badge{% if ccf %} pub-badge-ccf-{{ ccf }}{% endif %}">{{ item.venue }}</span>
             {%- endif -%}
         </div>
         <div class="col-md-9 col-xl-10 p-3 pl-md-0">
@@ -44,7 +53,7 @@
     {%- if item.cover -%}
     <img data-src="{{ item.cover | relative_url }}" alt="{{ item.title }}" class="lazy card-img w-100" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
     {%- if item.venue -%}
-    <span class="pub-badge">{{ item.venue }}</span>
+    <span class="pub-badge{% if ccf %} pub-badge-ccf-{{ ccf }}{% endif %}">{{ item.venue }}</span>
     {%- endif -%}
     {%- else -%}
     <img alt="{{ item.title }}" class="w-100 rounded-xl" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
