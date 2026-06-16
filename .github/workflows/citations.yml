@@ -13,12 +13,12 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      
+        uses: actions/checkout@v6
+
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
       
       - name: Generate publications data with citations
         run: node scripts/fetch-citations.js
@@ -31,7 +31,7 @@ jobs:
           cp _data/publications.json assets/data/publications.json
       
       - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "Update citations [automated]"
           file_pattern: "_data/publications.json assets/data/publications.json"

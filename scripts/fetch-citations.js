@@ -320,6 +320,7 @@ async function main() {
         
         let successCount = 0;
         let notFoundCount = 0;
+        let apiSuccessCount = 0;   // 真正从 API 拿到新数据的次数（不含回退保留的旧值）
         
         for (let i = 0; i < publications.length; i++) {
             const pub = publications[i];
@@ -341,6 +342,7 @@ async function main() {
                 };
                 results.total_citations += citationData.citationCount || 0;
                 successCount++;
+                apiSuccessCount++;
                 console.log(`  ✓ Found: ${citationData.citationCount || 0} citations`);
             } else {
                 // API 没查到：若上次有有效引用数，则保留旧值，避免清零
@@ -377,12 +379,21 @@ async function main() {
             }
         }
         
+        // 守卫：如果一篇都没从 API 拿到新数据，说明 API 整体故障（限流/宕机/key 失效）。
+        // 此时不要覆盖已有的 publications.json，并以非零退出码让 Action 显式报红。
+        if (apiSuccessCount === 0 && publications.length > 0) {
+            console.error('\n✗ API returned no fresh data for ANY publication.');
+            console.error('  Likely a Semantic Scholar outage / rate limit / invalid API key.');
+            console.error('  Keeping the existing publications.json untouched and failing the run.');
+            process.exit(1);
+        }
+
         // 确保目录存在
         const outputDir = path.dirname(OUTPUT_FILE);
         if (!fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir, { recursive: true });
         }
-        
+
         // 写入结果
         fs.writeFileSync(OUTPUT_FILE, JSON.stringify(results, null, 2));
         
