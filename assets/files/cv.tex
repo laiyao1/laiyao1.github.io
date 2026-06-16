@@ -1,0 +1,250 @@
+\documentclass{article}
+\setlength{\footskip}{3.6pt}
+
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[pdftex]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[most]{tcolorbox}
+\usepackage[dvipsnames]{xcolor}
+
+% Inline rounded badge
+\newtcbox{\resumetag}{on line,
+  boxsep=1pt,
+  left=3pt,right=3pt,top=1pt,bottom=1pt,
+  colback=black!6,
+  colframe=black!20,
+  arc=3pt,
+  boxrule=0.4pt
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item\small{
+    \textbf{#1}{: #2 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubheadingsimple}[2]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+% ====== CCF tag toggle ======
+\newif\ifshowCCF
+\showCCFtrue % set to \showCCFtrue to display [CCF-x]
+\newcommand{\ccf}[1]{%
+  \ifshowCCF
+    \textbf{[CCF-#1]}%
+  \fi
+}
+
+\begin{document}
+
+% Header
+\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+  \textbf{{\Large Yao Lai}} & Email : \href{mailto:yl2204@cam.ac.uk}{yl2204@cam.ac.uk}\\
+  \href{https://laiyao1.me/}{laiyao1.me} & Mobile : +44-7950049487 \\
+\end{tabular*}
+
+\section{Education}
+  \setlength{\itemsep}{0.5pt}
+  \setlength{\parsep}{0.5pt}
+  \setlength{\parskip}{0.5pt}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {The University of Hong Kong (QS rank: 11)}{Hong Kong S.A.R.}
+      {Ph.D. in Computer Science; \href{https://mmlab-hku.com/}{HKU-MMLab}; Advisor: \href{http://luoping.me/}{Prof. Ping Luo}}{Sep. 2021 -- Nov. 2025}
+    \resumeSubheading
+      {Tsinghua University (QS rank: 17)}{Beijing, China}
+      {M.Eng. in Software Engineering;  GPA: 3.84/4.00; Rank: 1/98; Advisor: \href{https://www.thss.tsinghua.edu.cn/en/faculty/xiaojunye.htm}{Prof. Xiaojun Ye}}{Sep. 2017 -- Jun. 2020}
+    \resumeSubheading
+      {Fudan University (QS rank: 30)}{Shanghai, China}
+      {B.Eng. in Microelectronics;  GPA: 3.87/4.00; Rank: 2/69; Advisor: \href{https://sme.fudan.edu.cn/60/77/c31158a352375/page.htm}{Prof. Xuan Zeng}, \href{https://sme.fudan.edu.cn/5f/ec/c31146a352236/page.htm}{Prof. Minge Jing}}{Sep. 2013 -- Jun. 2017}
+  \resumeSubHeadingListEnd
+
+\section{Research Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {University of Cambridge (QS rank: 6)}{Cambridge, United Kingdom}
+      {Postdoctoral Research Associate; Advisors: \href{https://www.cl.cam.ac.uk/~rdm34/}{Prof. Robert Mullins}, \href{https://www.cl.cam.ac.uk/~tmj32/}{Prof. Timothy M. Jones}}{Dec. 2025 -- Present}
+    \resumeSubheading
+      {The University of Texas at Austin (QS rank: 68)}{Austin, Texas, United States}
+      {Research Scholar; \href{https://www.cerc.utexas.edu/utda/}{UTDA Lab}; Advisor: \href{https://users.ece.utexas.edu/~dpan/}{Prof. David Z. Pan} (IEEE/ACM Fellow)}{Feb. 2024 -- Jul. 2024}
+  \resumeSubHeadingListEnd
+
+\section{Award}
+  \resumeSubHeadingListStart
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\parskip}{0pt}
+    \item{\textbf{Electronics Best PhD Thesis Award}\textit{ \hfill 2026}}
+    \item{\textbf{NeurIPS Scholar Award}\textit{ \hfill 2024}}
+    \item{\textbf{Best Oral Presentation of Westlake Future Scholars Forum}\textit{ \hfill 2023}}
+    \item{\textbf{Outstanding Graduates of Software School, Tsinghua University}\textit{ \hfill 2020}}
+    \item{\textbf{Excellent undergraduate thesis of Fudan University}\textit{ (Top 1 of 69) \hfill 2017}}
+    \item{\textbf{Shanghai Outstanding Graduates}\textit{ (Top 5\%) \hfill 2017}}
+  \resumeSubHeadingListEnd
+
+\section{Scholarship}
+  \resumeSubHeadingListStart
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\parskip}{0pt}
+    \item{\textbf{Hong Kong PhD Fellowship}\textit{ \hfill 2021 -- 2025}}
+    \item{\textbf{HKU Presidential PhD Scholar}\textit{\hfill 2021 -- 2025}}
+    \item{\textbf{Shanghai Scholarship}\textit{ (Top 3\%) \hfill 2016}}
+    \item{\textbf{National Scholarship}\textit{ (Top 1 of 69) \hfill 2015}}
+    \item{\textbf{Freshman Scholarship of Fudan University}\textit{ (Top 5\%) \hfill 2013}}
+  \resumeSubHeadingListEnd
+
+\section{Publications}
+  \resumeSubHeadingListStart
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\parskip}{0pt}
+
+    \item{\textbf{Analog IC Design}}
+    \resumeItemListStart
+      \item{[1] \textbf{Yao Lai}, Souradip Poddar, Sungyoung Lee, Guojin Chen, Mengkang Hu, Bei Yu, Ping Luo, David Z. Pan. ``AnalogCoder-Pro: Unifying Analog Circuit Generation and Optimization via Multi-modal LLMs.'' IEEE Transactions on Computer-Aided Design of Integrated Circuits \& Systems (TCAD), 2025. \ccf{A}}
+      \item{[2] \textbf{Yao Lai}, Sungyoung Lee, Guojin Chen, Souradip Poddar, Mengkang Hu, David Z. Pan, Ping Luo. ``AnalogCoder: Analog Circuit Design via Training-Free Code Generation.'' AAAI Conference on Artificial Intelligence (AAAI) \textbf{oral} (Top 5\%), 2025. \ccf{A}~\resumetag{\textbf{100+ citations}}~\resumetag{\textbf{Most Influential 2025 AAAI Papers (Paper Digest)}}}
+      \item{[3] Souradip Poddar, Youngmin Oh, \textbf{Yao Lai}, Hanqing Zhu, Bosun Hwang, David Z Pan. ``INSIGHT: Universal Neural Simulator for Analog Circuits Harnessing Autoregressive Transformers.'' Design Automation Conference (DAC), 2025. \ccf{A}}
+    \resumeItemListEnd
+
+    \vspace{3pt}
+    \item{\textbf{Physical Design}}
+    \resumeItemListStart
+      \item{[4] \textbf{Yao Lai}, Jinxin Liu, Zhentao Tang, Wang Bin, Jianye Hao, Ping Luo. ``ChiPFormer: Transferable Chip Placement via Offline Decision Transformer.'' International Conference on Machine Learning (ICML), 2023. \ccf{A}~\resumetag{\textbf{100+ citations}}}
+      \item{[5] \textbf{Yao Lai}, Yao Mu, Ping Luo. ``MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning.'' Advances in Neural Information Processing Systems (NeurIPS) \textbf{spotlight}, 2022. \ccf{A}~\resumetag{\textbf{100+ citations}}}
+      \item{[6] Guojin Chen, Keren Zhu, Seunggeun Kim, Hanqing Zhu, \textbf{Yao Lai}, Bei Yu, David Z. Pan. ``LLM-Enhanced Bayesian Optimization for Efficient Analog Layout Constraint Generation.'' arXiv, 2024.}
+      \item{[7] Yunqi Shi, Xi Lin, Zhiang Wang, Siyuan Xu, Shixiong Kai, \textbf{Yao Lai}, Chengrui Gao, Ke Xue, Mingxuan Yuan, Chao Qian, Zhi-Hua Zhou. ``Re$^{\text{2}}$MaP: Macro Placement by Recursively Prototyping and Packing Tree-based Relocating.'' IEEE Transactions on Computer-Aided Design of Integrated Circuits \& Systems (TCAD), 2026. \ccf{A}}
+      \item{[8] \textbf{Yao Lai}, Ming'e Jing. ``On-chip Network Source Routing Algorithm Based on A* Algorithm Optimization.'' Journal of Fudan University, 2018. (in Chinese)}
+    \resumeItemListEnd
+
+    \vspace{3pt}
+    \item{\textbf{Logic Design \& Computer Arithmetic}}
+    \resumeItemListStart
+      \item{[9] \textbf{Yao Lai}, Jinxin Liu, David Z. Pan, Ping Luo. ``Scalable and Effective Arithmetic Tree Generation for Adder and Multiplier Designs.'' Advances in Neural Information Processing Systems (NeurIPS) \textbf{spotlight} (Top 2\%), 2024. \ccf{A}}
+      \item{[10] Jing Wang, Zheng Li, Lei Li, Fan He, Liyu Lin, \textbf{Yao Lai}, Yan Li, Xiaoyang Zeng, Yufeng Guo. ``Principle-Guided Verilog Optimization: IP-Safe Knowledge Transfer via Local-Cloud Collaboration.'' arXiv, 2025.}
+    \resumeItemListEnd
+
+    \vspace{3pt}
+    \item{\textbf{Circuit Representation \& Modeling}}
+    \resumeItemListStart
+      \item{[11] Sungyoung Lee, \textbf{Yao Lai}, Ziyi Wang, Seunggeun Kim, Taekyun Lee, David Z. Pan. ``Dual-Augmentation Graph Contrastive Pretraining for Transistor-level Integrated Circuits.'' arXiv, 2025.}
+    \resumeItemListEnd
+
+    \vspace{3pt}
+    \item{\textbf{Design for Manufacturing}}
+    \resumeItemListStart
+      \item{[12] \textbf{Yao Lai}, Xuyuan Xiong, Zeyue Xue, Guojin Chen, Jing Wang, Xihui Liu, Rui Zhang, Robert Mullins, Bei Yu, Ping Luo. ``Fast Inverse Lithography via GRPO Reinforced Flow Matching.'' International Conference on Machine Learning (ICML), 2026 (accepted). \ccf{A}}
+    \resumeItemListEnd
+
+    \vspace{3pt}
+    \item{\textbf{Multimodal Foundation Models}}
+    \resumeItemListStart
+      \item{[13] Jin Wang*, \textbf{Yao Lai*}, Aoxue Li, Shifeng Zhang, Jiacheng Sun, Ning Kang, Chengyue Wu, Zhenguo Li, Ping Luo. ``FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities.'' Advances in Neural Information Processing Systems (NeurIPS) \textbf{spotlight} (Top 2\%), 2025. \ccf{A}}
+    \resumeItemListEnd
+
+    \vspace{3pt}
+    \item{\textbf{Computer Architecture}}
+    \resumeItemListStart
+      \item{[14] Jiayi Nie, Haoran Wu, \textbf{Yao Lai}, Zeyu Cao, Cheng Zhang, Binglei Lou, Erwei Wang, Jianyi Cheng, Timothy M. Jones, Robert Mullins, Rika Antonova, Yiren Zhao. ``KernelCraft: Benchmarking for Agentic Close-to-Metal Kernel Generation on Emerging Hardware.'' International Conference on Machine Learning (ICML), 2026. \ccf{A}}
+      \item{[15] Binglei Lou, Haoran Wu, Kevin Lau, Gregor MacDonald, Jiayi Nie, \textbf{Yao Lai}, Can Xiao, Xuan Guo, Jianyi Cheng, Rika Antonova, Robert Mullins, Aaron Zhao. ``NPU Design for Diffusion Language Model Inference.'' arXiv, 2026.}
+      \item{[16] Haoran Wu, Zeyu Cao, \textbf{Yao Lai}, Binglei Lou, Jiayi Nie, Can Xiao, Timi Adeniran, Przemyslaw Forys, Kauser Johar, Catriona Wright, Junyi Liu, Kai Shi, Nicholas D Lane, Rika Antonova, Jianyi Cheng, Timothy Jones, Aaron Zhao, Robert Mullins. ``MemExplorer: Navigating the Heterogeneous Memory Design Space for Agentic Inference NPUs.'' arXiv, 2026.}
+    \resumeItemListEnd
+
+    \vspace{3pt}
+    \item{\textbf{AI for Security and Planning}}
+    \resumeItemListStart
+      \item{[17] \textbf{Yao Lai}, Guolou Ping, Xiaojun Ye. ``OpenSmax: Unknown Domain Generation Algorithm Detection.'' European Conference on Artificial Intelligence (ECAI), 2020. \ccf{B}}
+      \item{[18] Lan Zhang, \textbf{Yao Lai}, Xiaojun Ye. ``Attention Mechanism Based Detection of Malware Call Sequences.'' Computer Science, 2019. (in Chinese)}
+      \item{[19] Lizheng Deng, Hongyong Yuan, Lida Huang, Shuan Yan, \textbf{Yao Lai}. ``Post-earthquake Search via an Autonomous UAV: Hybrid Algorithm and 3D Path Planning.'' IEEE ICNC-FSKD, 2018.}
+    \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+\section{Programming Skills}
+  \resumeSubHeadingListStart
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\parskip}{0pt}
+    \item{\textbf{Languages}{: C/C++, Python, SQL, Java, Perl, MATLAB, Verilog HDL}}
+    \item{\textbf{Tools}{: Pytorch, Tensorflow, Scikit-learn}}
+    % \item{\textbf{Certification}{: Certified Software Professional (CSP) Top 0.1\%}}
+  \resumeSubHeadingListEnd
+
+\section{Language Skills}
+
+  \resumeSubHeadingListStart
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\parskip}{0pt}
+    \item{\textbf{English}{: \textbf{Advanced} TOEFL-iBT: 102 }}
+    \item{\textbf{Japanese}{: \textbf{Intermediate} JLPT-N2 (Japanese Language Proficiency Test)}}
+    \item{\textbf{Cantonese}{: \textbf{Intermediate} }}
+  \resumeSubHeadingListEnd
+
+
+\section{Teaching}
+  \resumeSubHeadingListStart
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\parskip}{0pt}
+    \item{{Teaching Assistant for \textit{Computer programming II}}\textit{\hfill 2022}}
+    \item{{Teaching Assistant for \textit{Introduction to Database Management Systems}}\textit{\hfill 2022}}
+  \resumeSubHeadingListEnd
+
+
+\end{document}
