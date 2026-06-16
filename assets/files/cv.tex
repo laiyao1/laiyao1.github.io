@@ -15,14 +15,21 @@
 \usepackage[most]{tcolorbox}
 \usepackage[dvipsnames]{xcolor}
 
-% Inline rounded badge
+% ====== Theme colors ======
+\definecolor{titlecolor}{HTML}{1F4E79} % deep blue for headings / name
+\definecolor{badgebg}{HTML}{FFF3CD}    % light yellow badge background
+\definecolor{badgeframe}{HTML}{E0B84C} % golden badge border
+\definecolor{badgetext}{HTML}{7A5A00}  % dark amber badge text
+
+% Inline rounded badge (light yellow)
 \newtcbox{\resumetag}{on line,
   boxsep=1pt,
   left=3pt,right=3pt,top=1pt,bottom=1pt,
-  colback=black!6,
-  colframe=black!20,
+  colback=badgebg,
+  colframe=badgeframe,
+  coltext=badgetext,
   arc=3pt,
-  boxrule=0.4pt
+  boxrule=0.5pt
 }
 
 \pagestyle{fancy}
@@ -46,8 +53,8 @@
 
 % Sections formatting
 \titleformat{\section}{
-  \vspace{-4pt}\scshape\raggedright\large
-}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+  \vspace{-4pt}\scshape\raggedright\large\color{titlecolor}
+}{}{0em}{}[\color{titlecolor!45}\titlerule \vspace{-5pt}]
 
 %-------------------------
 % Custom commands
@@ -86,7 +93,7 @@
 \showCCFtrue % set to \showCCFtrue to display [CCF-x]
 \newcommand{\ccf}[1]{%
   \ifshowCCF
-    \textbf{[CCF-#1]}%
+    \resumetag{\textbf{CCF-#1}}%
   \fi
 }
 
@@ -94,7 +101,7 @@
 
 % Header
 \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
-  \textbf{{\Large Yao Lai}} & Email : \href{mailto:yl2204@cam.ac.uk}{yl2204@cam.ac.uk}\\
+  \textbf{{\Large \textcolor{titlecolor}{Yao Lai}}} & Email : \href{mailto:yl2204@cam.ac.uk}{yl2204@cam.ac.uk}\\
   \href{https://laiyao1.me/}{laiyao1.me} & Mobile : +44-7950049487 \\
 \end{tabular*}
 
