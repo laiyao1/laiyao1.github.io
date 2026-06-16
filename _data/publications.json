@@ -1,12 +1,18 @@
 {
-  "generated_at": "2026-06-16T11:39:48.581Z",
+  "generated_at": "2026-06-16T11:55:57.030Z",
   "total_citations": 351,
   "papers": [
     {
       "id": "2026-pub-2",
       "title": "LithoGRPO: Fast Inverse Lithography via GRPO Reinforced Flow Matching",
-      "citations": null,
-      "semantic_scholar": null
+      "citations": 0,
+      "semantic_scholar": {
+        "paper_id": "cb651f2c1834688f4d2c8c89ed5fe67fe194a007",
+        "external_ids": {
+          "ArXiv": "2606.00228",
+          "CorpusId": 288855048
+        }
+      }
     },
     {
       "id": "2026-pub-1",
