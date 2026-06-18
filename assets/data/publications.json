@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-17T00:51:56.888Z",
-  "total_citations": 351,
+  "generated_at": "2026-06-18T00:52:08.139Z",
+  "total_citations": 353,
   "papers": [
     {
       "id": "2026-pub-2",
@@ -31,7 +31,7 @@
     {
       "id": "2025-pub-2",
       "title": "FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities",
-      "citations": 36,
+      "citations": 37,
       "semantic_scholar": {
         "paper_id": "17fdf94362b3ae856f67edafd6a8532dc87642ee",
         "external_ids": {
@@ -45,7 +45,7 @@
     {
       "id": "2025-pub-1",
       "title": "AnalogCoder: Analog Circuit Design via Training-Free Code Generation",
-      "citations": 114,
+      "citations": 115,
       "semantic_scholar": {
         "paper_id": "bcfd6404ad1c913b915d1f7731d3bc69564d98e7",
         "external_ids": {
