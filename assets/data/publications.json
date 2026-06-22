@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-21T00:52:06.182Z",
-  "total_citations": 362,
+  "generated_at": "2026-06-22T00:51:25.248Z",
+  "total_citations": 363,
   "papers": [
     {
       "id": "2026-pub-2",
@@ -87,7 +87,7 @@
     {
       "id": "2022-pub-1",
       "title": "MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning",
-      "citations": 97,
+      "citations": 98,
       "semantic_scholar": {
         "paper_id": "938c988ce314c6cd64b5b860daa9923f10d2709c",
         "external_ids": {
