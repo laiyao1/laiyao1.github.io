@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-29T00:47:50.907Z",
-  "total_citations": 369,
+  "generated_at": "2026-06-30T00:45:58.867Z",
+  "total_citations": 375,
   "papers": [
     {
       "id": "2026-pub-2",
@@ -17,7 +17,7 @@
     {
       "id": "2026-pub-1",
       "title": "AnalogCoder-Pro: Unifying Analog Circuit Generation and Optimization via Multi-modal LLMs",
-      "citations": 15,
+      "citations": 16,
       "semantic_scholar": {
         "paper_id": "613a987b8e8440693c30747479737abd3c2dfaa1",
         "external_ids": {
@@ -31,7 +31,7 @@
     {
       "id": "2025-pub-2",
       "title": "FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities",
-      "citations": 37,
+      "citations": 39,
       "semantic_scholar": {
         "paper_id": "17fdf94362b3ae856f67edafd6a8532dc87642ee",
         "external_ids": {
@@ -45,7 +45,7 @@
     {
       "id": "2025-pub-1",
       "title": "AnalogCoder: Analog Circuit Design via Training-Free Code Generation",
-      "citations": 122,
+      "citations": 125,
       "semantic_scholar": {
         "paper_id": "bcfd6404ad1c913b915d1f7731d3bc69564d98e7",
         "external_ids": {
