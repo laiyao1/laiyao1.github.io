@@ -20,6 +20,10 @@
 \definecolor{badgebg}{HTML}{FFF3CD}    % light yellow badge background
 \definecolor{badgeframe}{HTML}{E0B84C} % golden badge border
 \definecolor{badgetext}{HTML}{7A5A00}  % dark amber badge text
+% CCF-B badge (muted gray, one tier below the golden CCF-A)
+\definecolor{ccfbbg}{HTML}{ECECEC}     % light gray badge background
+\definecolor{ccfbframe}{HTML}{B5B5B5}  % gray badge border
+\definecolor{ccfbtext}{HTML}{555555}   % dark gray badge text
 
 % Inline rounded badge (light yellow)
 \newtcbox{\resumetag}{on line,
@@ -28,6 +32,17 @@
   colback=badgebg,
   colframe=badgeframe,
   coltext=badgetext,
+  arc=3pt,
+  boxrule=0.5pt
+}
+
+% Inline rounded badge (muted gray, for CCF-B)
+\newtcbox{\resumetaggray}{on line,
+  boxsep=1pt,
+  left=3pt,right=3pt,top=1pt,bottom=1pt,
+  colback=ccfbbg,
+  colframe=ccfbframe,
+  coltext=ccfbtext,
   arc=3pt,
   boxrule=0.5pt
 }
@@ -93,7 +108,11 @@
 \showCCFtrue % set to \showCCFtrue to display [CCF-x]
 \newcommand{\ccf}[1]{%
   \ifshowCCF
-    \resumetag{\textbf{CCF-#1}}%
+    \ifnum\pdfstrcmp{#1}{A}=0
+      \resumetag{\textbf{CCF-#1}}%
+    \else
+      \resumetaggray{\textbf{CCF-#1}}%
+    \fi
   \fi
 }
 
@@ -183,54 +202,53 @@
     \item{\textbf{Logic Design \& Computer Arithmetic}}
     \resumeItemListStart
       \item{[9] \textbf{Yao Lai}, Jinxin Liu, David Z. Pan, Ping Luo. ``Scalable and Effective Arithmetic Tree Generation for Adder and Multiplier Designs.'' Advances in Neural Information Processing Systems (NeurIPS) \textbf{spotlight} (Top 2\%), 2024. \ccf{A}}
-      \item{[10] Jing Wang, Zheng Li, Lei Li, Fan He, Liyu Lin, \textbf{Yao Lai}, Yan Li, Xiaoyang Zeng, Yufeng Guo. ``Principle-Guided Verilog Optimization: IP-Safe Knowledge Transfer via Local-Cloud Collaboration.'' arXiv, 2025.}
+      \item{[10] Jing Wang, Zheng Li, Lei Li, Fan He, Liyu Lin, \textbf{Yao Lai}, Yan Li, Xiaoyang Zeng, Yufeng Guo. ``Principle-Guided Verilog Optimization: IP-Safe Knowledge Transfer via Local-Cloud Collaboration.'' IEEE International Conference on Artificial Intelligence Circuits and Systems (AICAS), 2026.}
     \resumeItemListEnd
 
     \vspace{3pt}
     \item{\textbf{Circuit Representation \& Modeling}}
     \resumeItemListStart
       \item{[11] Sungyoung Lee, \textbf{Yao Lai}, Ziyi Wang, Seunggeun Kim, Taekyun Lee, David Z. Pan. ``Dual-Augmentation Graph Contrastive Pretraining for Transistor-level Integrated Circuits.'' arXiv, 2025.}
+      \item{[12] Yihan Wang, Lei Li, \textbf{Yao Lai}, Jing Wang, Yan Lu. ``AnalogRetriever: Learning Cross-Modal Representations for Analog Circuit Retrieval.'' IEEE/ACM International Conference on Computer-Aided Design (ICCAD), 2026. \ccf{B}}
     \resumeItemListEnd
 
     \vspace{3pt}
     \item{\textbf{Design for Manufacturing}}
     \resumeItemListStart
-      \item{[12] \textbf{Yao Lai}, Xuyuan Xiong, Zeyue Xue, Guojin Chen, Jing Wang, Xihui Liu, Rui Zhang, Robert Mullins, Bei Yu, Ping Luo. ``Fast Inverse Lithography via GRPO Reinforced Flow Matching.'' International Conference on Machine Learning (ICML), 2026. \ccf{A}}
+      \item{[13] \textbf{Yao Lai}, Xuyuan Xiong, Zeyue Xue, Guojin Chen, Jing Wang, Xihui Liu, Rui Zhang, Robert Mullins, Bei Yu, Ping Luo. ``Fast Inverse Lithography via GRPO Reinforced Flow Matching.'' International Conference on Machine Learning (ICML), 2026. \ccf{A}}
     \resumeItemListEnd
 
     \vspace{3pt}
     \item{\textbf{Multimodal Foundation Models}}
     \resumeItemListStart
-      \item{[13] Jin Wang*, \textbf{Yao Lai*}, Aoxue Li, Shifeng Zhang, Jiacheng Sun, Ning Kang, Chengyue Wu, Zhenguo Li, Ping Luo. ``FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities.'' Advances in Neural Information Processing Systems (NeurIPS) \textbf{spotlight} (Top 2\%), 2025. \ccf{A}}
+      \item{[14] Jin Wang*, \textbf{Yao Lai*}, Aoxue Li, Shifeng Zhang, Jiacheng Sun, Ning Kang, Chengyue Wu, Zhenguo Li, Ping Luo. ``FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities.'' Advances in Neural Information Processing Systems (NeurIPS) \textbf{spotlight} (Top 2\%), 2025. \ccf{A}}
     \resumeItemListEnd
 
     \vspace{3pt}
     \item{\textbf{Computer Architecture}}
     \resumeItemListStart
-      \item{[14] Jiayi Nie, Haoran Wu, \textbf{Yao Lai}, Zeyu Cao, Cheng Zhang, Binglei Lou, Erwei Wang, Jianyi Cheng, Timothy M. Jones, Robert Mullins, Rika Antonova, Yiren Zhao. ``KernelCraft: Benchmarking for Agentic Close-to-Metal Kernel Generation on Emerging Hardware.'' International Conference on Machine Learning (ICML), 2026. \ccf{A}}
-      \item{[15] Binglei Lou, Haoran Wu, Kevin Lau, Gregor MacDonald, Jiayi Nie, \textbf{Yao Lai}, Can Xiao, Xuan Guo, Jianyi Cheng, Rika Antonova, Robert Mullins, Aaron Zhao. ``NPU Design for Diffusion Language Model Inference.'' arXiv, 2026.}
-      \item{[16] Haoran Wu, Zeyu Cao, \textbf{Yao Lai}, Binglei Lou, Jiayi Nie, Can Xiao, Timi Adeniran, Przemyslaw Forys, Kauser Johar, Catriona Wright, Junyi Liu, Kai Shi, Nicholas D Lane, Rika Antonova, Jianyi Cheng, Timothy Jones, Aaron Zhao, Robert Mullins. ``MemExplorer: Navigating the Heterogeneous Memory Design Space for Agentic Inference NPUs.'' arXiv, 2026.}
+      \item{[15] Jiayi Nie, Haoran Wu, \textbf{Yao Lai}, Zeyu Cao, Cheng Zhang, Binglei Lou, Erwei Wang, Jianyi Cheng, Timothy M. Jones, Robert Mullins, Rika Antonova, Yiren Zhao. ``KernelCraft: Benchmarking for Agentic Close-to-Metal Kernel Generation on Emerging Hardware.'' International Conference on Machine Learning (ICML), 2026. \ccf{A}}
+      \item{[16] Binglei Lou, Haoran Wu, Kevin Lau, Gregor MacDonald, Jiayi Nie, \textbf{Yao Lai}, Can Xiao, Xuan Guo, Jianyi Cheng, Rika Antonova, Robert Mullins, Aaron Zhao. ``NPU Design for Diffusion Language Model Inference.'' arXiv, 2026.}
+      \item{[17] Haoran Wu, Zeyu Cao, \textbf{Yao Lai}, Binglei Lou, Jiayi Nie, Can Xiao, Timi Adeniran, Przemyslaw Forys, Kauser Johar, Catriona Wright, Junyi Liu, Kai Shi, Nicholas D Lane, Rika Antonova, Jianyi Cheng, Timothy Jones, Aaron Zhao, Robert Mullins. ``MemExplorer: Navigating the Heterogeneous Memory Design Space for Agentic Inference NPUs.'' arXiv, 2026.}
     \resumeItemListEnd
 
     \vspace{3pt}
     \item{\textbf{AI for Security and Planning}}
     \resumeItemListStart
-      \item{[17] \textbf{Yao Lai}, Guolou Ping, Xiaojun Ye. ``OpenSmax: Unknown Domain Generation Algorithm Detection.'' European Conference on Artificial Intelligence (ECAI), 2020. \ccf{B}}
-      \item{[18] Lan Zhang, \textbf{Yao Lai}, Xiaojun Ye. ``Attention Mechanism Based Detection of Malware Call Sequences.'' Computer Science, 2019. (in Chinese)}
-      \item{[19] Lizheng Deng, Hongyong Yuan, Lida Huang, Shuan Yan, \textbf{Yao Lai}. ``Post-earthquake Search via an Autonomous UAV: Hybrid Algorithm and 3D Path Planning.'' IEEE ICNC-FSKD, 2018.}
-    \resumeItemListEnd
+      \item{[18] \textbf{Yao Lai}, Guolou Ping, Xiaojun Ye. ``OpenSmax: Unknown Domain Generation Algorithm Detection.'' European Conference on Artificial Intelligence (ECAI), 2020. \ccf{B}}
+      \item{[19] Lan Zhang, \textbf{Yao Lai}, Xiaojun Ye. ``Attention Mechanism Based Detection of Malware Call Sequences.'' Computer Science, 2019. (in Chinese)}    \resumeItemListEnd
 
   \resumeSubHeadingListEnd
 
-\section{Programming Skills}
-  \resumeSubHeadingListStart
-    \setlength{\itemsep}{0pt}
-    \setlength{\parsep}{0pt}
-    \setlength{\parskip}{0pt}
-    \item{\textbf{Languages}{: C/C++, Python, SQL, Java, Perl, MATLAB, Verilog HDL}}
-    \item{\textbf{Tools}{: Pytorch, Tensorflow, Scikit-learn}}
-    % \item{\textbf{Certification}{: Certified Software Professional (CSP) Top 0.1\%}}
-  \resumeSubHeadingListEnd
+% \section{Programming Skills}
+%   \resumeSubHeadingListStart
+%     \setlength{\itemsep}{0pt}
+%     \setlength{\parsep}{0pt}
+%     \setlength{\parskip}{0pt}
+%     \item{\textbf{Languages}{: C/C++, Python, SQL, Java, Perl, MATLAB, Verilog HDL}}
+%     \item{\textbf{Tools}{: Pytorch, Tensorflow, Scikit-learn}}
+%     % \item{\textbf{Certification}{: Certified Software Professional (CSP) Top 0.1\%}}
+%   \resumeSubHeadingListEnd
 
 \section{Language Skills}
 
