@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-30T02:03:20.573Z",
-  "total_citations": 397,
+  "generated_at": "2026-07-31T02:30:02.415Z",
+  "total_citations": 398,
   "papers": [
     {
       "id": "2026-pub-2",
@@ -17,7 +17,7 @@
     {
       "id": "2026-pub-1",
       "title": "AnalogCoder-Pro: Unifying Analog Circuit Generation and Optimization via Multi-modal LLMs",
-      "citations": 19,
+      "citations": 20,
       "semantic_scholar": {
         "paper_id": "613a987b8e8440693c30747479737abd3c2dfaa1",
         "external_ids": {
