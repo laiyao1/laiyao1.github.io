@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-09T01:23:11.042Z",
+  "generated_at": "2026-08-10T01:24:40.018Z",
   "total_citations": 404,
   "papers": [
     {
@@ -9,7 +9,9 @@
       "semantic_scholar": {
         "paper_id": "cb651f2c1834688f4d2c8c89ed5fe67fe194a007",
         "external_ids": {
+          "DBLP": "journals/corr/abs-2606-00228",
           "ArXiv": "2606.00228",
+          "DOI": "10.48550/arXiv.2606.00228",
           "CorpusId": 288855048
         }
       }
