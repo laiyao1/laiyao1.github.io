@@ -5,9 +5,9 @@ navbar_title: Home
 ---
 {% include widgets/profile_card.html %}
 
-<link rel="stylesheet" href="{{ '/assets/css/chip-town.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/chip-town.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 {% include widgets/chip_town.html %}
-<script src="{{ '/assets/js/chip-town.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/chip-town.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 
 {% include widgets/url_debug_message.html %}
 
