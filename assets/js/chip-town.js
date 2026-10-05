@@ -314,34 +314,14 @@
   }
   function saveChoice(id) { if(window.openai && window.openai.setWidgetState)window.openai.setWidgetState({modelContent:{building:id},privateContent:{playing}}).catch(()=>{}); }
   function clearSelection() { clearTimeout(hideTimer);selected=null;pinned=null;tip.hidden=true;root.querySelectorAll('[data-station]').forEach(el=>el.setAttribute('aria-expanded','false'));draw(); }
-  function positionTip(s) {
-    const stage=root.querySelector('.ct-stage'),cw=stage.clientWidth,ch=canvas.clientHeight;
-    // Measure the floating layout, then move long details below the compact map.
-    tip.classList.remove('ct-details-below');
-    if(tip.parentElement!==stage)stage.appendChild(tip);
-    const x=(s.x+s.w/2)/W*cw,y=(s.y+s.h)/H*ch;
-    const tw=tip.offsetWidth,th=tip.offsetHeight;
-    if(window.matchMedia('(max-width: 599px)').matches || th>ch-24){
-      tip.classList.add('ct-details-below');
-      root.insertBefore(tip,mobile);
-      return;
-    }
-    const right=(s.x+s.w+16)/W*cw, leftSide=(s.x-16)/W*cw-tw;
-    let left,top;
-    // Place popovers beside the active building, so they never steal its hover.
-    if(right+tw<=cw-12){left=right;top=Math.max(12,Math.min(ch-th-12,s.y/H*ch));}
-    else if(leftSide>=12){left=leftSide;top=Math.max(12,Math.min(ch-th-12,s.y/H*ch));}
-    else{left=Math.max(12,Math.min(cw-tw-12,x-tw/2));top=y+24;if(top+th>ch-12)top=Math.max(12,s.y/H*ch-th-12);}
-    tip.style.left=left+'px';tip.style.top=top+'px';
-  }
   function selectStation(id,pin=false,remember=true) {
     const s=stations.find(s=>s.id===id);if(!s)return;
     clearTimeout(hideTimer);selected=id;if(pin)pinned=id;
     tip.innerHTML='<div class="ct-tip-top"><h3 class="ct-tip-title">'+s.name+'</h3><button class="ct-close" type="button" aria-label="Close building details">×</button></div><p class="ct-tip-desc">'+s.desc+'</p>'+s.works.map(w=>'<div class="ct-work"><a href="'+w.paper+'" target="_blank" rel="noopener noreferrer">'+w.name+'</a><span class="ct-venue">'+w.venue+'</span><p>'+w.desc+'</p><div class="ct-work-links"><a href="'+w.paper+'" target="_blank" rel="noopener noreferrer">'+(w.name==='AIxSIM'?'Project ↗':'Paper ↗')+'</a>'+(w.code?'<a href="'+w.code+'" target="_blank" rel="noopener noreferrer">Code ↗</a>':'')+'</div></div>').join('');
     tip.hidden=false;tip.querySelector('.ct-close').addEventListener('click',()=>{const trigger=hitLayer.querySelector('[data-station="'+id+'"]');clearSelection();suppressFocus=true;trigger.focus({preventScroll:true});suppressFocus=false;});
-    root.querySelectorAll('[data-station]').forEach(el=>el.setAttribute('aria-expanded',String(el.dataset.station===id)));positionTip(s);draw();if(pin&&remember)saveChoice(id);
+    root.querySelectorAll('[data-station]').forEach(el=>el.setAttribute('aria-expanded',String(el.dataset.station===id)));draw();if(pin&&remember)saveChoice(id);
   }
-  function delayClose() { if(pinned)return;hideTimer=setTimeout(clearSelection,350); }
+  function delayClose() { if(pinned||window.matchMedia('(min-width: 768px)').matches)return;hideTimer=setTimeout(clearSelection,350); }
   stations.forEach((s,i)=>{
     const button=document.createElement('button');button.type='button';button.className='ct-hotspot cursor-interaction';button.dataset.station=s.id;button.setAttribute('aria-label',s.name+(s.works.length?': '+s.works.map(w=>w.name).join(', '):''));button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ct-building-detail');button.style.left=(s.x-8)/W*100+'%';button.style.top=(s.y-5)/H*100+'%';button.style.width=(s.w+16)/W*100+'%';button.style.height=(s.h+29)/H*100+'%';
     button.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!pinned)selectStation(s.id);});button.addEventListener('pointerleave',delayClose);button.addEventListener('focus',()=>{if(!pinned&&!suppressFocus)selectStation(s.id);});button.addEventListener('blur',delayClose);
@@ -356,7 +336,8 @@
   reduced.addEventListener('change',e=>{if(e.matches)setPlaying(false);});
   function tick(now) { const animate=playing&&onScreen&&document.visibilityState!=='hidden';if(last&&animate)seconds+=Math.min((now-last)/1000,.1);last=now;if(animate)draw();requestAnimationFrame(tick); }
   drawBase();root.classList.add('ct-ready');setPlaying(playing);draw();requestAnimationFrame(tick);
-  const ro=new ResizeObserver(()=>{draw();if(selected)positionTip(stations.find(s=>s.id===selected));});ro.observe(root);
+  if(window.matchMedia('(min-width: 768px)').matches)selectStation('physical',false,false);
+  const ro=new ResizeObserver(()=>draw());ro.observe(root);
   const visibility=new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting;});visibility.observe(root);
   root.chipTown={ render(t,labels=true){seconds=t;draw(t,labels);},setPlaying,selectStation,clearSelection,stations,shipmentAt,cycleDuration };
   function applyState(state){if(!state)return;if(state.privateContent && typeof state.privateContent.playing==='boolean')setPlaying(state.privateContent.playing);if(state.modelContent && state.modelContent.building)selectStation(state.modelContent.building,true,false);}

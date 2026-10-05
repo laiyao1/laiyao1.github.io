@@ -3,10 +3,12 @@
     <h2 class="ct-title"><i class="fas fa-microchip" aria-hidden="true"></i> Chip Design</h2>
     <button type="button" class="ct-motion" aria-pressed="false">Pause animation</button>
   </div>
-  <div class="ct-stage">
-    <img class="ct-fallback" src="{{ '/assets/images/chip-town.png' | relative_url }}" alt="Pixel art chip town: logic and analog design, physical design, mask and lithography, wafer fabrication, packaging and test, and hardware simulation." width="1024" height="620">
-    <canvas width="1024" height="620" role="img" aria-label="Follow one chip design as a delivery truck carries it from circuit design into physical design, mask and lithography, wafer fabrication, and packaging. Each workshop receives, processes, and hands off the same design."></canvas>
-    <div class="ct-hotspots" aria-label="Research buildings"></div>
+  <div class="ct-content">
+    <div class="ct-stage">
+      <img class="ct-fallback" src="{{ '/assets/images/chip-town.png' | relative_url }}" alt="Pixel art chip town: logic and analog design, physical design, mask and lithography, wafer fabrication, packaging and test, and hardware simulation." width="1024" height="620">
+      <canvas width="1024" height="620" role="img" aria-label="Follow one chip design as a delivery truck carries it from circuit design into physical design, mask and lithography, wafer fabrication, and packaging. Each workshop receives, processes, and hands off the same design."></canvas>
+      <div class="ct-hotspots" aria-label="Research buildings"></div>
+    </div>
     <div class="ct-tooltip" hidden role="region" aria-label="Selected research building"></div>
   </div>
   <div class="ct-mobile-stations" aria-label="Explore the research buildings"></div>
