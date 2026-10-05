@@ -313,7 +313,7 @@
       if(selected===s.id) { ctx.strokeStyle='#fff1ac';ctx.lineWidth=3;ctx.setLineDash([]);ctx.strokeRect(s.x-8,s.y-3,s.w+16,s.h+2);r(ctx,s.x+s.w/2-6,s.y-11,12,7,'#fff1ac'); }
       const lx=s.x+s.w/2,ly=s.y+s.h+10;
       ctx.textAlign='center';ctx.textBaseline='middle';
-      if(showLabels){ctx.font='500 18px "Trebuchet MS", sans-serif';const tw=ctx.measureText(s.name).width;r(ctx,lx-tw/2-9,ly-11,tw+18,24,'#f8f2dce8');r(ctx,lx-tw/2-9,ly+13,tw+18,2,'#647c5050');ctx.fillStyle=C.ink;ctx.fillText(s.name,lx,ly+1);}
+      if(showLabels){ctx.font='500 '+(!exportLabels&&canvas.clientWidth<640?21:18)+'px "Trebuchet MS", sans-serif';const tw=ctx.measureText(s.name).width;r(ctx,lx-tw/2-9,ly-11,tw+18,24,'#f8f2dce8');r(ctx,lx-tw/2-9,ly+13,tw+18,2,'#647c5050');ctx.fillStyle=C.ink;ctx.fillText(s.name,lx,ly+1);}
       else{r(ctx,lx-14,ly-14,28,28,'#f8f2dc');ctx.font='500 23px sans-serif';ctx.fillStyle=C.ink;ctx.fillText(String(i+1),lx,ly+1);}
     });
     drawShipment(shipmentAt(t),t,showLabels,exportLabels);
@@ -322,8 +322,16 @@
   function clearSelection() { clearTimeout(hideTimer);selected=null;pinned=null;tip.hidden=true;root.querySelectorAll('[data-station]').forEach(el=>el.setAttribute('aria-expanded','false'));draw(); }
   function positionTip(s) {
     const stage=root.querySelector('.ct-stage'),cw=stage.clientWidth,ch=canvas.clientHeight;
+    // Measure the floating layout, then move long details below the compact map.
+    tip.classList.remove('ct-details-below');
+    if(tip.parentElement!==stage)stage.appendChild(tip);
     const x=(s.x+s.w/2)/W*cw,y=(s.y+s.h)/H*ch;
     const tw=tip.offsetWidth,th=tip.offsetHeight;
+    if(window.matchMedia('(max-width: 599px)').matches || th>ch-24){
+      tip.classList.add('ct-details-below');
+      root.insertBefore(tip,mobile);
+      return;
+    }
     const right=(s.x+s.w+16)/W*cw, leftSide=(s.x-16)/W*cw-tw;
     let left,top;
     // Place popovers beside the active building, so they never steal its hover.
