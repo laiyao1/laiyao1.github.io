@@ -151,7 +151,10 @@
     [268,511,763].forEach(x=>polygon(b,[[x,TOP_ROAD-4],[x+8,TOP_ROAD],[x,TOP_ROAD+4]],'#ad9b6e'));
     [355,659,878].forEach(x=>polygon(b,[[x+8,554],[x,558],[x+8,562]],'#ad9b6e'));
     polygon(b,[[944,345],[948,353],[952,345]],'#ad9b6e');
-    r(b,386,589,251,19,'#89ab70');b.textAlign='center';b.font='12px monospace';b.fillStyle='#edf0d5';b.fillText('FROM IDEAS TO SILICON',512,603);
+    const credit='Chip Town © 2026 Yao Lai';
+    b.save();b.textAlign='center';b.font='16px "Trebuchet MS", sans-serif';
+    const creditWidth=b.measureText(credit).width+24;
+    r(b,512-creditWidth/2,587,creditWidth,24,'#b9cf9a');b.fillStyle='#4b6242';b.fillText(credit,512,604);b.restore();
   }
   function person(c,x,y,color,step) {
     x=Math.round(x);y=Math.round(y);ellipse(c,x,y+11,6,3,'#6b86576b');r(c,x-3,y-8,7,7,'#e5c39b');r(c,x-3,y-10,7,3,'#665448');r(c,x-4,y-1,9,8,color);r(c,x-5,y,2,5,'#e3bc92');r(c,x+5,y,2,5,'#e3bc92');r(c,x-3,y+7,3,5+(step?1:0),'#51636b');r(c,x+2,y+7,3,5+(step?0:1),'#51636b');
@@ -253,7 +256,7 @@
     const x=s.x+s.w/2,y=s.y+32;ctx.font='500 14px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
     const w=ctx.measureText(text).width+16;r(ctx,x-w/2,y-11,w,22,'#395f50');r(ctx,x-w/2,y+11,w,2,'#f4e7a2');ctx.fillStyle='#fff4d3';ctx.fillText(text,x,y+1);
   }
-  function drawShipment(state,t,showLabels,exportLabels) {
+  function drawShipment(state,t,showLabels) {
     const s=byId(state.station),p=state.progress;
     if(state.type==='transfer'){
       ctx.save();ctx.setLineDash([3,9]);line(ctx,state.points,'#61836b85',3);ctx.restore();
@@ -284,11 +287,6 @@
       r(ctx,lx-tw/2-6,ly-11,tw+12,22,'#fff6dceF');ctx.fillStyle='#355647';ctx.fillText(label,lx,ly+1);
     }
     ctx.restore();
-    if(exportLabels){r(ctx,258,583,510,37,C.grass);ctx.font='500 16px "Trebuchet MS", sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-      let caption=state.caption;
-      if(ctx.measureText(caption).width>690)caption=cargoNames[state.kind]+' → '+byId(state.to||state.station).name;
-      const tw=ctx.measureText(caption).width;r(ctx,512-tw/2-12,590,tw+24,27,'#eaf0cf');ctx.fillStyle=C.ink;ctx.fillText(caption,512,604);
-    }
   }
   function draw(t=seconds, exportLabels=false) {
     ctx.clearRect(0,0,W,H);ctx.drawImage(bg,0,0);
@@ -310,7 +308,7 @@
       if(showLabels){ctx.font='500 '+(!exportLabels&&canvas.clientWidth<640?21:18)+'px "Trebuchet MS", sans-serif';const tw=ctx.measureText(s.name).width;r(ctx,lx-tw/2-9,ly-11,tw+18,24,'#f8f2dce8');r(ctx,lx-tw/2-9,ly+13,tw+18,2,'#647c5050');ctx.fillStyle=C.ink;ctx.fillText(s.name,lx,ly+1);}
       else{r(ctx,lx-14,ly-14,28,28,'#f8f2dc');ctx.font='500 23px sans-serif';ctx.fillStyle=C.ink;ctx.fillText(String(i+1),lx,ly+1);}
     });
-    drawShipment(shipmentAt(t),t,showLabels,exportLabels);
+    drawShipment(shipmentAt(t),t,showLabels);
   }
   function saveChoice(id) { if(window.openai && window.openai.setWidgetState)window.openai.setWidgetState({modelContent:{building:id},privateContent:{playing}}).catch(()=>{}); }
   function clearSelection() { clearTimeout(hideTimer);selected=null;pinned=null;tip.hidden=true;root.querySelectorAll('[data-station]').forEach(el=>el.setAttribute('aria-expanded','false'));draw(); }
