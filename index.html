@@ -5,6 +5,10 @@ navbar_title: Home
 ---
 {% include widgets/profile_card.html %}
 
+<link rel="stylesheet" href="{{ '/assets/css/chip-town.css' | relative_url }}">
+{% include widgets/chip_town.html %}
+<script src="{{ '/assets/js/chip-town.js' | relative_url }}" defer></script>
+
 {% include widgets/url_debug_message.html %}
 
 {% if site.data.display.homepage.show_experience %}
