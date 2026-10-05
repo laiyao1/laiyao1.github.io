@@ -272,11 +272,11 @@
     ctx.save();
     if(state.type==='return')ctx.globalAlpha=Math.min(1,(1-p)*4);
     payload(ctx,state.cargo[0],state.cargo[1],state.kind,t);
-    const label=String(state.design).padStart(2,'0')+' · '+cargoNames[state.kind].toUpperCase();
+    const label=cargoNames[state.kind].toUpperCase();
     if(showLabels){ctx.font='500 15px monospace';ctx.textAlign='center';ctx.textBaseline='middle';const tw=ctx.measureText(label).width;
       let lx=state.cargo[0],ly=state.cargo[1]-45;
       if(state.type==='transfer' && state.cart[3]===0){
-        // Keep the shipment identifier on the road, away from the workshop nameplates.
+        // Keep the cargo label on the road, away from the workshop nameplates.
         lx=state.cart[0]+46+tw/2+6;ly=state.cart[1]+1;
         if(lx+tw/2+6>W-12)lx=state.cart[0]-32-tw/2-6;
       } else if(state.type==='transfer')ly=state.cargo[1]-57;
@@ -285,8 +285,8 @@
     }
     ctx.restore();
     if(exportLabels){r(ctx,258,583,510,37,C.grass);ctx.font='500 16px "Trebuchet MS", sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-      let caption='DESIGN '+String(state.design).padStart(2,'0')+' · '+state.caption;
-      if(ctx.measureText(caption).width>690)caption='DESIGN '+String(state.design).padStart(2,'0')+' · '+cargoNames[state.kind]+' → '+byId(state.to||state.station).name;
+      let caption=state.caption;
+      if(ctx.measureText(caption).width>690)caption=cargoNames[state.kind]+' → '+byId(state.to||state.station).name;
       const tw=ctx.measureText(caption).width;r(ctx,512-tw/2-12,590,tw+24,27,'#eaf0cf');ctx.fillStyle=C.ink;ctx.fillText(caption,512,604);
     }
   }
