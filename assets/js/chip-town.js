@@ -31,7 +31,6 @@
   let playing = !reduced.matches, selected = null, pinned = null, seconds = 0, last = 0, hideTimer, suppressFocus = false, onScreen = true;
   const tip = root.querySelector('.ct-tooltip');
   const motion = root.querySelector('.ct-motion');
-  const shipmentStatus = root.querySelector('.ct-shipment');
   const hitLayer = root.querySelector('.ct-hotspots');
   const mobile = root.querySelector('.ct-mobile-stations');
   const bg = document.createElement('canvas'); bg.width = W; bg.height = H;
@@ -254,7 +253,6 @@
     const x=s.x+s.w/2,y=s.y+32;ctx.font='500 14px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
     const w=ctx.measureText(text).width+16;r(ctx,x-w/2,y-11,w,22,'#395f50');r(ctx,x-w/2,y+11,w,2,'#f4e7a2');ctx.fillStyle='#fff4d3';ctx.fillText(text,x,y+1);
   }
-  let lastStatus='';
   function drawShipment(state,t,showLabels,exportLabels) {
     const s=byId(state.station),p=state.progress;
     if(state.type==='transfer'){
@@ -286,10 +284,6 @@
       r(ctx,lx-tw/2-6,ly-11,tw+12,22,'#fff6dceF');ctx.fillStyle='#355647';ctx.fillText(label,lx,ly+1);
     }
     ctx.restore();
-    const status='Design '+String(state.design).padStart(2,'0')+' · '+state.caption;
-    // Announce changes of phase only, rather than every animation frame.
-    const statusKey=state.design+':'+state.start;
-    if(lastStatus!==statusKey){shipmentStatus.textContent=status;lastStatus=statusKey;}
     if(exportLabels){r(ctx,258,583,510,37,C.grass);ctx.font='500 16px "Trebuchet MS", sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
       let caption='DESIGN '+String(state.design).padStart(2,'0')+' · '+state.caption;
       if(ctx.measureText(caption).width>690)caption='DESIGN '+String(state.design).padStart(2,'0')+' · '+cargoNames[state.kind]+' → '+byId(state.to||state.station).name;
