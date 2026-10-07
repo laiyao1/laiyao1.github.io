@@ -35,7 +35,11 @@
                                 <ul class="list-unstyled mb-1">
                                     {% for item in site.data.profile.experience %}
                                     <li class="media mb-1">
+                                        {% if item.logo %}
                                         <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;" class="mr-1 mt-1">
+                                        {% else %}
+                                        <i class="fas fa-briefcase mr-1 mt-1 text-muted" style="width: 18px;" aria-hidden="true"></i>
+                                        {% endif %}
                                         <div class="media-body">
                                             <div>{{ item.name }}</div>
                                             <div class="small">{{ item.dept }}</div>
