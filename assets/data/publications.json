@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-09T04:26:11.349Z",
-  "total_citations": 452,
+  "generated_at": "2026-10-10T04:11:40.339Z",
+  "total_citations": 453,
   "papers": [
     {
       "id": "2026-pub-2",
@@ -33,7 +33,7 @@
     {
       "id": "2025-pub-2",
       "title": "FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities",
-      "citations": 46,
+      "citations": 47,
       "semantic_scholar": {
         "paper_id": "17fdf94362b3ae856f67edafd6a8532dc87642ee",
         "external_ids": {
