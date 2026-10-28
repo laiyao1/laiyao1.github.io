@@ -98,6 +98,12 @@
                             <i class="ai ai-scopus"></i> Scopus
                         </a>
                         {% endif %}
+
+                        {% if site.data.profile.acl_anthology %}
+                        <a class="pr-3 no-break" target="_blank" rel="noopener noreferrer" href="https://aclanthology.org/people/{{ site.data.profile.acl_anthology }}/">
+                            <i class="fas fa-book-open" aria-hidden="true"></i> ACL Anthology
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
