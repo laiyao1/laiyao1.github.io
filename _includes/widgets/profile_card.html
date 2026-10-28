@@ -104,6 +104,12 @@
                             <span class="profile-link-icon acl-anthology-logo" aria-hidden="true"></span> ACL Anthology
                         </a>
                         {% endif %}
+
+                        {% if site.data.profile.web_of_science %}
+                        <a class="no-break" target="_blank" rel="noopener noreferrer" href="https://www.webofscience.com/wos/author/record/{{ site.data.profile.web_of_science }}">
+                            <span class="profile-link-icon web-of-science-logo" aria-hidden="true"></span> Web of Science
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

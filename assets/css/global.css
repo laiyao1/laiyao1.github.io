@@ -64,6 +64,12 @@ h1, h2, h3, h4, h5, h6,
     mask: url('../images/badges/acl-anthology.svg') no-repeat center / contain;
 }
 
+.web-of-science-logo {
+    background-color: currentColor;
+    -webkit-mask: url('../images/badges/web-of-science.png') no-repeat center / contain;
+    mask: url('../images/badges/web-of-science.png') no-repeat center / contain;
+}
+
 .no-break {
     white-space: nowrap;
 }
