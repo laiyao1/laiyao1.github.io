@@ -50,58 +50,58 @@
                 </div>
                 <hr />
                 <div class="row">
-                    <div class="col">
+                    <div class="col profile-links">
                         {% if site.data.profile.gscholar %}
-                        <a class="pr-3 no-break" target="_blank" href="https://scholar.google.com/citations?user={{ site.data.profile.gscholar }}&hl=en">
-                            <i class="fab fa-google-scholar"></i> Google Scholar
+                        <a class="no-break" target="_blank" href="https://scholar.google.com/citations?user={{ site.data.profile.gscholar }}&hl=en">
+                            <i class="fab fa-google-scholar profile-link-icon" aria-hidden="true"></i> Google Scholar
                         </a>
                         {% endif %}
 
                         {% if site.data.profile.semantic_scholar %}
-                        <a class="pr-3 no-break" target="_blank" href="https://www.semanticscholar.org/author/{{ site.data.profile.semantic_scholar }}">
-                            <i class="ai ai-semantic-scholar"></i> Semantic Scholar
+                        <a class="no-break" target="_blank" href="https://www.semanticscholar.org/author/{{ site.data.profile.semantic_scholar }}">
+                            <i class="ai ai-semantic-scholar profile-link-icon" aria-hidden="true"></i> Semantic Scholar
                         </a>
                         {% endif %}
 
                         {% if site.data.profile.github %}
-                        <a class="pr-3 no-break" target="_blank" href="https://github.com/{{ site.data.profile.github }}">
-                            <i class="fab fa-github"></i> GitHub
+                        <a class="no-break" target="_blank" href="https://github.com/{{ site.data.profile.github }}">
+                            <i class="fab fa-github profile-link-icon" aria-hidden="true"></i> GitHub
                         </a>
                         {% endif %}
 
                         {% if site.data.profile.wechat_qrcode %}
-                        <a class="pr-3 no-break" data-toggle="modal" data-target="#modal-wechat">
-                            <i class="fab fa-weixin"></i> WeChat
+                        <a class="no-break" data-toggle="modal" data-target="#modal-wechat">
+                            <i class="fab fa-weixin profile-link-icon" aria-hidden="true"></i> WeChat
                         </a>
                         {% endif %}
 
                         {% if site.data.profile.twitter %}
-                        <a class="pr-3 no-break" target="_blank" href="https://twitter.com/{{ site.data.profile.twitter }}">
-                            <i class="fab fa-twitter"></i> Twitter
+                        <a class="no-break" target="_blank" href="https://twitter.com/{{ site.data.profile.twitter }}">
+                            <i class="fab fa-twitter profile-link-icon" aria-hidden="true"></i> Twitter
                         </a>
                         {% endif %}
 
                         {% if site.data.profile.linkedin %}
-                        <a class="pr-3 no-break" target="_blank" href="https://www.linkedin.com/in/{{ site.data.profile.linkedin }}">
-                            <i class="fab fa-linkedin"></i> LinkedIn
+                        <a class="no-break" target="_blank" href="https://www.linkedin.com/in/{{ site.data.profile.linkedin }}">
+                            <i class="fab fa-linkedin profile-link-icon" aria-hidden="true"></i> LinkedIn
                         </a>
                         {% endif %}
 
                         {% if site.data.profile.orcid %}
-                        <a class="pr-3 no-break" target="_blank" href="https://orcid.org/{{ site.data.profile.orcid }}">
-                            <i class="fab fa-orcid"></i> ORCID
+                        <a class="no-break" target="_blank" href="https://orcid.org/{{ site.data.profile.orcid }}">
+                            <i class="fab fa-orcid profile-link-icon" aria-hidden="true"></i> ORCID
                         </a>
                         {% endif %}
 
                         {% if site.data.profile.scopus %}
-                        <a class="pr-3 no-break" target="_blank" rel="noopener noreferrer" href="https://www.scopus.com/authid/detail.uri?authorId={{ site.data.profile.scopus }}">
-                            <i class="ai ai-scopus"></i> Scopus
+                        <a class="no-break" target="_blank" rel="noopener noreferrer" href="https://www.scopus.com/authid/detail.uri?authorId={{ site.data.profile.scopus }}">
+                            <i class="ai ai-scopus profile-link-icon" aria-hidden="true"></i> Scopus
                         </a>
                         {% endif %}
 
                         {% if site.data.profile.acl_anthology %}
-                        <a class="pr-3 no-break" target="_blank" rel="noopener noreferrer" href="https://aclanthology.org/people/{{ site.data.profile.acl_anthology }}/">
-                            <span class="acl-anthology-logo" aria-hidden="true"></span> ACL Anthology
+                        <a class="no-break" target="_blank" rel="noopener noreferrer" href="https://aclanthology.org/people/{{ site.data.profile.acl_anthology }}/">
+                            <span class="profile-link-icon acl-anthology-logo" aria-hidden="true"></span> ACL Anthology
                         </a>
                         {% endif %}
                     </div>
