@@ -30,6 +30,16 @@ h1, h2, h3, h4, h5, h6,
     line-break: unset;
 }
 
+.acl-anthology-logo {
+    display: inline-block;
+    width: 1.4783em;
+    height: 1em;
+    vertical-align: -0.1em;
+    background-color: currentColor;
+    -webkit-mask: url('../images/badges/acl-anthology.svg') no-repeat center / contain;
+    mask: url('../images/badges/acl-anthology.svg') no-repeat center / contain;
+}
+
 .no-break {
     white-space: nowrap;
 }
