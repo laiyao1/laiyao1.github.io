@@ -18,8 +18,17 @@
                         <div class="text-profile-bio mt-3">
                             {{ site.data.profile.short_bio }}
                         </div>
-                        {% if site.data.profile.cv_link %}
-                            <a target="_blank" href="{{ site.data.profile.cv_link | relative_url }}"><i class="fas fa-file-alt"></i> Curriculum Vitae</a> <br/>
+                        {% if site.data.profile.cv_link or site.data.profile.email %}
+                        <div class="d-flex flex-wrap align-items-center">
+                            {% if site.data.profile.cv_link %}
+                            <a class="mr-3 mb-1 no-break" target="_blank" href="{{ site.data.profile.cv_link | relative_url }}"><i class="fas fa-file-alt"></i> Curriculum Vitae</a>
+                            {% endif %}
+                            {% if site.data.profile.email %}
+                            <a class="mb-1 text-break" href="mailto:{{ site.data.profile.email | encode_email }}">
+                                <i class="fas fa-at"></i> <span class="email-text">{{ site.data.profile.email | replace: "@", "(at)" }}</span>
+                            </a>
+                            {% endif %}
+                        </div>
                         {% endif %}
                     </div>
                     {% if site.data.profile.portrait_url %}
@@ -42,10 +51,6 @@
                 <hr />
                 <div class="row">
                     <div class="col">
-                        <a class="pr-3 no-break" href="mailto:{{ site.data.profile.email | encode_email }}">
-                            <i class="fas fa-at"></i> <span class="email-text">{{ site.data.profile.email | replace: "@", "(at)" }}</span>
-                        </a>
-
                         {% if site.data.profile.gscholar %}
                         <a class="pr-3 no-break" target="_blank" href="https://scholar.google.com/citations?user={{ site.data.profile.gscholar }}&hl=en">
                             <i class="fab fa-google-scholar"></i> Google Scholar
@@ -85,6 +90,12 @@
                         {% if site.data.profile.orcid %}
                         <a class="pr-3 no-break" target="_blank" href="https://orcid.org/{{ site.data.profile.orcid }}">
                             <i class="fab fa-orcid"></i> ORCID
+                        </a>
+                        {% endif %}
+
+                        {% if site.data.profile.scopus %}
+                        <a class="pr-3 d-inline-block" target="_blank" rel="noopener noreferrer" href="https://www.scopus.com/authid/detail.uri?authorId={{ site.data.profile.scopus }}">
+                            <i class="ai ai-scopus"></i> Scopus ID: <span class="no-break">{{ site.data.profile.scopus }}</span>
                         </a>
                         {% endif %}
                     </div>
