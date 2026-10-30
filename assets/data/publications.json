@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-29T04:14:05.377Z",
-  "total_citations": 479,
+  "generated_at": "2026-10-30T04:14:49.935Z",
+  "total_citations": 485,
   "papers": [
     {
       "id": "2026-pub-2",
@@ -19,13 +19,13 @@
     {
       "id": "2026-pub-1",
       "title": "AnalogCoder-Pro: Unifying Analog Circuit Generation and Optimization via Multi-modal LLMs",
-      "citations": 32,
+      "citations": 33,
       "semantic_scholar": {
         "paper_id": "613a987b8e8440693c30747479737abd3c2dfaa1",
         "external_ids": {
           "DBLP": "journals/corr/abs-2508-02518",
           "ArXiv": "2508.02518",
-          "DOI": "10.48550/arXiv.2508.02518",
+          "DOI": "10.1109/TCAD.2026.3673493",
           "CorpusId": 280422637
         }
       }
@@ -47,7 +47,7 @@
     {
       "id": "2025-pub-1",
       "title": "AnalogCoder: Analog Circuit Design via Training-Free Code Generation",
-      "citations": 174,
+      "citations": 175,
       "semantic_scholar": {
         "paper_id": "bcfd6404ad1c913b915d1f7731d3bc69564d98e7",
         "external_ids": {
@@ -75,7 +75,7 @@
     {
       "id": "2023-pub-1",
       "title": "ChiPFormer: Transferable Chip Placement via Offline Decision Transformer",
-      "citations": 92,
+      "citations": 94,
       "semantic_scholar": {
         "paper_id": "4a810f17843145195d73d5c63dc0f1477ba9cafc",
         "external_ids": {
@@ -89,7 +89,7 @@
     {
       "id": "2022-pub-1",
       "title": "MaskPlace: Fast Chip Placement via Reinforced Visual Representation Learning",
-      "citations": 111,
+      "citations": 113,
       "semantic_scholar": {
         "paper_id": "938c988ce314c6cd64b5b860daa9923f10d2709c",
         "external_ids": {
