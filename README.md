@@ -38,7 +38,7 @@ A GitHub Pages (Jekyll) template for personal academic website. Click [here](htt
 
 ### Running Locally
 
-The homepage uses a sticky profile sidebar on desktop and stacks the profile above the main content below 992px. Edit `_data/profile.yml` to update the profile, contact details, and academic links.
+The homepage uses a sticky profile sidebar on desktop and stacks the profile above the main content below 992px. The desktop portrait shrinks while scrolling and restores at the top, and the navigation name has a blinking caret. Reduced-motion preferences disable these effects. Edit `_data/profile.yml` to update the profile, contact details, and academic links.
 
 2. Follow the **step 1** and **step 2** of the instruction [here](https://jekyllrb.com/docs/) to install prerequisites and jekyll.
 

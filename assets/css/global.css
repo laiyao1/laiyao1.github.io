@@ -23,6 +23,26 @@ h1, h2, h3, h4, h5, h6,
     opacity: 0.95;
 }
 
+.navbar-name {
+    display: inline-block;
+    padding-right: 0.15em;
+    border-right: 0.12em solid currentColor;
+    white-space: nowrap;
+    animation: navbar-caret 1s step-end infinite;
+}
+
+@keyframes navbar-caret {
+    0%, 100% { border-right-color: transparent; }
+    50% { border-right-color: currentColor; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar-name {
+        animation: none;
+        border-right-color: transparent;
+    }
+}
+
 .inline-badge {
     height: 16px;
     vertical-align: -10%;
