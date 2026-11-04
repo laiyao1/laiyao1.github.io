@@ -40,6 +40,8 @@ A GitHub Pages (Jekyll) template for personal academic website. Click [here](htt
 
 The homepage uses a sticky profile sidebar on desktop and stacks the profile above the main content below 992px. The desktop portrait shrinks while scrolling and restores at the top, and the navigation name has a blinking caret. Reduced-motion preferences disable these effects. Edit `_data/profile.yml` to update the profile, contact details, and academic links.
 
+Chip Town cycles through all seven building details every six seconds on desktop. Hover or keyboard focus holds a card, clicking a building pins it, and the animation control pauses both the town and the cards. Close or Escape dismisses the cards until another building is explored or playback is restarted. Mobile and reduced-motion views keep manual building selection.
+
 2. Follow the **step 1** and **step 2** of the instruction [here](https://jekyllrb.com/docs/) to install prerequisites and jekyll.
 
 3. Clone your forked repository to your local machine.

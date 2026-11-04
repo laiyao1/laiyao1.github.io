@@ -28,7 +28,10 @@
     { id: 'pack', name: 'Packaging & Test', stage: '05 · Assembly and test', x: 86, y: 374, w: 215, h: 156, color: '#c58f58', works: [], desc: 'Separate dies, assemble packages, and test the finished chips. This building completes the process map.' }
   ];
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const desktop = window.matchMedia('(min-width: 768px)');
+  const tourInterval = 6;
   let playing = !reduced.matches, selected = null, pinned = null, seconds = 0, last = 0, hideTimer, suppressFocus = false, onScreen = true;
+  let tourEnabled = true, tourIndex = 0, tourSeconds = 0;
   const tip = root.querySelector('.ct-tooltip');
   const motion = root.querySelector('.ct-motion');
   const hitLayer = root.querySelector('.ct-hotspots');
@@ -311,30 +314,111 @@
     drawShipment(shipmentAt(t),t,showLabels);
   }
   function saveChoice(id) { if(window.openai && window.openai.setWidgetState)window.openai.setWidgetState({modelContent:{building:id},privateContent:{playing}}).catch(()=>{}); }
-  function clearSelection() { clearTimeout(hideTimer);selected=null;pinned=null;tip.hidden=true;root.querySelectorAll('[data-station]').forEach(el=>el.setAttribute('aria-expanded','false'));draw(); }
+  function clearSelection(suspendTour=true) {
+    clearTimeout(hideTimer);
+    const wasPinned = pinned !== null;
+    selected = null;
+    pinned = null;
+    tourSeconds = 0;
+    if (suspendTour) tourEnabled = false;
+    tip.hidden = true;
+    root.querySelectorAll('[data-station]').forEach(el=>el.setAttribute('aria-expanded','false'));
+    if (wasPinned) saveChoice(null);
+    draw();
+  }
+  function returnFocus(id) {
+    const controls = desktop.matches ? hitLayer : mobile;
+    const trigger = controls.querySelector('[data-station="'+id+'"]');
+    if (!trigger) return;
+    suppressFocus = true;
+    trigger.focus({preventScroll:true});
+    suppressFocus = false;
+  }
+  // Overlapping panels reserve the tallest card's height and keep the page steady.
+  const panels = new Map();
+  stations.forEach(s=>{
+    const panel = document.createElement('div');
+    panel.className = 'ct-building';
+    panel.inert = true;
+    panel.setAttribute('aria-hidden', 'true');
+    panel.innerHTML='<div class="ct-tip-top"><h3 class="ct-tip-title">'+s.name+'</h3><button class="ct-close" type="button" aria-label="Close building details">×</button></div><p class="ct-tip-desc">'+s.desc+'</p>'+s.works.map(w=>'<div class="ct-work"><a href="'+w.paper+'" target="_blank" rel="noopener noreferrer">'+w.name+'</a><span class="ct-venue">'+w.venue+'</span><p>'+w.desc+'</p><div class="ct-work-links"><a href="'+w.paper+'" target="_blank" rel="noopener noreferrer">'+(w.name==='AIxSIM'?'Project ↗':'Paper ↗')+'</a>'+(w.code?'<a href="'+w.code+'" target="_blank" rel="noopener noreferrer">Code ↗</a>':'')+'</div></div>').join('');
+    panel.querySelector('.ct-close').addEventListener('click',()=>{clearSelection();returnFocus(s.id);});
+    panels.set(s.id, panel);
+    tip.appendChild(panel);
+  });
   function selectStation(id,pin=false,remember=true) {
     const s=stations.find(s=>s.id===id);if(!s)return;
     clearTimeout(hideTimer);selected=id;if(pin)pinned=id;
-    tip.innerHTML='<div class="ct-tip-top"><h3 class="ct-tip-title">'+s.name+'</h3><button class="ct-close" type="button" aria-label="Close building details">×</button></div><p class="ct-tip-desc">'+s.desc+'</p>'+s.works.map(w=>'<div class="ct-work"><a href="'+w.paper+'" target="_blank" rel="noopener noreferrer">'+w.name+'</a><span class="ct-venue">'+w.venue+'</span><p>'+w.desc+'</p><div class="ct-work-links"><a href="'+w.paper+'" target="_blank" rel="noopener noreferrer">'+(w.name==='AIxSIM'?'Project ↗':'Paper ↗')+'</a>'+(w.code?'<a href="'+w.code+'" target="_blank" rel="noopener noreferrer">Code ↗</a>':'')+'</div></div>').join('');
-    tip.hidden=false;tip.querySelector('.ct-close').addEventListener('click',()=>{const trigger=hitLayer.querySelector('[data-station="'+id+'"]');clearSelection();suppressFocus=true;trigger.focus({preventScroll:true});suppressFocus=false;});
+    tourIndex = stations.indexOf(s);
+    tourSeconds = 0;
+    if (remember) tourEnabled = true;
+    panels.forEach((panel, panelId)=>{
+      const active = panelId === id;
+      panel.classList.toggle('is-active', active);
+      panel.inert = !active;
+      panel.setAttribute('aria-hidden', String(!active));
+    });
+    tip.hidden=false;
     root.querySelectorAll('[data-station]').forEach(el=>el.setAttribute('aria-expanded',String(el.dataset.station===id)));draw();if(pin&&remember)saveChoice(id);
   }
-  function delayClose() { if(pinned||window.matchMedia('(min-width: 768px)').matches)return;hideTimer=setTimeout(clearSelection,350); }
+  function interactionHeld() {
+    return root.querySelector('.ct-hotspot:hover, .ct-tooltip:hover, [data-station]:focus-visible, .ct-tooltip:focus-within') !== null;
+  }
+  function delayClose() {
+    clearTimeout(hideTimer);
+    if (pinned || desktop.matches) return;
+    hideTimer = setTimeout(()=>{if (!interactionHeld()) clearSelection(false);}, 350);
+  }
+  function releasePin() {
+    pinned = null;
+    tourEnabled = true;
+    tourSeconds = 0;
+    saveChoice(null);
+  }
+  function togglePin(id) {
+    if (pinned !== id) selectStation(id, true);
+    else if (desktop.matches) releasePin();
+    else clearSelection();
+  }
   stations.forEach((s,i)=>{
     const button=document.createElement('button');button.type='button';button.className='ct-hotspot cursor-interaction';button.dataset.station=s.id;button.setAttribute('aria-label',s.name+(s.works.length?': '+s.works.map(w=>w.name).join(', '):''));button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ct-building-detail');button.style.left=(s.x-8)/W*100+'%';button.style.top=(s.y-5)/H*100+'%';button.style.width=(s.w+16)/W*100+'%';button.style.height=(s.h+29)/H*100+'%';
     button.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!pinned)selectStation(s.id);});button.addEventListener('pointerleave',delayClose);button.addEventListener('focus',()=>{if(!pinned&&!suppressFocus)selectStation(s.id);});button.addEventListener('blur',delayClose);
-    button.addEventListener('click',()=>{if(pinned===s.id)clearSelection();else selectStation(s.id,true);});hitLayer.appendChild(button);
-    const mb=document.createElement('button');mb.type='button';mb.dataset.station=s.id;mb.setAttribute('aria-expanded','false');mb.setAttribute('aria-controls','ct-building-detail');mb.textContent=(i+1)+'. '+s.name;mb.addEventListener('click',()=>pinned===s.id?clearSelection():selectStation(s.id,true));mobile.appendChild(mb);
+    button.addEventListener('click',()=>togglePin(s.id));hitLayer.appendChild(button);
+    const mb=document.createElement('button');mb.type='button';mb.dataset.station=s.id;mb.setAttribute('aria-expanded','false');mb.setAttribute('aria-controls','ct-building-detail');mb.textContent=(i+1)+'. '+s.name;mb.addEventListener('click',()=>togglePin(s.id));mobile.appendChild(mb);
   });
   tip.id='ct-building-detail';tip.addEventListener('pointerenter',()=>clearTimeout(hideTimer));tip.addEventListener('pointerleave',delayClose);tip.addEventListener('focusin',()=>clearTimeout(hideTimer));tip.addEventListener('focusout',e=>{if(!tip.contains(e.relatedTarget))delayClose();});
-  root.addEventListener('keydown',e=>{if(e.key==='Escape'){const trigger=(pinned||selected)&&hitLayer.querySelector('[data-station="'+(pinned||selected)+'"]');clearSelection();if(trigger){suppressFocus=true;trigger.focus({preventScroll:true});suppressFocus=false;}}});
-  root.addEventListener('pointerdown',e=>{if(pinned&&!e.target.closest('.ct-tooltip, [data-station]'))clearSelection();});
-  function setPlaying(value) { playing=Boolean(value);motion.textContent=playing?'Pause animation':'Play animation';motion.setAttribute('aria-pressed',String(!playing));last=0; }
+  root.addEventListener('keydown',e=>{if(e.key==='Escape'){const id=pinned||selected;clearSelection();if(id)returnFocus(id);}});
+  root.addEventListener('pointerdown',e=>{if(pinned&&!e.target.closest('.ct-tooltip, [data-station], .ct-motion'))releasePin();});
+  function setPlaying(value) {
+    const restarting = !playing && Boolean(value);
+    playing=Boolean(value);motion.textContent=playing?'Pause animation':'Play animation';motion.setAttribute('aria-pressed',String(!playing));last=0;
+    if (restarting) {
+      tourEnabled = true;
+      tourSeconds = 0;
+      if (desktop.matches && selected === null) selectStation(stations[tourIndex].id, false, false);
+    }
+  }
   motion.addEventListener('click',()=>{setPlaying(!playing);saveChoice(pinned);});
   reduced.addEventListener('change',e=>{if(e.matches)setPlaying(false);});
-  function tick(now) { const animate=playing&&onScreen&&document.visibilityState!=='hidden';if(last&&animate)seconds+=Math.min((now-last)/1000,.1);last=now;if(animate)draw();requestAnimationFrame(tick); }
+  function tick(now) {
+    const animate=playing&&onScreen&&document.visibilityState!=='hidden';
+    if (last && animate) {
+      const elapsed = Math.min((now-last)/1000, .1);
+      seconds += elapsed;
+      if (tourEnabled && desktop.matches && !reduced.matches && !pinned && !interactionHeld()) {
+        tourSeconds += elapsed;
+        if (tourSeconds >= tourInterval) selectStation(stations[(tourIndex+1)%stations.length].id, false, false);
+      } else tourSeconds = 0;
+    }
+    last=now;if(animate)draw();requestAnimationFrame(tick);
+  }
   drawBase();root.classList.add('ct-ready');setPlaying(playing);draw();requestAnimationFrame(tick);
-  if(window.matchMedia('(min-width: 768px)').matches)selectStation('physical',false,false);
+  if(desktop.matches)selectStation(stations[tourIndex].id,false,false);
+  desktop.addEventListener('change',()=>{
+    if (pinned || interactionHeld()) return;
+    if (desktop.matches && tourEnabled) selectStation(stations[tourIndex].id, false, false);
+    else if (!desktop.matches) clearSelection(false);
+  });
   const ro=new ResizeObserver(()=>draw());ro.observe(root);
   const visibility=new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting;});visibility.observe(root);
   root.chipTown={ render(t,labels=true){seconds=t;draw(t,labels);},setPlaying,selectStation,clearSelection,stations,shipmentAt,cycleDuration };
