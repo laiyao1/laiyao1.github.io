@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ page.title }}{% if site.data.profile.navbar_name != "" %} - {{ site.data.profile.navbar_name }}{% endif %}</title>
+    <title>{{ page.title }}{% if site.data.profile.navbar_name != "" and page.title != site.data.profile.navbar_name %} - {{ site.data.profile.navbar_name }}{% endif %}</title>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
@@ -16,11 +16,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ '/assets/css/global.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 </head>
-<body class="bg-light" {{ page.body_attr }}>
+<body class="bg-light d-flex flex-column min-vh-100" {{ page.body_attr }}>
     {% include navbar.html %}
-    <div class="container">
+    <main class="container flex-grow-1 flex-shrink-0 {{ page.container_class }}" id="main-content">
         {{content}}
-    </div>
+    </main>
     {% include footer.html %}
 
     <!-- Scripts -->

@@ -1,0 +1,61 @@
+<div class="profile-links profile-links-sidebar" aria-label="Academic and social profiles">
+    {% if site.data.profile.gscholar %}
+    <a class="profile-social-link" target="_blank" rel="noopener noreferrer" href="https://scholar.google.com/citations?user={{ site.data.profile.gscholar }}&hl=en" title="Google Scholar" aria-label="Google Scholar">
+        <i class="fab fa-google-scholar profile-link-icon" aria-hidden="true"></i><span class="sr-only">Google Scholar</span>
+    </a>
+    {% endif %}
+
+    {% if site.data.profile.semantic_scholar %}
+    <a class="profile-social-link" target="_blank" rel="noopener noreferrer" href="https://www.semanticscholar.org/author/{{ site.data.profile.semantic_scholar }}" title="Semantic Scholar" aria-label="Semantic Scholar">
+        <i class="ai ai-semantic-scholar profile-link-icon" aria-hidden="true"></i><span class="sr-only">Semantic Scholar</span>
+    </a>
+    {% endif %}
+
+    {% if site.data.profile.github %}
+    <a class="profile-social-link" target="_blank" rel="noopener noreferrer" href="https://github.com/{{ site.data.profile.github }}" title="GitHub" aria-label="GitHub">
+        <i class="fab fa-github profile-link-icon" aria-hidden="true"></i><span class="sr-only">GitHub</span>
+    </a>
+    {% endif %}
+
+    {% if site.data.profile.wechat_qrcode %}
+    <a class="profile-social-link" data-toggle="modal" data-target="#modal-wechat" title="WeChat" aria-label="WeChat">
+        <i class="fab fa-weixin profile-link-icon" aria-hidden="true"></i><span class="sr-only">WeChat</span>
+    </a>
+    {% endif %}
+
+    {% if site.data.profile.twitter %}
+    <a class="profile-social-link" target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{ site.data.profile.twitter }}" title="Twitter" aria-label="Twitter">
+        <i class="fab fa-twitter profile-link-icon" aria-hidden="true"></i><span class="sr-only">Twitter</span>
+    </a>
+    {% endif %}
+
+    {% if site.data.profile.linkedin %}
+    <a class="profile-social-link" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/{{ site.data.profile.linkedin }}" title="LinkedIn" aria-label="LinkedIn">
+        <i class="fab fa-linkedin profile-link-icon" aria-hidden="true"></i><span class="sr-only">LinkedIn</span>
+    </a>
+    {% endif %}
+
+    {% if site.data.profile.orcid %}
+    <a class="profile-social-link" target="_blank" rel="noopener noreferrer" href="https://orcid.org/{{ site.data.profile.orcid }}" title="ORCID" aria-label="ORCID">
+        <i class="fab fa-orcid profile-link-icon" aria-hidden="true"></i><span class="sr-only">ORCID</span>
+    </a>
+    {% endif %}
+
+    {% if site.data.profile.scopus %}
+    <a class="profile-social-link" target="_blank" rel="noopener noreferrer" href="https://www.scopus.com/authid/detail.uri?authorId={{ site.data.profile.scopus }}" title="Scopus" aria-label="Scopus">
+        <i class="ai ai-scopus profile-link-icon" aria-hidden="true"></i><span class="sr-only">Scopus</span>
+    </a>
+    {% endif %}
+
+    {% if site.data.profile.acl_anthology %}
+    <a class="profile-social-link" target="_blank" rel="noopener noreferrer" href="https://aclanthology.org/people/{{ site.data.profile.acl_anthology }}/" title="ACL Anthology" aria-label="ACL Anthology">
+        <span class="profile-link-icon acl-anthology-logo" aria-hidden="true"></span><span class="sr-only">ACL Anthology</span>
+    </a>
+    {% endif %}
+
+    {% if site.data.profile.web_of_science %}
+    <a class="profile-social-link" target="_blank" rel="noopener noreferrer" href="https://www.webofscience.com/wos/author/record/{{ site.data.profile.web_of_science }}" title="Web of Science" aria-label="Web of Science">
+        <span class="profile-link-icon web-of-science-logo" aria-hidden="true"></span><span class="sr-only">Web of Science</span>
+    </a>
+    {% endif %}
+</div>

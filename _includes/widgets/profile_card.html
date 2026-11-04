@@ -1,120 +1,25 @@
-<div class="row">
-    <div class="col">
-        <div class="card border-0 shadow-sm bg-white rounded-xl">
-            <div class="card-body p-5">
-                <div class="row">
-                    <div class="col">
-                        <div class="h1 font-weight-normal">
-                            {{ site.data.profile.primary_name }} <small>{{ site.data.profile.secondary_name }}</small>
-                        </div>
-                        <div class="text-profile-position">
-                            {% for position in site.data.profile.positions %}
-                            {% if position.logo -%}
-                            <img src="{{ position.logo | relative_url }}" alt="Logo" class="inline-badge"/>
-                            {%- endif %}
-                            {{ position.name }}<br/>
-                            {% endfor %}
-                        </div>
-                        <div class="text-profile-bio mt-3">
-                            {{ site.data.profile.short_bio }}
-                        </div>
-                        {% if site.data.profile.cv_link or site.data.profile.email %}
-                        <div class="d-flex flex-wrap align-items-center">
-                            {% if site.data.profile.cv_link %}
-                            <a class="mr-3 mb-1 no-break" target="_blank" href="{{ site.data.profile.cv_link | relative_url }}"><i class="fas fa-file-alt"></i> Curriculum Vitae</a>
-                            {% endif %}
-                            {% if site.data.profile.email %}
-                            <a class="mb-1 text-break" href="mailto:{{ site.data.profile.email | encode_email }}">
-                                <i class="fas fa-at"></i> <span class="email-text">{{ site.data.profile.email | replace: "@", "(at)" }}</span>
-                            </a>
-                            {% endif %}
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% if site.data.profile.portrait_url %}
-                    <div class="col-md-auto">
-                        <figure class="figure">
-                            <img 
-                                src="{{ site.data.profile.portrait_url | relative_url }}" 
-                                class="figure-img img-fluid img-thumbnail" 
-                                style="height: 200px;"
-                                data-toggle="tooltip" 
-                                data-placement="top" 
-                                title="{{ site.data.profile.portrait_caption }}"
-                            >
-                            <figcaption class="figure-caption text-right"></figcaption>
-                        </figure>
-                    </div>
-                    {% endif %}
-        
-                </div>
-                <hr />
-                <div class="row">
-                    <div class="col profile-links">
-                        {% if site.data.profile.gscholar %}
-                        <a class="no-break" target="_blank" href="https://scholar.google.com/citations?user={{ site.data.profile.gscholar }}&hl=en">
-                            <i class="fab fa-google-scholar profile-link-icon" aria-hidden="true"></i> Google Scholar
-                        </a>
-                        {% endif %}
-
-                        {% if site.data.profile.semantic_scholar %}
-                        <a class="no-break" target="_blank" href="https://www.semanticscholar.org/author/{{ site.data.profile.semantic_scholar }}">
-                            <i class="ai ai-semantic-scholar profile-link-icon" aria-hidden="true"></i> Semantic Scholar
-                        </a>
-                        {% endif %}
-
-                        {% if site.data.profile.github %}
-                        <a class="no-break" target="_blank" href="https://github.com/{{ site.data.profile.github }}">
-                            <i class="fab fa-github profile-link-icon" aria-hidden="true"></i> GitHub
-                        </a>
-                        {% endif %}
-
-                        {% if site.data.profile.wechat_qrcode %}
-                        <a class="no-break" data-toggle="modal" data-target="#modal-wechat">
-                            <i class="fab fa-weixin profile-link-icon" aria-hidden="true"></i> WeChat
-                        </a>
-                        {% endif %}
-
-                        {% if site.data.profile.twitter %}
-                        <a class="no-break" target="_blank" href="https://twitter.com/{{ site.data.profile.twitter }}">
-                            <i class="fab fa-twitter profile-link-icon" aria-hidden="true"></i> Twitter
-                        </a>
-                        {% endif %}
-
-                        {% if site.data.profile.linkedin %}
-                        <a class="no-break" target="_blank" href="https://www.linkedin.com/in/{{ site.data.profile.linkedin }}">
-                            <i class="fab fa-linkedin profile-link-icon" aria-hidden="true"></i> LinkedIn
-                        </a>
-                        {% endif %}
-
-                        {% if site.data.profile.orcid %}
-                        <a class="no-break" target="_blank" href="https://orcid.org/{{ site.data.profile.orcid }}">
-                            <i class="fab fa-orcid profile-link-icon" aria-hidden="true"></i> ORCID
-                        </a>
-                        {% endif %}
-
-                        {% if site.data.profile.scopus %}
-                        <a class="no-break" target="_blank" rel="noopener noreferrer" href="https://www.scopus.com/authid/detail.uri?authorId={{ site.data.profile.scopus }}">
-                            <i class="ai ai-scopus profile-link-icon" aria-hidden="true"></i> Scopus
-                        </a>
-                        {% endif %}
-
-                        {% if site.data.profile.acl_anthology %}
-                        <a class="no-break" target="_blank" rel="noopener noreferrer" href="https://aclanthology.org/people/{{ site.data.profile.acl_anthology }}/">
-                            <span class="profile-link-icon acl-anthology-logo" aria-hidden="true"></span> ACL Anthology
-                        </a>
-                        {% endif %}
-
-                        {% if site.data.profile.web_of_science %}
-                        <a class="no-break" target="_blank" rel="noopener noreferrer" href="https://www.webofscience.com/wos/author/record/{{ site.data.profile.web_of_science }}">
-                            <span class="profile-link-icon web-of-science-logo" aria-hidden="true"></span> Web of Science
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>        
+<div class="card border-0 shadow-sm bg-white rounded-xl profile-card">
+    {% if site.data.profile.portrait_url %}
+    <img class="profile-portrait" src="{{ site.data.profile.portrait_url | relative_url }}" alt="Portrait of {{ site.data.profile.primary_name }}">
+    {% endif %}
+    <div class="profile-card-heading">
+        <h1 class="profile-name">{{ site.data.profile.primary_name }}{% if site.data.profile.secondary_name != "" %} <small>{{ site.data.profile.secondary_name }}</small>{% endif %}</h1>
+        {% for position in site.data.profile.positions %}
+        <div class="profile-affiliation">
+            {% if position.title %}<div>{{ position.title }}</div>{% endif %}
+            <div>{% if position.logo %}<img src="{{ position.logo | relative_url }}" alt="" class="inline-badge" aria-hidden="true">{% endif %}{{ position.name }}</div>
+        </div>
+        {% endfor %}
     </div>
+    <div class="profile-contacts">
+        {% if site.data.profile.email %}
+        <a class="profile-email email-text" href="mailto:{{ site.data.profile.email | encode_email }}">{{ site.data.profile.email | escape }}</a>
+        {% endif %}
+        {% if site.data.profile.cv_link %}
+        <a class="no-break" href="{{ site.data.profile.cv_link | relative_url }}" target="_blank" rel="noopener noreferrer" aria-label="Curriculum Vitae"><i class="fas fa-file-alt" aria-hidden="true"></i> CV</a>
+        {% endif %}
+    </div>
+    {% include widgets/profile_links.html %}
 </div>
 
 {% if site.data.profile.wechat_qrcode %}

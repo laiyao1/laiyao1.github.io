@@ -2,39 +2,47 @@
 layout: default
 title : Yao Lai
 navbar_title: Home
+container_class: homepage-container
 ---
-{% include widgets/profile_card.html %}
+<div class="homepage-layout">
+    <aside class="homepage-sidebar" aria-label="Personal profile">
+        {% include widgets/profile_card.html %}
+    </aside>
+    <div class="homepage-content">
+        {% include widgets/profile_card_bio_only.html %}
 
-<link rel="stylesheet" href="{{ '/assets/css/chip-town.css' | relative_url }}?v={{ site.time | date: '%s' }}">
-{% include widgets/chip_town.html %}
-<script src="{{ '/assets/js/chip-town.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+        <link rel="stylesheet" href="{{ '/assets/css/chip-town.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+        {% include widgets/chip_town.html %}
+        <script src="{{ '/assets/js/chip-town.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 
-{% include widgets/url_debug_message.html %}
+        {% include widgets/url_debug_message.html %}
 
-{% if site.data.display.homepage.show_experience %}
-{% include widgets/experience_card.html %}
-{% endif %}
+        {% if site.data.display.homepage.show_experience %}
+        {% include widgets/experience_card.html %}
+        {% endif %}
 
-{% if site.data.display.homepage.show_news %}
-{% assign count_news = site.news | size %}
-{% if count_news > 0 %}
-{% include widgets/news_card.html %}
-{% endif %}
-{% endif %}
+        {% if site.data.display.homepage.show_news %}
+        {% assign count_news = site.news | size %}
+        {% if count_news > 0 %}
+        {% include widgets/news_card.html %}
+        {% endif %}
+        {% endif %}
 
-{% if site.data.display.homepage.show_selected_publications %}
-{% assign pubs = site.publications | sort: "date" | reverse | where: "selected", true %}
-{% 
-    include widgets/publication_card.html 
-    publications=pubs
-    title='<i class="fas fa-star"></i> Selected Publications'
-%}
-{% endif %}
+        {% if site.data.display.homepage.show_selected_publications %}
+        {% assign pubs = site.publications | sort: "date" | reverse | where: "selected", true %}
+        {%
+            include widgets/publication_card.html
+            publications=pubs
+            title='<i class="fas fa-star"></i> Selected Publications'
+        %}
+        {% endif %}
 
-{% include widgets/video.html %}
+        {% include widgets/video.html %}
 
 
-<!-- MapMyVisitors 访客地图 -->
-<div style="width: 180px; max-width: 100%; margin: 20px auto;">
-<script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=VNW2YgK-QyLTNLm9oDtfGdRvcxDijg-PqRT01_NKkIg&cl=ffffff&w=a"></script>
+        <!-- Visitor map -->
+        <div style="width: 180px; max-width: 100%; margin: 20px auto;">
+        <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=VNW2YgK-QyLTNLm9oDtfGdRvcxDijg-PqRT01_NKkIg&cl=ffffff&w=a"></script>
+        </div>
+    </div>
 </div>

@@ -1,10 +1,11 @@
 primary_name: "Yao Lai"
 secondary_name: ""
-navbar_name: ""
+navbar_name: "Yao Lai"
 
 positions:
 - logo: /assets/images/badges/cambridge.jpg  # Logo is optional
   name: University of Cambridge
+  title: Postdoctoral Research Associate
 # - name: Position 2 without logo
 
 

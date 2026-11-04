@@ -38,6 +38,8 @@ A GitHub Pages (Jekyll) template for personal academic website. Click [here](htt
 
 ### Running Locally
 
+The homepage uses a sticky profile sidebar on desktop and stacks the profile above the main content below 992px. Edit `_data/profile.yml` to update the profile, contact details, and academic links.
+
 2. Follow the **step 1** and **step 2** of the instruction [here](https://jekyllrb.com/docs/) to install prerequisites and jekyll.
 
 3. Clone your forked repository to your local machine.
@@ -45,6 +47,7 @@ A GitHub Pages (Jekyll) template for personal academic website. Click [here](htt
 4. Run the following command in the root directory of the repository:
 
    ```bash
+   bundle install
    bundle exec jekyll serve
    ```
 
