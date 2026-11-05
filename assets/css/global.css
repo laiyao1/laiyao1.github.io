@@ -179,6 +179,10 @@ img.lazy {
     line-height: 1.6;
 }
 
+.profile-affiliation + .profile-affiliation {
+    margin-top: 12px;
+}
+
 .profile-contacts {
     display: flex;
     flex-wrap: wrap;

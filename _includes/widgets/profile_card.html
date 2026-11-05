@@ -18,6 +18,9 @@
         {% if site.data.profile.cv_link %}
         <a class="no-break" href="{{ site.data.profile.cv_link | relative_url }}" target="_blank" rel="noopener noreferrer" aria-label="Curriculum Vitae"><i class="fas fa-file-alt" aria-hidden="true"></i> CV</a>
         {% endif %}
+        {% if site.data.profile.secondary_email %}
+        <a class="profile-email email-text" href="mailto:{{ site.data.profile.secondary_email | encode_email }}">{{ site.data.profile.secondary_email | escape }}</a>
+        {% endif %}
     </div>
     {% include widgets/profile_links.html %}
 </div>
