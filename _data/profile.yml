@@ -1,6 +1,7 @@
 primary_name: "Yao Lai"
 secondary_name: ""
 navbar_name: "Yao Lai"
+navbar_name_zh: "來耀"
 
 positions:
 - logo: /assets/images/badges/cuhk.png
