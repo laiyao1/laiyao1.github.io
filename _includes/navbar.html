@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top mb-5 shadow-sm">
     <div class="container {{ page.container_class }}">
-        <a class="navbar-brand" href="{{ '/' | relative_url }}" aria-label="{{ site.data.profile.navbar_name }} home">
-            <strong class="navbar-name"><span aria-hidden="true">&gt; </span>{{ site.data.profile.navbar_name }}</strong>
+        <a class="navbar-brand" href="{{ '/' | relative_url }}" aria-label="{{ site.data.profile.navbar_name | escape }}{% if site.data.profile.navbar_name_zh %} ({{ site.data.profile.navbar_name_zh | escape }}){% endif %} home">
+            <strong class="navbar-name" aria-hidden="true"><span>&gt; </span><span class="navbar-name-text" data-alternate-name="{{ site.data.profile.navbar_name_zh | escape }}">{{ site.data.profile.navbar_name }}</span></strong>
         </a>
         <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-map"></i> Menu

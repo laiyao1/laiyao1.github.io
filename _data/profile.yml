@@ -1,15 +1,19 @@
 primary_name: "Yao Lai"
 secondary_name: ""
 navbar_name: "Yao Lai"
+navbar_name_zh: "來耀"
 
 positions:
-- logo: /assets/images/badges/cambridge.jpg  # Logo is optional
+- logo: /assets/images/badges/cuhk.png
+  name: The Chinese University of Hong Kong
+  title: Research Assistant Professor
+- logo: /assets/images/badges/cambridge.jpg
   name: University of Cambridge
-  title: Postdoctoral Research Associate
-# - name: Position 2 without logo
+  title: Visitor
 
 
-email: "yao.lai@cl.cam.ac.uk"
+email: "ylai@cse.cuhk.edu.hk"
+secondary_email: "yao.lai@cl.cam.ac.uk"
 cv_link: /assets/files/cv.pdf
 gscholar: 9Oxeo68AAAAJ
 semantic_scholar: 2192588046
@@ -27,7 +31,8 @@ orcid: 0009-0006-2200-096X
 
 short_bio: >-
   <p>
-    I am a Postdoctoral Research Associate at the <a href="https://www.cam.ac.uk/">University of Cambridge</a>, working with <a href="https://www.cl.cam.ac.uk/~rdm34/">Prof. Robert Mullins</a> and <a href="https://www.cl.cam.ac.uk/~tmj32/">Prof. Timothy M. Jones</a> on <a href="https://aicrosssim.github.io/">AIxSIM</a>, an <a href="https://www.aria.org.uk/">ARIA</a>-funded cross-stack simulation effort for novel AI hardware.
+    I am a Research Assistant Professor in the <a href="https://www.cse.cuhk.edu.hk/">Department of Computer Science and Engineering</a> at <a href="https://www.cuhk.edu.hk/english/">The Chinese University of Hong Kong</a> (CUHK), where I collaborate with <a href="https://www.cse.cuhk.edu.hk/~byu/">Prof. Bei Yu</a>.
+    I am also a Visitor in the <a href="https://www.cst.cam.ac.uk/">Department of Computer Science and Technology</a> at the <a href="https://www.cam.ac.uk/">University of Cambridge</a>, where I was previously a Postdoctoral Research Associate and continue to work with <a href="https://www.cl.cam.ac.uk/~rdm34/">Prof. Robert Mullins</a> and <a href="https://www.cl.cam.ac.uk/~tmj32/">Prof. Timothy M. Jones</a> on <a href="https://aicrosssim.github.io/">AIxSIM</a>, an <a href="https://www.aria.org.uk/">ARIA</a>-funded cross-stack simulation effort for novel AI hardware.
     I received my Ph.D. in Computer Science from the <a href="https://cs.hku.hk">University of Hong Kong</a> (HKU), where I was affiliated with <a href="https://mmlab.hk/">mmlab@HKU</a> and advised by <a href="http://luoping.me/">Prof. Ping Luo</a>.
     During my Ph.D., I was also a visiting collaborator at the <a href="https://www.cerc.utexas.edu/utda/">UTDA Lab</a>, <a href="https://www.utexas.edu/">The University of Texas at Austin</a>, hosted by <a href="https://www.ece.utexas.edu/people/faculty/david-z-pan">Prof. David Z. Pan</a> (IEEE/ACM Fellow).
     I received my M.Eng. from the <a href="https://www.thss.tsinghua.edu.cn/">Software School</a>, <a href="https://www.tsinghua.edu.cn">Tsinghua University</a>, advised by <a href="https://www.thss.tsinghua.edu.cn/en/faculty/xiaojunye.htm">Prof. Xiaojun Ye</a>, and my B.Eng. from the <a href="https://sme.fudan.edu.cn/">Department of Microelectronics</a>, <a href="https://www.fudan.edu.cn">Fudan University</a>, advised by <a href="https://sme.fudan.edu.cn/60/77/c31158a352375/page.htm">Prof. Xuan Zeng</a> and <a href="https://sme.fudan.edu.cn/5f/ec/c31146a352236/page.htm">Prof. Minge Jing</a>.
@@ -55,10 +60,23 @@ education:
   date: Sep. 2013 - Jul. 2017
 
 experience:
+- name: The Chinese University of Hong Kong
+  logo: /assets/images/badges/cuhk.png
+  dept: Department of Computer Science and Engineering
+  position: Research Assistant Professor
+  date: Oct. 2026 - Present
+
 - name: University of Cambridge
   logo: /assets/images/badges/cambridge.jpg
+  dept: Department of Computer Science and Technology
+  position: Visitor
+  date: Oct. 2026 - Present
+
+- name: University of Cambridge
+  logo: /assets/images/badges/cambridge.jpg
+  dept: Department of Computer Science and Technology
   position: Postdoctoral Research Associate
-  date: Dec. 2025 - Present
+  date: Dec. 2025 - Sep. 2026
 
 - name: The University of Texas at Austin
   logo: /assets/images/badges/utaustin.png
