@@ -189,7 +189,7 @@ img.lazy {
 
 .profile-contacts {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 8px 12px;
